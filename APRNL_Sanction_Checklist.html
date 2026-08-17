@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>APRNL Sanction File — Credit Processing Checklist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F4EC;
+    --paper-dim:#EFEADE;
+    --ink:#1B2A1E;
+    --ink-soft:#3A4A3D;
+    --olive:#4A5D45;
+    --seal-red:#8B1E1E;
+    --seal-red-soft:#B8483F;
+    --gold:#C9A227;
+    --gold-soft:#E4C766;
+    --line:#D8D0BC;
+    --card:#FFFDF7;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.015) 0px, rgba(0,0,0,0.015) 1px, transparent 1px, transparent 34px),
+      var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    padding:0 0 80px;
+  }
+  ::selection{background:var(--gold-soft);}
+
+  /* ===== HEADER / FILE JACKET ===== */
+  .jacket{
+    background:var(--ink);
+    color:var(--paper);
+    padding:28px 20px 24px;
+    position:relative;
+    overflow:hidden;
+    border-bottom:6px double var(--gold);
+  }
+  .jacket::before{
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0; bottom:0;
+    background:
+      radial-gradient(circle at 85% 20%, rgba(201,162,39,0.12), transparent 45%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--gold-soft);
+    margin:0 0 6px;
+  }
+  h1{
+    font-family:'Roboto Slab',serif;
+    font-size:26px;
+    line-height:1.15;
+    margin:0 0 4px;
+    font-weight:700;
+  }
+  .subtitle{
+    font-size:13px;
+    color:#C9C4B0;
+    margin:0 0 20px;
+  }
+  .file-meta{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px 14px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.14);
+    border-radius:4px;
+    padding:14px;
+  }
+  .file-meta label{
+    display:block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:9.5px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--gold-soft);
+    margin-bottom:3px;
+  }
+  .file-meta input{
+    width:100%;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid rgba(255,255,255,0.3);
+    color:var(--paper);
+    font-family:'Inter',sans-serif;
+    font-size:13.5px;
+    padding:3px 1px 5px;
+    outline:none;
+  }
+  .file-meta input::placeholder{color:#6b7a6b;}
+  .file-meta input:focus{border-bottom-color:var(--gold);}
+
+  /* ===== SEAL / PROGRESS ===== */
+  .seal-wrap{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:18px 20px;
+    max-width:720px;
+    margin:0 auto;
+  }
+  .seal{
+    flex:0 0 auto;
+    width:76px;height:76px;
+    border-radius:50%;
+    border:3px solid var(--seal-red);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    transform:rotate(-8deg);
+    transition:all .5s ease;
+    position:relative;
+  }
+  .seal .txt{
+    font-family:'Roboto Slab',serif;
+    font-weight:700;
+    font-size:9px;
+    letter-spacing:0.03em;
+    color:var(--seal-red);
+    line-height:1.2;
+    text-transform:uppercase;
+  }
+  .seal.ready{
+    border-color:var(--gold);
+    box-shadow:0 0 0 3px rgba(201,162,39,0.15);
+  }
+  .seal.ready .txt{color:#8a6d0f;}
+  .seal.hardstop{
+    border-color:var(--seal-red);
+    background:rgba(139,30,30,0.06);
+  }
+  .progress-info{flex:1;}
+  .progress-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--olive);
+    margin-bottom:6px;
+    display:flex;
+    justify-content:space-between;
+  }
+  .progress-track{
+    height:8px;
+    background:var(--line);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:linear-gradient(90deg,var(--olive),var(--gold));
+    width:0%;
+    transition:width .4s ease;
+    border-radius:4px;
+  }
+  .hardstop-note{
+    font-size:11.5px;
+    color:var(--seal-red);
+    margin-top:6px;
+    font-weight:600;
+    display:none;
+  }
+  .hardstop-note.show{display:block;}
+
+  /* ===== SECTIONS ===== */
+  .content{
+    max-width:720px;
+    margin:0 auto;
+    padding:8px 16px 0;
+  }
+  .section{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    margin-bottom:16px;
+    overflow:hidden;
+  }
+  .section-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 16px;
+    cursor:pointer;
+    user-select:none;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#fff,var(--card));
+  }
+  .section-num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--paper);
+    background:var(--ink);
+    width:26px;height:26px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    flex:0 0 auto;
+    font-weight:700;
+  }
+  .section-title{
+    font-family:'Roboto Slab',serif;
+    font-weight:600;
+    font-size:15px;
+    flex:1;
+  }
+  .section-count{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--olive);
+    background:var(--paper);
+    border:1px solid var(--line);
+    padding:2px 8px;
+    border-radius:10px;
+    white-space:nowrap;
+  }
+  .section-count.complete{
+    background:var(--gold-soft);
+    border-color:var(--gold);
+    color:#5c4a0d;
+  }
+  .chevron{
+    font-size:12px;
+    color:var(--olive);
+    transition:transform .25s ease;
+  }
+  .section.collapsed .chevron{transform:rotate(-90deg);}
+  .section-body{
+    max-height:3000px;
+    transition:max-height .35s ease, padding .35s ease;
+    padding:6px 0 10px;
+  }
+  .section.collapsed .section-body{
+    max-height:0;
+    padding:0;
+    overflow:hidden;
+  }
+
+  .item{
+    display:flex;
+    gap:11px;
+    padding:10px 16px;
+    border-bottom:1px solid #EFEAD9;
+    align-items:flex-start;
+  }
+  .item:last-child{border-bottom:none;}
+  .item.hard{background:rgba(139,30,30,0.03);}
+  .chk{
+    flex:0 0 auto;
+    width:21px;height:21px;
+    margin-top:1px;
+    border:2px solid var(--olive);
+    border-radius:4px;
+    background:#fff;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .15s ease;
+    position:relative;
+  }
+  .chk:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+  .chk.checked{
+    background:var(--olive);
+    border-color:var(--olive);
+  }
+  .chk.checked::after{
+    content:"✓";
+    color:#fff;
+    font-size:13px;
+    font-weight:700;
+  }
+  .item.hard .chk{border-color:var(--seal-red);}
+  .item.hard .chk.checked{background:var(--seal-red);border-color:var(--seal-red);}
+
+  .item-text{flex:1;}
+  .item-label{
+    font-size:13.5px;
+    line-height:1.42;
+    color:var(--ink);
+  }
+  .item-label.checked{
+    color:#8a8a7a;
+    text-decoration:line-through;
+    text-decoration-color:#b8b09a;
+  }
+  .item-sub{
+    font-size:11.5px;
+    color:var(--olive);
+    margin-top:2px;
+    line-height:1.4;
+  }
+  .tag{
+    display:inline-block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:9px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    padding:1px 6px;
+    border-radius:3px;
+    margin-left:6px;
+    vertical-align:middle;
+    font-weight:700;
+  }
+  .tag.hard{background:var(--seal-red);color:#fff;}
+  .tag.rcac{background:var(--gold);color:#4a3a06;}
+
+  /* ===== CALCULATOR ===== */
+  .calc-box{
+    margin:0 16px 14px;
+    padding:14px;
+    background:var(--paper);
+    border:1px dashed var(--line);
+    border-radius:6px;
+  }
+  .calc-title{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--olive);
+    margin-bottom:10px;
+  }
+  .calc-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:8px;
+    align-items:center;
+  }
+  .calc-row label{
+    font-size:12.5px;
+    flex:1;
+    color:var(--ink-soft);
+  }
+  .calc-row input{
+    width:120px;
+    padding:6px 8px;
+    border:1px solid var(--line);
+    border-radius:4px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    text-align:right;
+    background:#fff;
+  }
+  .calc-result{
+    margin-top:10px;
+    padding:10px 12px;
+    background:#fff;
+    border-left:3px solid var(--gold);
+    border-radius:3px;
+    font-size:12.5px;
+    line-height:1.5;
+  }
+  .calc-result b{font-family:'JetBrains Mono',monospace;}
+  .calc-result .final{
+    font-size:15px;
+    font-weight:700;
+    color:var(--seal-red);
+    margin-top:4px;
+  }
+
+  /* ===== FOOTER ACTIONS ===== */
+  .actions{
+    max-width:720px;
+    margin:20px auto 0;
+    padding:0 16px;
+    display:flex;
+    gap:10px;
+  }
+  .btn{
+    flex:1;
+    padding:12px;
+    border-radius:6px;
+    border:1px solid var(--line);
+    background:var(--card);
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:13px;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .btn.primary{
+    background:var(--ink);
+    color:var(--paper);
+    border-color:var(--ink);
+  }
+  .btn:active{transform:scale(0.98);}
+
+  .footnote{
+    max-width:720px;
+    margin:16px auto 0;
+    padding:0 20px;
+    font-size:10.5px;
+    color:#8a8570;
+    line-height:1.5;
+    text-align:center;
+  }
+
+  @media (max-width:420px){
+    .file-meta{grid-template-columns:1fr;}
+    h1{font-size:22px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="jacket">
+  <p class="eyebrow">Annexure I · Scheme Code: APRNL · Valid till 31.12.2026</p>
+  <h1>APGB Rythu Nestham Loan</h1>
+  <p class="subtitle">Sanction File — Credit Processing Checklist</p>
+  <div class="file-meta">
+    <div>
+      <label>Applicant Name</label>
+      <input type="text" id="f-name" placeholder="—">
+    </div>
+    <div>
+      <label>KCC A/c No.</label>
+      <input type="text" id="f-kcc" placeholder="—">
+    </div>
+    <div>
+      <label>Branch</label>
+      <input type="text" id="f-branch" placeholder="—">
+    </div>
+    <div>
+      <label>Processed By</label>
+      <input type="text" id="f-officer" placeholder="—">
+    </div>
+  </div>
+</div>
+
+<div class="seal-wrap">
+  <div class="seal" id="seal">
+    <div class="txt" id="seal-txt">Pending<br>Review</div>
+  </div>
+  <div class="progress-info">
+    <div class="progress-label">
+      <span id="prog-count">0 / 0 checked</span>
+      <span id="prog-pct">0%</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+    <div class="hardstop-note" id="hardstop-note">⚠ Hard-stop item(s) unresolved — cannot sanction</div>
+  </div>
+</div>
+
+<div class="content" id="sections"></div>
+
+<div class="actions">
+  <button class="btn" id="reset-btn">Reset File</button>
+  <button class="btn primary" id="save-btn">Save Progress</button>
+</div>
+
+<p class="footnote">Reference: Annexure I, APRNL Scheme Circular. This tool is a working aid for branch-level processing and does not replace the original circular. Always verify current circular number/date before sanction, as charges and delegation may be revised.</p>
+
+<script>
+const SECTIONS = [
+  {
+    title: "Eligibility Screening",
+    items: [
+      { t: "Applicant holds an active KCC (incl. KCC-Animal Husbandry & Fisheries) account", hard:true },
+      { t: "Regular repayment confirmed for past 2 renewals — within due date or 30-day grace period", sub:"Verify against actual ledger dates, not borrower's verbal claim.", hard:true },
+      { t: "Age at application is between 20 and 70 years", hard:true },
+      { t: "If age 70–75: RCAC deviation obtained AND at least one legal heir added as co-applicant", sub:"Only applicable if age relaxation is being used." },
+      { t: "Facility being applied for at same branch where existing KCC is held", hard:true },
+      { t: "No active CGRNL / CGRCL facility (for eCGGB-origin KCC borrowers)", sub:"No outstanding under these schemes at time of sanction." },
+    ]
+  },
+  {
+    title: "Loan Quantum",
+    items: [
+      { t: "Computed 50% of existing KCC sanctioned limit" },
+      { t: "Computed 95% of actual project cost (based on quotation/estimate, not inflated figure)" },
+      { t: "Lower of the two values applied as eligible loan amount", hard:true },
+      { t: "Final amount falls within Rs. 5,000 – Rs. 1,00,000 band", hard:true },
+    ]
+  },
+  {
+    title: "Credit History (CIC) Assessment",
+    items: [
+      { t: "CIC report pulled from any of the 4 bureaus", hard:true },
+      { t: "CIC score is 600 or above", hard:true },
+      { t: "No Wilful Default / Write-off / Suit Filed / current NPA in CIC report", sub:"No deviation possible for this — absolute bar.", hard:true },
+      { t: "If Settled / Post-WO-Settled present: RCAC deviation approval obtained", sub:"Only required if such status appears." },
+      { t: "CIC scrutinised to confirm no other-institution loan for same purpose", sub:"Cross-check against borrower's declaration (16.6)." },
+    ]
+  },
+  {
+    title: "Standard Asset & Facility Status",
+    items: [
+      { t: "All existing facilities of borrower with the Bank are in Standard (performing) category as on sanction date", hard:true },
+      { t: "Linked accounts / co-obligations also checked, not just primary KCC" },
+    ]
+  },
+  {
+    title: "Security & Collateral",
+    items: [
+      { t: "Composite limit computed = existing KCC sanctioned limit + proposed APRNL" },
+      { t: "If composite > Rs. 3 Lakh: collateral obtained — 150% (immovable property) or 120% (bank deposit) or combination", tag:"rcac-composite" },
+      { t: "If composite ≤ Rs. 3 Lakh: no mandatory collateral; negative lien obtained if collateral already exists on KCC/other facility" },
+      { t: "Collateral independently valued (not borrower's self-declared value)" },
+      { t: "Encumbrance certificate / prior charge search completed on any immovable collateral" },
+      { t: "Primary security: hypothecation of standing & future crops noted in file" },
+      { t: "If implement purchase: newly acquired asset additionally hypothecated" },
+    ]
+  },
+  {
+    title: "Guarantee",
+    items: [
+      { t: "Guarantor requirement assessed — not mandatory under scheme, obtained only if sanctioning authority deems necessary" },
+    ]
+  },
+  {
+    title: "Purpose-Specific Documentation",
+    items: [
+      { t: "Implements purchase: vendor bills obtained; disbursement preferably direct to vendor" },
+      { t: "Land development (vendor executed): bills from vendor obtained" },
+      { t: "Land development (self/labour executed): labour receipt as per Annexure obtained" },
+      { t: "Distressed farmer relief: pre-disbursement declaration naming non-institutional lender + date of loan", hard:true },
+      { t: "Distressed farmer relief: post-disbursement declaration confirming dues cleared obtained", sub:"Easy to miss — requires follow-up after disbursement, not just at sanction.", hard:true },
+    ]
+  },
+  {
+    title: "Charges & Stamp Duty",
+    items: [
+      { t: "Processing fee 0.5% applied correctly (waived if aggregate sanctioned limits ≤ Rs. 50,000)" },
+      { t: "GST @ 18% applied on applicable charges" },
+      { t: "Confirmed: no admin/inspection charge, no prepayment penalty levied" },
+      { t: "Penal charge 2% p.a. applied only if sanctioned limit > Rs. 50,000 and account overdue" },
+      { t: "Stamp duty exemption checked: composite limit ≤ Rs. 3 Lakh, OR landholding ≤5 acres wet / ≤10 acres dry", sub:"Two separate conditions — check both, don't assume one covers the other." },
+    ]
+  },
+  {
+    title: "Sanctioning Authority (Delegation)",
+    items: [
+      { t: "Verified who sanctioned the ORIGINAL KCC (branch vs SRK/AMH/CPC/RO/HO) — not just current holding branch", hard:true },
+      { t: "If original KCC sanctioned by branch → Branch Manager sanctioning this loan" },
+      { t: "If original KCC sanctioned by SRK/AMH/CPC/RO/HO → routed to RCAC", tag:"rcac" },
+    ]
+  },
+  {
+    title: "Deviation Triggers — Route to RCAC",
+    items: [
+      { t: "Age relaxation 70–75 years", tag:"rcac" },
+      { t: "CIC shows Settled / Post-WO-Settled status", tag:"rcac" },
+      { t: "KCC opened <2 years ago at this bank, with prior regular KCC repayment history at another bank", sub:"Requires other bank's certified statement of regular repayment.", tag:"rcac" },
+    ]
+  },
+  {
+    title: "Document Bundle — Final Check",
+    items: [
+      { t: "Application form" },
+      { t: "Demand Promissory Note (DPN)" },
+      { t: "Sanction letter — duly acknowledged, ROI 11% p.a. explicitly stated", hard:true },
+      { t: "Composite Agreement (Agriculture)" },
+      { t: "Letter of general lien (if other properties mortgaged elsewhere)" },
+      { t: "Purpose-specific bills/receipts attached" },
+      { t: "Distressed-farmer declarations (pre + post disbursement) attached, if applicable" },
+      { t: "CIC report copy on file" },
+      { t: "Declaration of no other-institution loan for same purpose, signed" },
+    ]
+  },
+  {
+    title: "MIS Codes & Scheme Compliance",
+    items: [
+      { t: "Sector code: 001 - Priority Sector" },
+      { t: "Sub-Sector code correctly matched to actual purpose (ALT01–ALT27 / AIF09)" },
+      { t: "Borrower category code correct (Male/Female individual)" },
+      { t: "Purpose of advance code correct (01151 / 01153 / 01154 / 01159)" },
+      { t: "Mode of Advance: 002 - Direct Advance - Agriculture" },
+      { t: "Advance Type: 34 - Kisan Credit Card - Investment" },
+      { t: "Nature of Advance: 003 - Term Loans" },
+      { t: "Free Code 2 (SF/MF/OF/LEC) correctly assigned" },
+      { t: "Guarantee Cover Code: NOGUA" },
+      { t: "Sanction date confirmed on/before 31.12.2026 (scheme validity)", hard:true },
+    ]
+  },
+];
+
+const container = document.getElementById('sections');
+let state = {};
+
+function loadState(){
+  try{
+    const saved = localStorage.getItem('aprnl_checklist_state');
+    if(saved) state = JSON.parse(saved);
+  }catch(e){ state = {}; }
+}
+
+function saveState(){
+  try{
+    localStorage.setItem('aprnl_checklist_state', JSON.stringify(state));
+  }catch(e){}
+}
+
+function loadMeta(){
+  try{
+    const m = JSON.parse(localStorage.getItem('aprnl_meta') || '{}');
+    ['name','kcc','branch','officer'].forEach(k=>{
+      if(m[k]) document.getElementById('f-'+k).value = m[k];
+    });
+  }catch(e){}
+}
+function saveMeta(){
+  const m = {
+    name: document.getElementById('f-name').value,
+    kcc: document.getElementById('f-kcc').value,
+    branch: document.getElementById('f-branch').value,
+    officer: document.getElementById('f-officer').value,
+  };
+  localStorage.setItem('aprnl_meta', JSON.stringify(m));
+}
+
+function itemKey(si, ii){ return si+'-'+ii; }
+
+function render(){
+  container.innerHTML = '';
+  SECTIONS.forEach((sec, si) => {
+    const secEl = document.createElement('div');
+    secEl.className = 'section';
+    secEl.dataset.si = si;
+
+    const head = document.createElement('div');
+    head.className = 'section-head';
+    head.innerHTML = `
+      <div class="section-num">${si+1}</div>
+      <div class="section-title">${sec.title}</div>
+      <div class="section-count" data-count="${si}"></div>
+      <div class="chevron">▾</div>
+    `;
+    head.addEventListener('click', () => {
+      secEl.classList.toggle('collapsed');
+    });
+    secEl.appendChild(head);
+
+    const body = document.createElement('div');
+    body.className = 'section-body';
+
+    sec.items.forEach((it, ii) => {
+      const key = itemKey(si, ii);
+      const checked = !!state[key];
+      const row = document.createElement('div');
+      row.className = 'item' + (it.hard ? ' hard' : '');
+      row.innerHTML = `
+        <div class="chk ${checked?'checked':''}" tabindex="0" role="checkbox" aria-checked="${checked}" data-key="${key}"></div>
+        <div class="item-text">
+          <div class="item-label ${checked?'checked':''}">${it.t}${it.hard?'<span class="tag hard">Hard Stop</span>':''}${it.tag==='rcac'?'<span class="tag rcac">RCAC</span>':''}</div>
+          ${it.sub ? `<div class="item-sub">${it.sub}</div>` : ''}
+        </div>
+      `;
+      const chk = row.querySelector('.chk');
+      const toggle = () => {
+        state[key] = !state[key];
+        saveState();
+        render();
+        updateProgress();
+      };
+      chk.addEventListener('click', toggle);
+      chk.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); }
+      });
+      body.appendChild(row);
+    });
+
+    // insert calculator after Loan Quantum section
+    if(sec.title === "Loan Quantum"){
+      body.appendChild(buildCalculator());
+    }
+
+    secEl.appendChild(body);
+    container.appendChild(secEl);
+  });
+
+  updateSectionCounts();
+}
+
+function buildCalculator(){
+  const wrap = document.createElement('div');
+  wrap.className = 'calc-box';
+  wrap.innerHTML = `
+    <div class="calc-title">Quick Calculator</div>
+    <div class="calc-row">
+      <label>Existing KCC Sanctioned Limit (₹)</label>
+      <input type="number" id="calc-kcc" min="0" placeholder="0">
+    </div>
+    <div class="calc-row">
+      <label>Actual Project Cost (₹)</label>
+      <input type="number" id="calc-project" min="0" placeholder="0">
+    </div>
+    <div class="calc-result" id="calc-result">Enter values above to compute eligible loan amount.</div>
+  `;
+  wrap.querySelectorAll('input').forEach(inp => {
+    inp.addEventListener('input', computeCalc);
+  });
+  setTimeout(computeCalc, 0);
+  return wrap;
+}
+
+function computeCalc(){
+  const kccEl = document.getElementById('calc-kcc');
+  const projEl = document.getElementById('calc-project');
+  const resEl = document.getElementById('calc-result');
+  if(!kccEl || !projEl || !resEl) return;
+  const kcc = parseFloat(kccEl.value) || 0;
+  const proj = parseFloat(projEl.value) || 0;
+  if(kcc === 0 && proj === 0){
+    resEl.innerHTML = 'Enter values above to compute eligible loan amount.';
+    return;
+  }
+  const capA = kcc * 0.5;
+  const capB = proj * 0.95;
+  let eligible = Math.min(capA, capB);
+  let capped = eligible;
+  let note = '';
+  if(eligible > 100000){ capped = 100000; note = ' (capped at scheme maximum)'; }
+  if(eligible < 5000 && eligible > 0){ note = ' — below scheme minimum of ₹5,000, not eligible'; }
+  resEl.innerHTML = `
+    50% of KCC limit: <b>₹${capA.toLocaleString('en-IN')}</b><br>
+    95% of project cost: <b>₹${capB.toLocaleString('en-IN')}</b>
+    <div class="final">Eligible amount: ₹${capped.toLocaleString('en-IN')}${note}</div>
+  `;
+}
+
+function updateSectionCounts(){
+  SECTIONS.forEach((sec, si) => {
+    const total = sec.items.length;
+    let done = 0;
+    sec.items.forEach((it, ii) => { if(state[itemKey(si,ii)]) done++; });
+    const el = document.querySelector(`.section-count[data-count="${si}"]`);
+    if(el){
+      el.textContent = `${done}/${total}`;
+      el.classList.toggle('complete', done === total);
+    }
+  });
+}
+
+function updateProgress(){
+  let total = 0, done = 0, hardTotal = 0, hardDone = 0;
+  SECTIONS.forEach((sec, si) => {
+    sec.items.forEach((it, ii) => {
+      total++;
+      const c = !!state[itemKey(si,ii)];
+      if(c) done++;
+      if(it.hard){ hardTotal++; if(c) hardDone++; }
+    });
+  });
+  const pct = total ? Math.round((done/total)*100) : 0;
+  document.getElementById('prog-count').textContent = `${done} / ${total} checked`;
+  document.getElementById('prog-pct').textContent = `${pct}%`;
+  document.getElementById('prog-fill').style.width = pct + '%';
+
+  const seal = document.getElementById('seal');
+  const sealTxt = document.getElementById('seal-txt');
+  const noteEl = document.getElementById('hardstop-note');
+
+  const allHardDone = hardDone === hardTotal;
+  const allDone = done === total;
+
+  if(allDone){
+    seal.className = 'seal ready';
+    sealTxt.innerHTML = 'Sanction<br>Ready';
+    noteEl.classList.remove('show');
+  } else if(!allHardDone && done > 0){
+    seal.className = 'seal hardstop';
+    sealTxt.innerHTML = 'Pending<br>Review';
+    noteEl.classList.add('show');
+    noteEl.textContent = `⚠ ${hardTotal - hardDone} hard-stop item(s) unresolved`;
+  } else {
+    seal.className = 'seal';
+    sealTxt.innerHTML = 'Pending<br>Review';
+    noteEl.classList.remove('show');
+  }
+  updateSectionCounts();
+}
+
+document.getElementById('reset-btn').addEventListener('click', () => {
+  if(confirm('Reset all checklist items for this file? Applicant details will be kept.')){
+    state = {};
+    saveState();
+    render();
+    updateProgress();
+  }
+});
+
+document.getElementById('save-btn').addEventListener('click', () => {
+  saveMeta();
+  saveState();
+  const btn = document.getElementById('save-btn');
+  const orig = btn.textContent;
+  btn.textContent = 'Saved ✓';
+  setTimeout(() => { btn.textContent = orig; }, 1200);
+});
+
+['f-name','f-kcc','f-branch','f-officer'].forEach(id => {
+  document.getElementById(id).addEventListener('input', saveMeta);
+});
+
+loadState();
+loadMeta();
+render();
+updateProgress();
+</script>
+
+</body>
+</html>
