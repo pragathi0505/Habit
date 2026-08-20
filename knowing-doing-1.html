@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Knowing → Doing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2B2622;
+    --paper:#F6F2EA;
+    --paper-raised:#FBF8F2;
+    --rule:#D9CFBE;
+    --clay:#B5502F;
+    --clay-soft:#E3C3B3;
+    --moss:#5C6B4E;
+    --moss-soft:#D9E0CE;
+    --ink-faint:#8A7F70;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:22px 16px 60px;}
+  .masthead{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px;}
+  .title{font-family:'Newsreader',Georgia,serif;font-weight:700;font-size:26px;letter-spacing:-0.015em;line-height:1.1;}
+  .date{font-size:11.5px;color:var(--ink-faint);margin-top:4px;letter-spacing:0.02em;}
+  .tagline{font-family:'Newsreader',Georgia,serif;font-style:italic;font-size:14px;color:var(--ink-faint);
+    border-bottom:1px solid var(--rule);padding-bottom:16px;margin-bottom:18px;}
+  .statrow{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+  .streak{display:flex;align-items:baseline;gap:8px;}
+  .streaknum{font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:22px;color:var(--ink-faint);}
+  .streaknum.active{color:var(--clay);}
+  .streaklabel{font-size:11.5px;color:var(--ink-faint);}
+  .savestate{font-size:10.5px;color:var(--ink-faint);letter-spacing:0.03em;}
+  .exportbtn{background:var(--paper-raised);border:1px solid var(--rule);border-radius:3px;
+    padding:6px 12px;font-family:'IBM Plex Mono', monospace;font-size:11.5px;color:var(--ink);
+    cursor:pointer;}
+  .exportbtn:hover{border-color:var(--clay);color:var(--clay);}
+  .exportrow{display:flex;justify-content:flex-end;margin-bottom:12px;}
+
+  .tabs{display:flex;gap:4px;margin-bottom:20px;border-bottom:1px solid var(--rule);}
+  .tabbtn{background:none;border:none;border-bottom:2px solid transparent;padding:8px 10px;
+    font-size:13px;color:var(--ink-faint);margin-bottom:-1px;font-family:inherit;cursor:pointer;}
+  .tabbtn.active{border-bottom:2px solid var(--clay);color:var(--ink);font-weight:600;}
+
+  .card{background:var(--paper);border:1px solid var(--rule);border-radius:4px;padding:20px 18px;margin-bottom:16px;}
+  .card.moss{background:var(--moss-soft);border:1px solid var(--moss);}
+
+  .sectionlabel{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .badge{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--clay);display:flex;
+    align-items:center;justify-content:center;font-size:11px;color:var(--clay);flex-shrink:0;}
+  .sectionlabel h3{font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:19px;margin:0;letter-spacing:-0.01em;}
+
+  .field{margin-bottom:18px;}
+  .fieldhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
+  .fieldlabel{font-family:'Newsreader',Georgia,serif;font-style:italic;font-size:15.5px;}
+  .fieldhint{font-size:11px;color:var(--ink-faint);}
+  textarea{
+    width:100%;background:var(--paper-raised);border:1px solid var(--rule);border-radius:3px;
+    padding:10px 12px;font-family:'IBM Plex Mono', monospace;font-size:14px;line-height:1.55;
+    color:var(--ink);resize:vertical;outline:none;
+  }
+  textarea:focus{border-color:var(--clay);}
+  textarea::placeholder{color:var(--ink-faint);opacity:0.6;}
+
+  .chk{display:flex;align-items:center;gap:8px;background:none;border:none;padding:0;cursor:pointer;margin-bottom:10px;font-family:inherit;}
+  .box{width:18px;height:18px;border-radius:3px;border:1.5px solid var(--clay);display:inline-flex;
+    align-items:center;justify-content:center;color:#fff;font-size:12px;flex-shrink:0;}
+  .box.checked{background:var(--clay);}
+  .box.moss-border{border-color:#3E4A34;}
+  .box.moss-checked{background:#3E4A34;}
+  .chktext{font-size:13px;}
+  .chktext.moss{color:#3E4A34;}
+
+  .yestertext{font-size:12.5px;color:#3E4A34;margin-bottom:10px;line-height:1.5;}
+  .yesterempty{font-size:12.5px;color:#3E4A34;font-style:italic;}
+
+  .choicerow{display:flex;gap:8px;}
+  .choicebtn{flex:1;padding:9px 0;border-radius:3px;border:1.5px solid var(--rule);background:var(--paper-raised);
+    color:var(--ink-faint);font-size:13px;text-transform:capitalize;cursor:pointer;font-family:inherit;}
+  .choicebtn.yes-active{border-color:var(--moss);background:var(--moss-soft);color:var(--moss);font-weight:600;}
+  .choicebtn.no-active{border-color:var(--clay);background:var(--clay-soft);color:var(--clay);font-weight:600;}
+
+  .emptynote{font-size:12px;color:var(--ink-faint);font-style:italic;}
+
+  .histentry{padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--rule);}
+  .histhead{display:flex;justify-content:space-between;margin-bottom:6px;}
+  .histdate{font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:14px;}
+  .histflag{font-size:10.5px;font-weight:600;color:var(--ink-faint);}
+  .histflag.output{color:var(--moss);}
+  .histline{font-size:12.5px;line-height:1.5;margin-bottom:3px;}
+  .histline .lbl{color:var(--ink-faint);}
+
+  .footer{text-align:center;font-size:10.5px;color:var(--ink-faint);margin-top:26px;font-style:italic;
+    font-family:'Newsreader',Georgia,serif;}
+
+  svg{flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="masthead">
+    <div>
+      <div class="title">Knowing &rarr; Doing</div>
+      <div class="date" id="dateLabel"></div>
+    </div>
+    <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+      <path d="M8 20c0-6 5-11 11-11 4 0 7.5 2.3 9 5.8" stroke="#B5502F" stroke-width="2" stroke-linecap="round"/>
+      <path d="M23 9.5l5 5.6-6.8 1.4" stroke="#B5502F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M26 14c0 6-5 11-11 11-4 0-7.5-2.3-9-5.8" stroke="#5C6B4E" stroke-width="2" stroke-linecap="round"/>
+      <path d="M11 24.5L6 18.9l6.8-1.4" stroke="#5C6B4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <div class="tagline">Nothing goes in without something coming out.</div>
+
+  <div class="statrow">
+    <div class="streak">
+      <span class="streaknum" id="streakNum">0</span>
+      <span class="streaklabel" id="streakLabel">days of real output</span>
+    </div>
+    <span class="savestate" id="saveState"></span>
+  </div>
+
+  <div class="tabs">
+    <button class="tabbtn active" data-tab="study">Study &amp; Books</button>
+    <button class="tabbtn" data-tab="urge">Urge Log</button>
+    <button class="tabbtn" data-tab="history">Trail</button>
+  </div>
+
+  <!-- STUDY TAB -->
+  <div id="tab-study" class="tabpanel">
+    <div class="card moss" id="yesterdayCard"></div>
+
+    <div class="card">
+      <div class="sectionlabel"><div class="badge">1</div><h3>What are you studying today?</h3></div>
+      <div class="field">
+        <div class="fieldhead"><label class="fieldlabel">Topic</label></div>
+        <textarea id="topic" rows="1" placeholder="e.g. Mauryan Administration — APPSC Ch.9, or 'Atomic Habits — Ch.3'"></textarea>
+      </div>
+
+      <div class="sectionlabel"><div class="badge">2</div><h3>Read once. Close it. Write from memory.</h3></div>
+      <div class="field">
+        <div class="fieldhead"><label class="fieldlabel">Free write — closed book</label><span class="fieldhint">don't peek</span></div>
+        <textarea id="freeWrite" rows="6" placeholder="Everything you remember, in your own words. Messy is fine. Stop when it dries up."></textarea>
+      </div>
+      <div class="field">
+        <div class="fieldhead"><label class="fieldlabel">Gaps you found</label><span class="fieldhint">mark, don't rewrite the whole thing</span></div>
+        <textarea id="gaps" rows="3" placeholder="Only what you missed when you checked against the source."></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sectionlabel"><div class="badge">3</div><h3>Compress to three lines</h3></div>
+      <div class="field">
+        <div class="fieldhead"><label class="fieldlabel">One idea</label><span class="fieldhint">the single thing this is built around</span></div>
+        <textarea id="oneIdea" rows="2" placeholder="If someone remembers nothing else, they remember this."></textarea>
+      </div>
+      <div class="field">
+        <div class="fieldhead"><label class="fieldlabel">One application</label><span class="fieldhint">to your actual life, not in theory</span></div>
+        <textarea id="oneApplication" rows="2" placeholder="Where does this touch something real — your bank work, your prep, your family?"></textarea>
+      </div>
+      <div class="field">
+        <div class="fieldhead"><label class="fieldlabel">One action</label><span class="fieldhint">this week</span></div>
+        <textarea id="oneAction" rows="2" placeholder="A specific, small, checkable thing you'll actually do."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- URGE TAB -->
+  <div id="tab-urge" class="tabpanel" style="display:none;">
+    <div class="card">
+      <div class="sectionlabel"><div class="badge">&#10022;</div><h3>In-the-moment log</h3></div>
+      <div class="fieldhint" style="display:block;font-size:12.5px;line-height:1.55;margin-bottom:16px;">
+        The plan doesn't hold in the moment — the move does. Log it right after, while it's fresh,
+        so you can see what actually works over time instead of guessing.
+      </div>
+      <button class="chk" id="urgeLoggedBtn">
+        <span class="box" id="urgeLoggedBox"></span>
+        <span class="chktext">An urge showed up today</span>
+      </button>
+
+      <div id="urgeDetails" style="display:none;">
+        <div class="field">
+          <div class="fieldhead"><label class="fieldlabel">The 90-second move you used</label></div>
+          <textarea id="urgeMove" rows="2" placeholder="What you actually did — walk, cold water, called someone, left the room…"></textarea>
+        </div>
+        <div class="field" style="margin-bottom:6px;">
+          <div class="fieldlabel" style="display:block;margin-bottom:8px;">Did it work?</div>
+          <div class="choicerow">
+            <button class="choicebtn" id="urgeYesBtn">yes</button>
+            <button class="choicebtn" id="urgeNoBtn">no</button>
+          </div>
+        </div>
+      </div>
+      <div id="urgeEmptyNote" class="emptynote">Nothing to log yet today — that's fine. This box is here when you need it, not a confession booth.</div>
+    </div>
+  </div>
+
+  <!-- HISTORY TAB -->
+  <div id="tab-history" class="tabpanel" style="display:none;">
+    <div class="exportrow">
+      <button class="exportbtn" id="exportBtn">&#8681; Download CSV (all entries)</button>
+    </div>
+    <div class="card">
+      <div class="sectionlabel"><div class="badge">&#8634;</div><h3>Last 14 days</h3></div>
+      <div id="historyList"></div>
+    </div>
+  </div>
+
+  <div class="footer">Knowing is maybe ten percent. Write it, say it, apply it — that's the rest.</div>
+</div>
+
+<script>
+(function(){
+  const STORAGE_PREFIX = "kd_entry_";
+
+  function pad(n){ return String(n).padStart(2,"0"); }
+  function keyFor(d){ return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+  function todayKey(){ return keyFor(new Date()); }
+  function prettyDate(key){
+    const d = new Date(key+"T00:00:00");
+    return d.toLocaleDateString("en-IN", { weekday:"long", day:"numeric", month:"long" });
+  }
+  function shiftDay(key, delta){
+    const d = new Date(key+"T00:00:00");
+    d.setDate(d.getDate()+delta);
+    return keyFor(d);
+  }
+
+  function emptyEntry(){
+    return {
+      recallDone:false, recallText:"",
+      topic:"", freeWrite:"", gaps:"",
+      oneIdea:"", oneApplication:"", oneAction:"",
+      urgeLogged:false, urgeMove:"", urgeWorked:null,
+      loggedAt:null
+    };
+  }
+
+  function loadEntry(key){
+    try{
+      const raw = localStorage.getItem(STORAGE_PREFIX+key);
+      if(!raw) return null;
+      return JSON.parse(raw);
+    }catch(e){ return null; }
+  }
+  function saveEntry(key, entry){
+    try{
+      localStorage.setItem(STORAGE_PREFIX+key, JSON.stringify(entry));
+      return true;
+    }catch(e){ return false; }
+  }
+  function listAllKeys(){
+    const keys = [];
+    for(let i=0;i<localStorage.length;i++){
+      const k = localStorage.key(i);
+      if(k && k.indexOf(STORAGE_PREFIX)===0){
+        keys.push(k.substring(STORAGE_PREFIX.length));
+      }
+    }
+    return keys;
+  }
+  function hasOutput(e){
+    return !!(e && ((e.freeWrite && e.freeWrite.trim()) || (e.oneIdea && e.oneIdea.trim()) || (e.oneAction && e.oneAction.trim())));
+  }
+
+  const dateKey = todayKey();
+  let entry = loadEntry(dateKey) || emptyEntry();
+  const yKey = shiftDay(dateKey, -1);
+  const yesterdayEntry = loadEntry(yKey);
+
+  document.getElementById("dateLabel").textContent = prettyDate(dateKey);
+
+  // ---- field bindings ----
+  const fieldIds = ["topic","freeWrite","gaps","oneIdea","oneApplication","oneAction","urgeMove","recallText"];
+  fieldIds.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.value = entry[id] || "";
+  });
+
+  let saveTimer = null;
+  const saveStateEl = document.getElementById("saveState");
+  function scheduleSave(){
+    saveStateEl.textContent = "saving…";
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(()=>{
+      entry.loggedAt = new Date().toISOString();
+      const ok = saveEntry(dateKey, entry);
+      saveStateEl.textContent = ok ? "saved" : "";
+      renderStreak();
+    }, 500);
+  }
+
+  fieldIds.forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener("input", ()=>{
+      entry[id] = el.value;
+      scheduleSave();
+    });
+  });
+
+  // ---- tabs ----
+  document.querySelectorAll(".tabbtn").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      document.querySelectorAll(".tabbtn").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      const tab = btn.getAttribute("data-tab");
+      document.querySelectorAll(".tabpanel").forEach(p=>p.style.display="none");
+      document.getElementById("tab-"+tab).style.display="block";
+      if(tab==="history") renderHistory();
+    });
+  });
+
+  // ---- yesterday recall card ----
+  function renderYesterdayCard(){
+    const card = document.getElementById("yesterdayCard");
+    const hasY = yesterdayEntry && (yesterdayEntry.oneIdea || yesterdayEntry.freeWrite || yesterdayEntry.topic);
+    if(!hasY){
+      card.innerHTML = `
+        <div class="sectionlabel" style="margin-bottom:8px;">
+          <h3 style="color:#3E4A34;font-size:15px;">Before anything new — recall yesterday</h3>
+        </div>
+        <div class="yesterempty">No entry logged yesterday — start fresh today, and tomorrow this box will hold you to it.</div>
+      `;
+      return;
+    }
+    card.innerHTML = `
+      <div style="font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:15px;color:#3E4A34;margin-bottom:8px;">
+        Before anything new — recall yesterday
+      </div>
+      <div class="yestertext">Yesterday's topic was <strong>${escapeHtml(yesterdayEntry.topic || "(untitled)")}</strong>.
+      Close your eyes and try to say it back — out loud — before reading what you wrote. Then check.</div>
+      <button class="chk" id="recallBtn">
+        <span class="box moss-border ${entry.recallDone ? 'moss-checked' : ''}" id="recallBox">${entry.recallDone ? '&#10003;' : ''}</span>
+        <span class="chktext moss">I recalled it before checking my notes</span>
+      </button>
+      <div id="recallTextWrap" style="display:${entry.recallDone ? 'block':'none'};margin-top:10px;">
+        <textarea id="recallText" rows="2" placeholder="What came back on its own, in your words — even fragments…"
+          style="border-color:#A8B594;background:#FBF8F2;"></textarea>
+      </div>
+    `;
+    document.getElementById("recallBtn").addEventListener("click", ()=>{
+      entry.recallDone = !entry.recallDone;
+      renderYesterdayCard();
+      scheduleSave();
+    });
+    const rt = document.getElementById("recallText");
+    if(rt){
+      rt.value = entry.recallText || "";
+      rt.addEventListener("input", ()=>{
+        entry.recallText = rt.value;
+        scheduleSave();
+      });
+    }
+  }
+
+  // ---- urge tab ----
+  function renderUrge(){
+    const box = document.getElementById("urgeLoggedBox");
+    box.className = "box " + (entry.urgeLogged ? "checked" : "");
+    box.innerHTML = entry.urgeLogged ? "&#10003;" : "";
+    document.getElementById("urgeDetails").style.display = entry.urgeLogged ? "block" : "none";
+    document.getElementById("urgeEmptyNote").style.display = entry.urgeLogged ? "none" : "block";
+
+    const yesBtn = document.getElementById("urgeYesBtn");
+    const noBtn = document.getElementById("urgeNoBtn");
+    yesBtn.className = "choicebtn" + (entry.urgeWorked===true ? " yes-active" : "");
+    noBtn.className = "choicebtn" + (entry.urgeWorked===false ? " no-active" : "");
+  }
+  document.getElementById("urgeLoggedBtn").addEventListener("click", ()=>{
+    entry.urgeLogged = !entry.urgeLogged;
+    renderUrge();
+    scheduleSave();
+  });
+  document.getElementById("urgeYesBtn").addEventListener("click", ()=>{
+    entry.urgeWorked = true; renderUrge(); scheduleSave();
+  });
+  document.getElementById("urgeNoBtn").addEventListener("click", ()=>{
+    entry.urgeWorked = false; renderUrge(); scheduleSave();
+  });
+
+  // ---- history ----
+  function renderHistory(){
+    const list = document.getElementById("historyList");
+    const keys = listAllKeys().filter(k=>k!==dateKey).sort().reverse().slice(0,14);
+    if(keys.length===0){
+      list.innerHTML = `<div class="emptynote">Nothing logged yet before today. The trail builds from here.</div>`;
+      return;
+    }
+    list.innerHTML = keys.map(k=>{
+      const e = loadEntry(k) || {};
+      const out = hasOutput(e);
+      let lines = "";
+      if(e.topic) lines += `<div class="histline"><span class="lbl">topic — </span>${escapeHtml(e.topic)}</div>`;
+      if(e.oneIdea) lines += `<div class="histline"><span class="lbl">idea — </span>${escapeHtml(e.oneIdea)}</div>`;
+      if(!e.topic && !e.oneIdea) lines = `<div class="emptynote">empty entry</div>`;
+      return `
+        <div class="histentry">
+          <div class="histhead">
+            <span class="histdate">${prettyDate(k)}</span>
+            <span class="histflag ${out?'output':''}">${out?'OUTPUT':'—'}</span>
+          </div>
+          ${lines}
+        </div>
+      `;
+    }).join("");
+  }
+
+  // ---- streak ----
+  function renderStreak(){
+    let count = hasOutput(entry) ? 1 : 0;
+    let cursor = shiftDay(dateKey, -1);
+    while(true){
+      const e = loadEntry(cursor);
+      if(e && hasOutput(e)){
+        count += 1;
+        cursor = shiftDay(cursor, -1);
+      } else break;
+    }
+    const numEl = document.getElementById("streakNum");
+    numEl.textContent = count;
+    numEl.className = "streaknum" + (count>0 ? " active" : "");
+    document.getElementById("streakLabel").textContent = "day"+(count===1?"":"s")+" of real output";
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c=>({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[c]));
+  }
+
+  // ---- CSV export ----
+  function csvEscape(val){
+    if(val===null || val===undefined) return "";
+    const s = String(val);
+    if(s.includes(",") || s.includes('"') || s.includes("\n")){
+      return '"' + s.replace(/"/g,'""') + '"';
+    }
+    return s;
+  }
+
+  function exportCsv(){
+    // make sure today's in-progress entry is captured too
+    entry.loggedAt = entry.loggedAt || new Date().toISOString();
+    saveEntry(dateKey, entry);
+
+    const allKeys = listAllKeys().sort(); // oldest first
+    const headers = [
+      "date","topic","free_write","gaps","one_idea","one_application","one_action",
+      "recall_done","recall_text","urge_logged","urge_move","urge_worked","logged_at"
+    ];
+    const rows = [headers.join(",")];
+
+    allKeys.forEach(k=>{
+      const e = loadEntry(k) || {};
+      rows.push([
+        csvEscape(k),
+        csvEscape(e.topic),
+        csvEscape(e.freeWrite),
+        csvEscape(e.gaps),
+        csvEscape(e.oneIdea),
+        csvEscape(e.oneApplication),
+        csvEscape(e.oneAction),
+        csvEscape(e.recallDone ? "yes" : "no"),
+        csvEscape(e.recallText),
+        csvEscape(e.urgeLogged ? "yes" : "no"),
+        csvEscape(e.urgeMove),
+        csvEscape(e.urgeWorked===true ? "yes" : (e.urgeWorked===false ? "no" : "")),
+        csvEscape(e.loggedAt)
+      ].join(","));
+    });
+
+    const csvContent = rows.join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "knowing-doing-" + dateKey + ".csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  document.getElementById("exportBtn").addEventListener("click", exportCsv);
+
+  // ---- init ----
+  renderYesterdayCard();
+  renderUrge();
+  renderStreak();
+})();
+</script>
+
+</body>
+</html>
