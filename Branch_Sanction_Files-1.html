@@ -1,0 +1,3478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Branch Sanction Files — Credit Processing Checklists</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F4EC;
+    --paper-dim:#EFEADE;
+    --ink:#1B2A1E;
+    --ink-soft:#3A4A3D;
+    --olive:#4A5D45;
+    --seal-red:#8B1E1E;
+    --seal-red-soft:#B8483F;
+    --gold:#C9A227;
+    --gold-soft:#E4C766;
+    --line:#D8D0BC;
+    --card:#FFFDF7;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.015) 0px, rgba(0,0,0,0.015) 1px, transparent 1px, transparent 34px),
+      var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    padding:0 0 80px;
+  }
+  ::selection{background:var(--gold-soft);}
+  button{font-family:inherit;}
+
+  /* ===== TOP BAR ===== */
+  .topbar{
+    background:var(--ink);
+    color:var(--paper);
+    padding:20px 20px 16px;
+    position:relative;
+    overflow:hidden;
+    border-bottom:6px double var(--gold);
+  }
+  .topbar::before{
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0; bottom:0;
+    background:radial-gradient(circle at 85% 20%, rgba(201,162,39,0.12), transparent 45%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--gold-soft);
+    margin:0 0 6px;
+  }
+  h1{
+    font-family:'Roboto Slab',serif;
+    font-size:23px;
+    line-height:1.15;
+    margin:0 0 4px;
+    font-weight:700;
+  }
+  .subtitle{
+    font-size:12.5px;
+    color:#C9C4B0;
+    margin:0;
+  }
+
+  /* ===== PRODUCT INDEX (registry view) ===== */
+  .registry{
+    max-width:760px;
+    margin:0 auto;
+    padding:18px 16px 0;
+  }
+  .registry-hint{
+    font-size:12px;
+    color:var(--olive);
+    margin:0 0 14px;
+    line-height:1.5;
+  }
+  .search-row{
+    margin-bottom:10px;
+  }
+  .search-input{
+    width:100%;
+    box-sizing:border-box;
+    padding:11px 14px;
+    font-size:14px;
+    font-family:inherit;
+    border:1px solid var(--line);
+    border-radius:6px;
+    background:var(--card);
+    color:var(--ink);
+  }
+  .search-input:focus{
+    outline:none;
+    border-color:var(--gold);
+  }
+  .chip-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-bottom:16px;
+  }
+  .chip{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    padding:5px 10px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:var(--card);
+    color:var(--olive);
+    cursor:pointer;
+    white-space:nowrap;
+    transition:border-color .15s ease, background .15s ease, color .15s ease;
+  }
+  .chip.active{
+    background:var(--ink);
+    color:var(--paper);
+    border-color:var(--ink);
+  }
+  .group-block{
+    margin-bottom:18px;
+  }
+  .group-title{
+    font-family:'Roboto Slab',serif;
+    font-weight:700;
+    font-size:13px;
+    color:var(--ink);
+    margin:0 0 8px;
+    padding-bottom:4px;
+    border-bottom:1px solid var(--line);
+  }
+  .no-results{
+    font-size:13px;
+    color:var(--olive);
+    text-align:center;
+    padding:30px 0;
+  }
+  .card-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  .product-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    cursor:pointer;
+    transition:border-color .15s ease, transform .1s ease;
+    position:relative;
+  }
+  .product-card:active{transform:scale(0.99);}
+  .product-card.active-product{border-color:var(--gold);}
+  .product-card.placeholder{opacity:0.62;}
+  .product-tab-index{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--paper);
+    background:var(--ink);
+    width:28px;height:28px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    flex:0 0 auto;
+    font-weight:700;
+  }
+  .product-tab-index.empty{
+    background:var(--paper-dim);
+    color:var(--olive);
+    border:1.5px dashed var(--line);
+  }
+  .product-info{flex:1; min-width:0;}
+  .product-name{
+    font-family:'Roboto Slab',serif;
+    font-weight:600;
+    font-size:14.5px;
+    margin-bottom:2px;
+  }
+  .product-code{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    color:var(--olive);
+  }
+  .product-status{
+    font-size:10.5px;
+    font-family:'JetBrains Mono',monospace;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    padding:2px 8px;
+    border-radius:10px;
+    white-space:nowrap;
+    flex:0 0 auto;
+  }
+  .product-status.ready{background:var(--gold-soft);color:#5c4a0d;}
+  .product-status.progress{background:#e4ecdf;color:var(--olive);}
+  .product-status.notstarted{background:var(--paper-dim);color:#9a9482;border:1px solid var(--line);}
+  .product-status.empty{background:var(--paper-dim);color:#9a9482;border:1px dashed var(--line);}
+  .card-arrow{color:var(--olive);font-size:14px;flex:0 0 auto;}
+
+  .footnote{
+    max-width:760px;
+    margin:20px auto 0;
+    padding:0 20px;
+    font-size:10.5px;
+    color:#8a8570;
+    line-height:1.5;
+    text-align:center;
+  }
+
+  /* ===== DETAIL VIEW ===== */
+  .detail-view{display:none;}
+  .detail-view.active{display:block;}
+  .registry-view.hidden{display:none;}
+
+  .back-row{
+    max-width:720px;
+    margin:0 auto;
+    padding:14px 16px 0;
+  }
+  .back-btn{
+    background:none;
+    border:none;
+    color:var(--paper);
+    font-size:12.5px;
+    display:flex;
+    align-items:center;
+    gap:5px;
+    cursor:pointer;
+    padding:2px 0;
+    font-weight:600;
+  }
+  .back-btn:hover{color:var(--gold-soft);}
+
+  .jacket-inner{
+    max-width:720px;
+    margin:0 auto;
+    padding:6px 16px 20px;
+  }
+  .file-meta{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px 14px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.14);
+    border-radius:4px;
+    padding:14px;
+    margin-top:14px;
+  }
+  .file-meta label{
+    display:block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:9.5px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--gold-soft);
+    margin-bottom:3px;
+  }
+  .file-meta input{
+    width:100%;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid rgba(255,255,255,0.3);
+    color:var(--paper);
+    font-family:'Inter',sans-serif;
+    font-size:13.5px;
+    padding:3px 1px 5px;
+    outline:none;
+  }
+  .file-meta input::placeholder{color:#6b7a6b;}
+  .file-meta input:focus{border-bottom-color:var(--gold);}
+
+  .seal-wrap{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:18px 20px;
+    max-width:720px;
+    margin:0 auto;
+  }
+  .seal{
+    flex:0 0 auto;
+    width:76px;height:76px;
+    border-radius:50%;
+    border:3px solid var(--seal-red);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    transform:rotate(-8deg);
+    transition:all .5s ease;
+    position:relative;
+  }
+  .seal .txt{
+    font-family:'Roboto Slab',serif;
+    font-weight:700;
+    font-size:9px;
+    letter-spacing:0.03em;
+    color:var(--seal-red);
+    line-height:1.2;
+    text-transform:uppercase;
+  }
+  .seal.ready{
+    border-color:var(--gold);
+    box-shadow:0 0 0 3px rgba(201,162,39,0.15);
+  }
+  .seal.ready .txt{color:#8a6d0f;}
+  .seal.hardstop{
+    border-color:var(--seal-red);
+    background:rgba(139,30,30,0.06);
+  }
+  .progress-info{flex:1;}
+  .progress-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--olive);
+    margin-bottom:6px;
+    display:flex;
+    justify-content:space-between;
+  }
+  .progress-track{
+    height:8px;
+    background:var(--line);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:linear-gradient(90deg,var(--olive),var(--gold));
+    width:0%;
+    transition:width .4s ease;
+    border-radius:4px;
+  }
+  .hardstop-note{
+    font-size:11.5px;
+    color:var(--seal-red);
+    margin-top:6px;
+    font-weight:600;
+    display:none;
+  }
+  .hardstop-note.show{display:block;}
+
+  .content{
+    max-width:720px;
+    margin:0 auto;
+    padding:8px 16px 0;
+  }
+  .section{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    margin-bottom:16px;
+    overflow:hidden;
+  }
+  .section-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 16px;
+    cursor:pointer;
+    user-select:none;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#fff,var(--card));
+  }
+  .section-num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--paper);
+    background:var(--ink);
+    width:26px;height:26px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    flex:0 0 auto;
+    font-weight:700;
+  }
+  .section-title{
+    font-family:'Roboto Slab',serif;
+    font-weight:600;
+    font-size:15px;
+    flex:1;
+  }
+  .section-count{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--olive);
+    background:var(--paper);
+    border:1px solid var(--line);
+    padding:2px 8px;
+    border-radius:10px;
+    white-space:nowrap;
+  }
+  .section-count.complete{
+    background:var(--gold-soft);
+    border-color:var(--gold);
+    color:#5c4a0d;
+  }
+  .chevron{
+    font-size:12px;
+    color:var(--olive);
+    transition:transform .25s ease;
+  }
+  .section.collapsed .chevron{transform:rotate(-90deg);}
+  .section-body{
+    max-height:3000px;
+    transition:max-height .35s ease, padding .35s ease;
+    padding:6px 0 10px;
+  }
+  .section.collapsed .section-body{
+    max-height:0;
+    padding:0;
+    overflow:hidden;
+  }
+
+  .item{
+    display:flex;
+    gap:11px;
+    padding:10px 16px;
+    border-bottom:1px solid #EFEAD9;
+    align-items:flex-start;
+  }
+  .item:last-child{border-bottom:none;}
+  .item.hard{background:rgba(139,30,30,0.03);}
+  .chk{
+    flex:0 0 auto;
+    width:21px;height:21px;
+    margin-top:1px;
+    border:2px solid var(--olive);
+    border-radius:4px;
+    background:#fff;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .15s ease;
+    position:relative;
+  }
+  .chk:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+  .chk.checked{
+    background:var(--olive);
+    border-color:var(--olive);
+  }
+  .chk.checked::after{
+    content:"✓";
+    color:#fff;
+    font-size:13px;
+    font-weight:700;
+  }
+  .item.hard .chk{border-color:var(--seal-red);}
+  .item.hard .chk.checked{background:var(--seal-red);border-color:var(--seal-red);}
+
+  .item-text{flex:1;}
+  .item-label{
+    font-size:13.5px;
+    line-height:1.42;
+    color:var(--ink);
+  }
+  .item-label.checked{
+    color:#8a8a7a;
+    text-decoration:line-through;
+    text-decoration-color:#b8b09a;
+  }
+  .item-sub{
+    font-size:11.5px;
+    color:var(--olive);
+    margin-top:2px;
+    line-height:1.4;
+  }
+  .tag{
+    display:inline-block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:9px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    padding:1px 6px;
+    border-radius:3px;
+    margin-left:6px;
+    vertical-align:middle;
+    font-weight:700;
+  }
+  .tag.hard{background:var(--seal-red);color:#fff;}
+  .tag.rcac{background:var(--gold);color:#4a3a06;}
+
+  .calc-box{
+    margin:0 16px 14px;
+    padding:14px;
+    background:var(--paper);
+    border:1px dashed var(--line);
+    border-radius:6px;
+  }
+  .calc-title{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--olive);
+    margin-bottom:10px;
+  }
+  .calc-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:8px;
+    align-items:center;
+  }
+  .calc-row label{
+    font-size:12.5px;
+    flex:1;
+    color:var(--ink-soft);
+  }
+  .calc-row input{
+    width:120px;
+    padding:6px 8px;
+    border:1px solid var(--line);
+    border-radius:4px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    text-align:right;
+    background:#fff;
+  }
+  .calc-result{
+    margin-top:10px;
+    padding:10px 12px;
+    background:#fff;
+    border-left:3px solid var(--gold);
+    border-radius:3px;
+    font-size:12.5px;
+    line-height:1.5;
+  }
+  .calc-result b{font-family:'JetBrains Mono',monospace;}
+  .calc-result .final{
+    font-size:15px;
+    font-weight:700;
+    color:var(--seal-red);
+    margin-top:4px;
+  }
+
+  .actions{
+    max-width:720px;
+    margin:20px auto 0;
+    padding:0 16px;
+    display:flex;
+    gap:10px;
+  }
+  .btn{
+    flex:1;
+    padding:12px;
+    border-radius:6px;
+    border:1px solid var(--line);
+    background:var(--card);
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:13px;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .btn.primary{
+    background:var(--ink);
+    color:var(--paper);
+    border-color:var(--ink);
+  }
+  .btn:active{transform:scale(0.98);}
+
+  /* ===== EMPTY PRODUCT STATE ===== */
+  .empty-state{
+    max-width:720px;
+    margin:24px auto 0;
+    padding:0 16px;
+  }
+  .empty-card{
+    background:var(--card);
+    border:1.5px dashed var(--line);
+    border-radius:8px;
+    padding:34px 24px;
+    text-align:center;
+  }
+  .empty-icon{
+    font-size:30px;
+    margin-bottom:12px;
+    opacity:0.5;
+  }
+  .empty-title{
+    font-family:'Roboto Slab',serif;
+    font-weight:600;
+    font-size:16px;
+    margin-bottom:8px;
+  }
+  .empty-text{
+    font-size:12.5px;
+    color:var(--olive);
+    line-height:1.6;
+    max-width:420px;
+    margin:0 auto;
+  }
+
+  @media (max-width:420px){
+    .file-meta{grid-template-columns:1fr;}
+    h1{font-size:20px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ REGISTRY VIEW (product picker) ============ -->
+<div class="registry-view" id="registry-view">
+  <div class="topbar">
+    <p class="eyebrow">Branch Credit Processing</p>
+    <h1>Sanction Files — Product Index</h1>
+    <p class="subtitle">Tap a product to open its processing checklist</p>
+  </div>
+  <div class="registry">
+    <p class="registry-hint" id="registry-hint"></p>
+    <div class="search-row">
+      <input type="text" id="product-search" class="search-input" placeholder="Search by product name or code…" autocomplete="off">
+    </div>
+    <div class="chip-row" id="category-chips"></div>
+    <div id="registry-groups"></div>
+    <p class="no-results" id="no-results" style="display:none;">No products match your search.</p>
+  </div>
+  <p class="footnote">Reference: respective scheme Annexures/Circulars. This tool is a working aid for branch-level processing and does not replace the original circulars. Always verify the current circular number/date before sanction.</p>
+</div>
+
+<!-- ============ DETAIL VIEW (single product checklist) ============ -->
+<div class="detail-view" id="detail-view">
+  <div class="topbar">
+    <div class="back-row" style="padding:0 0 10px;">
+      <button class="back-btn" id="back-btn">← All Products</button>
+    </div>
+    <p class="eyebrow" id="d-eyebrow">—</p>
+    <h1 id="d-title">—</h1>
+    <p class="subtitle" id="d-subtitle">—</p>
+    <div class="jacket-inner" style="padding:0;">
+      <div class="file-meta">
+        <div>
+          <label>Applicant Name</label>
+          <input type="text" id="f-name" placeholder="—">
+        </div>
+        <div>
+          <label>Loan / Ref A/c No.</label>
+          <input type="text" id="f-kcc" placeholder="—">
+        </div>
+        <div>
+          <label>Branch</label>
+          <input type="text" id="f-branch" placeholder="—">
+        </div>
+        <div>
+          <label>Processed By</label>
+          <input type="text" id="f-officer" placeholder="—">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="populated-block" style="display:none;">
+    <div class="seal-wrap">
+      <div class="seal" id="seal">
+        <div class="txt" id="seal-txt">Pending<br>Review</div>
+      </div>
+      <div class="progress-info">
+        <div class="progress-label">
+          <span id="prog-count">0 / 0 checked</span>
+          <span id="prog-pct">0%</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+        <div class="hardstop-note" id="hardstop-note">⚠ Hard-stop item(s) unresolved — cannot sanction</div>
+      </div>
+    </div>
+
+    <div class="content" id="sections"></div>
+
+    <div class="actions">
+      <button class="btn" id="reset-btn">Reset File</button>
+      <button class="btn primary" id="save-btn">Save Progress</button>
+    </div>
+  </div>
+
+  <div id="empty-block" style="display:none;">
+    <div class="empty-state">
+      <div class="empty-card">
+        <div class="empty-icon">📋</div>
+        <div class="empty-title">Checklist not yet built</div>
+        <div class="empty-text">Upload the Annexure/circular for this product and it'll be turned into a full sanction checklist — eligibility, quantum, security, documentation, delegation, and MIS codes, matching the same format as the products already live.</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="footnote">Reference: respective scheme Annexure/Circular. This tool is a working aid for branch-level processing and does not replace the original circular.</p>
+</div>
+
+<script>
+/* ============================================================
+   PRODUCT REGISTRY
+   Each product has: id, name, code, validity (optional), sections (array or null if not yet populated)
+   To add a new product later: add an entry here with its own `sections` array
+   built in the same shape as APRNL's.
+============================================================ */
+
+/* ============================================================
+   GOLD LOAN CHECKLIST BUILDER
+   Shared across all 9 gold loan products (common circular structure).
+   Each product supplies only what differs: category, quantum,
+   assessment method, LTV, tenure, ROI, NPA norm, docs, codes.
+============================================================ */
+function buildGoldLoanSections(cfg){
+  const sections = [
+    {
+      title: "Product Identification",
+      items: [
+        { t: `Confirmed correct product: ${cfg.productName}`, sub: `Scheme Code: ${cfg.schemeCode} · GL Code: ${cfg.glCode}`, hard:true },
+        { t: `Loan Category: ${cfg.category}` },
+        { t: `Facility Type: ${cfg.facilityType}` },
+      ]
+    },
+    {
+      title: "Eligibility & Purpose",
+      items: cfg.eligibilityItems
+    },
+    {
+      title: "Eligible Collateral",
+      items: [
+        { t: "Gold ornaments/jewellery purity below 18 carats NOT accepted", hard:true },
+        { t: "18–22 carat jewellery valued after conversion to 22-carat equivalent" },
+        { t: "24-carat specially minted bank gold coins accepted up to max 50 grams per borrower" },
+        { t: "Maximum collateral weight capped at 1 kg of gold ornaments/jewellery per borrower across ALL gold loan accounts", hard:true },
+      ]
+    },
+    {
+      title: "Loan Quantum & Assessment",
+      items: cfg.quantumItems,
+      calculator: cfg.calculator
+    },
+    {
+      title: "Loan-to-Value (LTV) Monitoring",
+      items: [
+        { t: `Prescribed LTV ceiling applied and understood: ${cfg.ltvNote}`, hard:true },
+        { t: "LTV computation includes principal + accrued interest + applicable charges, not principal alone" },
+        { t: "Per-gram lending rate used is the current HO-communicated rate, not a stale/cached figure" },
+        { t: "Daily CBS reports monitored for LTV breach; corrective action/margin call process known and followed if breached" },
+      ]
+    },
+    {
+      title: "Tenure, Interest & Disbursement",
+      items: [
+        { t: `Loan tenure confirmed: ${cfg.tenure}`, hard:true },
+        { t: `Rate of Interest confirmed: ${cfg.roi}`, hard:true },
+        { t: `Interest application/rest frequency: ${cfg.restFreq}` },
+        { t: "Borrower has an operative SB/CA/OD account with the Bank; disbursement credited only to this account", hard:true },
+      ]
+    },
+    {
+      title: "Repayment",
+      items: cfg.repaymentItems
+    },
+    {
+      title: "Charges & Penal Interest",
+      items: [
+        { t: "Appraisal, Processing, and Safe Custody charges applied per current approved slabs" },
+        { t: "Safe custody charges correctly WAIVED where aggregate exposure per CIF ≤ Rs.50,000 (PSL accounts only)", sub:"Common error: charging safe custody on small PSL accounts that qualify for waiver." },
+        { t: "Penal charges 2% p.a. on overdue applied at monthly rests" },
+        { t: "NIL penal charges correctly applied where aggregate exposure per CIF ≤ Rs.50,000 under Priority Sector (Agri/Agri-Allied/MSME)", hard:true, sub:"Exemption is at CIF/borrower level, not per-account — check all linked accounts." },
+      ]
+    },
+    {
+      title: "Asset Classification (NPA Norms)",
+      items: [
+        { t: `NPA classification trigger confirmed: ${cfg.npaNorm}`, hard:true },
+        { t: "RBI IRAC norms for gold-jewellery-secured advances applied" },
+      ]
+    },
+    {
+      title: "Sanctioning Authority",
+      items: [
+        { t: "Sanctioned strictly per Bank's delegation of powers and discretionary limits", hard:true },
+      ]
+    },
+    {
+      title: "Operational Guidelines — Pouch & KFS",
+      items: [
+        { t: "Pledged gold ornaments placed in pre-approved high-security gold loan pouch", hard:true },
+        { t: "Pouch number recorded in CBS and maintained in branch safe custody records", hard:true },
+        { t: `${cfg.kfsType} provided to borrower, clearly disclosing loan terms, interest rates, charges, repayment obligations` },
+      ]
+    },
+    {
+      title: "Document Bundle — Final Check",
+      items: cfg.documentItems
+    },
+    {
+      title: "Top-Up Loan Provisions (If Applicable)",
+      items: [
+        { t: "Top-up considered only if underlying account is 'Standard'", hard:true },
+        { t: `Top-up maintained as separate linked CBS account under scheme code: ${cfg.topUpCode}`, hard:true },
+        { t: "High-Security Pouch digitally linked to top-up account, identical to parent; all account numbers noted on physical pouch" },
+        { t: "LTV compliance checked on aggregate exposure (existing loan + top-up), not top-up amount alone", hard:true },
+        { t: "Top-up tenor does NOT exceed residual tenure of original loan" },
+        { t: "Top-up amount is at least 10% of original limit or Rs.10,000, whichever higher" },
+        { t: "Confirmed max 2 top-up loans per original account at any point in time", hard:true },
+        { t: "Appraisal fee & Safe Custody charges NOT levied on top-up (Processing Charges still apply)" },
+        { t: "Comprehensive lien marked against pledged security covering original + all top-up accounts" },
+        { t: "Parent account NOT closed / gold NOT released until all linked top-ups fully settled", hard:true },
+      ]
+    },
+    {
+      title: "Renewal & Part-Payment",
+      items: cfg.isOverdraft ? [
+        { t: "Part payment (deposit into OD account) reduces interest — no prepayment charges apply" },
+        { t: "Confirmed NO partial release of pledged gold on part payment/deposit — full collateral held until complete closure of facility", hard:true },
+      ] : [
+        { t: "Renewal requires fresh application, full accrued interest payment, fresh appraisal, and LTV compliance check" },
+        { t: "Active top-up accounts closed prior to renewal of primary facility (or consolidated per conditions: all Standard, interest cleared, new limit within LTV)" },
+        { t: "Part payment allowed without prepayment charges" },
+        { t: "Confirmed NO partial release of pledged gold on part payment — full collateral held until complete settlement", hard:true },
+      ]
+    },
+  ];
+  return sections;
+}
+
+const PRODUCTS = [
+  {
+    id: "aprnl", category: "Agri & Rural",
+    name: "APGB Rythu Nestham Loan",
+    code: "APRNL",
+    validity: "Valid till 31.12.2026",
+    sections: [
+      {
+        title: "Eligibility Screening",
+        items: [
+          { t: "Applicant holds an active KCC (incl. KCC-Animal Husbandry & Fisheries) account", hard:true },
+          { t: "Regular repayment confirmed for past 2 renewals — within due date or 30-day grace period", sub:"Verify against actual ledger dates, not borrower's verbal claim.", hard:true },
+          { t: "Age at application is between 20 and 70 years", hard:true },
+          { t: "If age 70–75: RCAC deviation obtained AND at least one legal heir added as co-applicant", sub:"Only applicable if age relaxation is being used." },
+          { t: "Facility being applied for at same branch where existing KCC is held", hard:true },
+          { t: "No active CGRNL / CGRCL facility (for eCGGB-origin KCC borrowers)", sub:"No outstanding under these schemes at time of sanction." },
+        ]
+      },
+      {
+        title: "Loan Quantum",
+        items: [
+          { t: "Computed 50% of existing KCC sanctioned limit" },
+          { t: "Computed 95% of actual project cost (based on quotation/estimate, not inflated figure)" },
+          { t: "Lower of the two values applied as eligible loan amount", hard:true },
+          { t: "Final amount falls within Rs. 5,000 – Rs. 1,00,000 band", hard:true },
+        ],
+        calculator: {
+          title: "Quick Calculator",
+          fields: [
+            { id:"calc-kcc", label:"Existing KCC Sanctioned Limit (₹)" },
+            { id:"calc-project", label:"Actual Project Cost (₹)" },
+          ],
+          compute: (v) => {
+            const kcc = v["calc-kcc"] || 0;
+            const proj = v["calc-project"] || 0;
+            if(kcc === 0 && proj === 0) return null;
+            const capA = kcc * 0.5;
+            const capB = proj * 0.95;
+            let eligible = Math.min(capA, capB);
+            let capped = eligible;
+            let note = '';
+            if(eligible > 100000){ capped = 100000; note = ' (capped at scheme maximum)'; }
+            if(eligible < 5000 && eligible > 0){ note = ' — below scheme minimum of ₹5,000, not eligible'; }
+            return `50% of KCC limit: <b>₹${capA.toLocaleString('en-IN')}</b><br>95% of project cost: <b>₹${capB.toLocaleString('en-IN')}</b><div class="final">Eligible amount: ₹${capped.toLocaleString('en-IN')}${note}</div>`;
+          }
+        }
+      },
+      {
+        title: "Credit History (CIC) Assessment",
+        items: [
+          { t: "CIC report pulled from any of the 4 bureaus", hard:true },
+          { t: "CIC score is 600 or above", hard:true },
+          { t: "No Wilful Default / Write-off / Suit Filed / current NPA in CIC report", sub:"No deviation possible for this — absolute bar.", hard:true },
+          { t: "If Settled / Post-WO-Settled present: RCAC deviation approval obtained", sub:"Only required if such status appears." },
+          { t: "CIC scrutinised to confirm no other-institution loan for same purpose", sub:"Cross-check against borrower's declaration (16.6)." },
+        ]
+      },
+      {
+        title: "Standard Asset & Facility Status",
+        items: [
+          { t: "All existing facilities of borrower with the Bank are in Standard (performing) category as on sanction date", hard:true },
+          { t: "Linked accounts / co-obligations also checked, not just primary KCC" },
+        ]
+      },
+      {
+        title: "Security & Collateral",
+        items: [
+          { t: "Composite limit computed = existing KCC sanctioned limit + proposed APRNL" },
+          { t: "If composite > Rs. 3 Lakh: collateral obtained — 150% (immovable property) or 120% (bank deposit) or combination", tag:"rcac-composite" },
+          { t: "If composite ≤ Rs. 3 Lakh: no mandatory collateral; negative lien obtained if collateral already exists on KCC/other facility" },
+          { t: "Collateral independently valued (not borrower's self-declared value)" },
+          { t: "Encumbrance certificate / prior charge search completed on any immovable collateral" },
+          { t: "Primary security: hypothecation of standing & future crops noted in file" },
+          { t: "If implement purchase: newly acquired asset additionally hypothecated" },
+        ]
+      },
+      {
+        title: "Guarantee",
+        items: [
+          { t: "Guarantor requirement assessed — not mandatory under scheme, obtained only if sanctioning authority deems necessary" },
+        ]
+      },
+      {
+        title: "Purpose-Specific Documentation",
+        items: [
+          { t: "Implements purchase: vendor bills obtained; disbursement preferably direct to vendor" },
+          { t: "Land development (vendor executed): bills from vendor obtained" },
+          { t: "Land development (self/labour executed): labour receipt as per Annexure obtained" },
+          { t: "Distressed farmer relief: pre-disbursement declaration naming non-institutional lender + date of loan", hard:true },
+          { t: "Distressed farmer relief: post-disbursement declaration confirming dues cleared obtained", sub:"Easy to miss — requires follow-up after disbursement, not just at sanction.", hard:true },
+        ]
+      },
+      {
+        title: "Charges & Stamp Duty",
+        items: [
+          { t: "Processing fee 0.5% applied correctly (waived if aggregate sanctioned limits ≤ Rs. 50,000)" },
+          { t: "GST @ 18% applied on applicable charges" },
+          { t: "Confirmed: no admin/inspection charge, no prepayment penalty levied" },
+          { t: "Penal charge 2% p.a. applied only if sanctioned limit > Rs. 50,000 and account overdue" },
+          { t: "Stamp duty exemption checked: composite limit ≤ Rs. 3 Lakh, OR landholding ≤5 acres wet / ≤10 acres dry", sub:"Two separate conditions — check both, don't assume one covers the other." },
+        ]
+      },
+      {
+        title: "Sanctioning Authority (Delegation)",
+        items: [
+          { t: "Verified who sanctioned the ORIGINAL KCC (branch vs SRK/AMH/CPC/RO/HO) — not just current holding branch", hard:true },
+          { t: "If original KCC sanctioned by branch → Branch Manager sanctioning this loan" },
+          { t: "If original KCC sanctioned by SRK/AMH/CPC/RO/HO → routed to RCAC", tag:"rcac" },
+        ]
+      },
+      {
+        title: "Deviation Triggers — Route to RCAC",
+        items: [
+          { t: "Age relaxation 70–75 years", tag:"rcac" },
+          { t: "CIC shows Settled / Post-WO-Settled status", tag:"rcac" },
+          { t: "KCC opened <2 years ago at this bank, with prior regular KCC repayment history at another bank", sub:"Requires other bank's certified statement of regular repayment.", tag:"rcac" },
+        ]
+      },
+      {
+        title: "Document Bundle — Final Check",
+        items: [
+          { t: "Application form" },
+          { t: "Demand Promissory Note (DPN)" },
+          { t: "Sanction letter — duly acknowledged, ROI 11% p.a. explicitly stated", hard:true },
+          { t: "Composite Agreement (Agriculture)" },
+          { t: "Letter of general lien (if other properties mortgaged elsewhere)" },
+          { t: "Purpose-specific bills/receipts attached" },
+          { t: "Distressed-farmer declarations (pre + post disbursement) attached, if applicable" },
+          { t: "CIC report copy on file" },
+          { t: "Declaration of no other-institution loan for same purpose, signed" },
+        ]
+      },
+      {
+        title: "MIS Codes & Scheme Compliance",
+        items: [
+          { t: "Sector code: 001 - Priority Sector" },
+          { t: "Sub-Sector code correctly matched to actual purpose (ALT01–ALT27 / AIF09)" },
+          { t: "Borrower category code correct (Male/Female individual)" },
+          { t: "Purpose of advance code correct (01151 / 01153 / 01154 / 01159)" },
+          { t: "Mode of Advance: 002 - Direct Advance - Agriculture" },
+          { t: "Advance Type: 34 - Kisan Credit Card - Investment" },
+          { t: "Nature of Advance: 003 - Term Loans" },
+          { t: "Free Code 2 (SF/MF/OF/LEC) correctly assigned" },
+          { t: "Guarantee Cover Code: NOGUA" },
+          { t: "Sanction date confirmed on/before 31.12.2026 (scheme validity)", hard:true },
+        ]
+      },
+    ]
+  },
+  {
+    id: "kcc-own", category: "Agri & Rural",
+    name: "KCC — Own Farmers",
+    code: "APKCC",
+    validity: "Cir No.192 dated 14.08.2026",
+    sections: [
+      {
+        title: "Eligibility Screening",
+        items: [
+          { t: "Applicant is an agriculturist (individual/joint) holding clear land title and engaged in cultivation", hard:true },
+          { t: "OR applicant is RMG/JLG of farmers holding clear land title, engaged in cultivation" },
+          { t: "Minimum age 18 confirmed (no maximum age cap)", hard:true },
+          { t: "Land extent verified against Mee Bhoomi / Loan Charge / LPM Portal records", hard:true },
+        ]
+      },
+      {
+        title: "Limit Assessment",
+        items: [
+          { t: "Marginal farmer: Flexi-KCC Rs.10,000–50,000 fixed per BM assessment (land holding, crops, consumption, small term investments)", sub:"Not tied to value of land." },
+          { t: "Other farmers, single crop: ST limit = SoF × area + 10% (post-harvest/consumption) + 20% (repairs/maintenance) + insurance", hard:true },
+          { t: "Multi-crop farmers: limit fixed per crop as per proposed cropping pattern, + 10% cost escalation for years 2–5" },
+          { t: "2nd–5th year limit = prior year limit + 10% cost escalation OR prevailing SoF, whichever lower" },
+          { t: "Term loan component for investment (land dev., minor irrigation, farm equipment, allied activities) assessed on unit cost + repayment capacity" },
+          { t: "Maximum Permissible Limit (MPL) = 5th-year ST limit + estimated long-term loan requirement", hard:true },
+        ]
+      },
+      {
+        title: "Security & Collateral",
+        items: [
+          { t: "Up to Rs.2,00,000: hypothecation of standing/future crops + loan charge portal charge creation only" },
+          { t: "Rs.2,00,000–3,00,000: hypothecation + 3rd party guarantee (150% worth) + charge creation", hard:true },
+          { t: "Above Rs.3,00,000: hypothecation + 3rd party guarantee (150%+) + collateral (150% immovable or 120% deposit) + charge creation", hard:true },
+          { t: "Family member of borrower confirmed NOT acting as guarantor", hard:true },
+          { t: "DKT/Assigned/ROFR/Re-survey/Temple/Inam/Waqf lands confirmed NOT accepted as collateral", hard:true },
+          { t: "Loan charge portal printout (before & after creation) retained with loan documents" },
+        ]
+      },
+      {
+        title: "Credit Score & CIC",
+        items: [
+          { t: "Up to Rs.5 lakh: CIC/CIBIL mandatory only at fresh sanction; optional at renewal/enhancement" },
+          { t: "Above Rs.5 lakh: CIC/CIBIL mandatory for fresh loans, enhancements, and on 5-year KCC expiry", hard:true },
+          { t: "Above Rs.20 lakh: CIBIL + one additional bureau report (Equifax/Experian/CRIF) obtained", hard:true },
+          { t: "Minimum bureau score 600 confirmed (or NTC: -1, 1–5, 100–300 band)", hard:true },
+          { t: "No adverse remarks (suit filed/written off/settled/post-WO-settled/purchased account)", hard:true },
+          { t: "If deviation on score/adverse remarks: competent authority approval per Cir 102 dated 17.06.2026 obtained" },
+        ]
+      },
+      {
+        title: "Branch Jurisdiction",
+        items: [
+          { t: "Land in different area from residence: processed by branch within 25 KMs of residence" },
+          { t: "Distant land: pre-sanction inspection delegated to nearest branch, completed within 6 working days" },
+          { t: "Renewal/enhancement: borrower option to continue at same branch OR shift within 25 KMs of KYC address" },
+          { t: "Land in-state but residence outside operational area: RCAC administrative approval obtained (fresh sanction only)", tag:"rcac" },
+        ]
+      },
+      {
+        title: "Pre-Sanction Due Diligence",
+        items: [
+          { t: "Pre-sanction field visit conducted — skills, experience, cropping pattern feasibility verified", hard:true },
+          { t: "Land record particulars (village, survey no., extent, irrigated/dry) cross-verified with revenue records" },
+          { t: "Undisputed cultivation rights confirmed via village revenue records/passbook + local enquiry" },
+          { t: "KYC verified (Aadhaar, Voter ID, PAN)", hard:true },
+          { t: "e-Pattadar passbook Xerox obtained (photo + Tahsildar digital signature); if unavailable, 1-B & Adangal accepted" },
+        ]
+      },
+      {
+        title: "Special Land Categories (DKT/ROFR/Re-survey/Temple/Inam/Waqf)",
+        items: [
+          { t: "If charge creation possible on Web Land Portal: processed by sanctioning authority per delegation, no RCAC approval needed" },
+          { t: "If charge creation NOT possible: RCAC prior approval obtained (renewal only) + Form 1B submitted", tag:"rcac" },
+          { t: "Confirmed such lands NOT accepted as collateral regardless of portal charge availability", hard:true },
+        ]
+      },
+      {
+        title: "Notional Khata / Discretionary Renewal",
+        items: [
+          { t: "If renewing in Anubhavadaru (enjoyment holder) name: BM personal field verification of actual cultivation done", hard:true },
+          { t: "Documentary evidence (Form 1-B/Adangal or equivalent) obtained substantiating cultivation claim" },
+          { t: "Enhancement capped at higher of outstanding (P+I) or preceding year's sanctioned limit" },
+        ]
+      },
+      {
+        title: "Insurance & Subvention",
+        items: [
+          { t: "PMFBY/WBCIS coverage mandatory for all loanee borrowers unless opt-out form obtained", hard:true },
+          { t: "PAIS or PMJJBY or PMSBY coverage confirmed for all eligible borrowers" },
+          { t: "Aadhaar seeded + mobile number updated for interest subvention (1.5%) and prompt-repayment incentive (3%)", hard:true },
+        ]
+      },
+      {
+        title: "Charges & Stamp Duty",
+        items: [
+          { t: "Processing charges: NIL up to Rs.3L; above Rs.3L = 0.75% of limit, min Rs.500" },
+          { t: "Inspection charges per aggregate agri slab (Nil/Rs.300/Rs.600/Rs.750 per half-year) + GST 18%" },
+          { t: "Stamp duty exempt: small/marginal farmer (≤5 acres wet/≤10 acres dry), limit ≤Rs.3L, per G.O.Ms.No.15" },
+          { t: "Other farmers: stamp duty 0.5% of limit + Rs.100, capped at Rs.50,000" },
+          { t: "Penal charge 2% p.a. + GST 18% applied only if sanctioned limit >Rs.50,000 and overdue", hard:true },
+        ]
+      },
+      {
+        title: "Documentation & Compliance",
+        items: [
+          { t: "Repayment period: ST component 1 year from first drawl (Kharif/Rabi); TL component ≤5 years" },
+          { t: "Limit expiry date in CBS = 1 year from disbursement minus 1 day, correctly computed", hard:true },
+          { t: "No pre-signed withdrawal vouchers — drawl form signed in presence of BM/Credit Officer", hard:true },
+          { t: "Illiterate borrower: witness signature + KYC copy + explanation declaration obtained" },
+          { t: "Vernacular declaration obtained where borrower signs in non-English language" },
+          { t: "Deceased borrower renewal: legal heir identified, existing loan closed, undertaking + NOC from co-heirs obtained" },
+          { t: "Revival letter (Re.1 stamp, borrower + guarantor) obtained from 2nd year onwards" },
+          { t: "Rate of interest confirmed: 7% p.a. (subvention, ≤Rs.3L) / 13% p.a. (post-subvention or >Rs.3L)" },
+        ]
+      },
+    ]
+  },
+  {
+    id: "kcc-tenant", category: "Agri & Rural",
+    name: "KCC — Tenant Farmers",
+    code: "APKRR",
+    validity: "Cir No.192 dated 14.08.2026",
+    sections: [
+      {
+        title: "Eligibility Screening",
+        items: [
+          { t: "Individual tenant farmer holds valid CCRC Card issued by authorized officer", hard:true },
+          { t: "Fresh RMG/JLG: all members hold CCRC cards", sub:"First-time group applicants only." },
+          { t: "Existing RMG/JLG renewal/enhancement: CCRC cards OR Agriculture Officer confirmation of tenancy cultivation accepted" },
+          { t: "Minimum age 18 confirmed (no maximum age cap)", hard:true },
+          { t: "CCRC holder confirmed NOT a past defaulter to the bank", hard:true },
+          { t: "CCRC holder is permanent resident within 25 KMs of branch (RM approval needed for relaxation)" },
+          { t: "CCRC holder holds Savings account with the bank (for Social Security Scheme coverage)" },
+        ]
+      },
+      {
+        title: "Limit Assessment",
+        items: [
+          { t: "Limit = SoF for crop × area cultivated (per CCRC Card), capped at Rs.2 lakh maximum", hard:true },
+          { t: "If limit requested >Rs.1 lakh: Regional Office administrative approval obtained", tag:"rcac" },
+          { t: "Land parcel confirmed NOT already charged to another financial institution", hard:true },
+          { t: "If owner of land has separately availed KCC: confirmed tenant NOT financed for same land", hard:true },
+          { t: "Borrowers with CCRC against DKT/Assigned lands confirmed ineligible", hard:true },
+        ]
+      },
+      {
+        title: "Security & Documentation",
+        items: [
+          { t: "Hypothecation of standing & future crops/assets" },
+          { t: "Charge creation on loan charge portal (loancharge.ap.gov.in / loanchargelpm.ap.gov.in) completed, before/after printout retained", hard:true },
+          { t: "Resurvey/LPM-assigned lands: charge created in loanchargelpm.ap.gov.in specifically" },
+          { t: "No collateral/margin required — no stamp duty (max loan Rs.2L, within exemption)" },
+        ]
+      },
+      {
+        title: "Credit Score & CIC",
+        items: [
+          { t: "Up to Rs.2 lakh: CIC/CIBIL mandatory only at fresh sanction; optional at renewal/enhancement" },
+          { t: "Minimum bureau score 650 confirmed (or NTC: -1, 1–5, 100–300 band)", hard:true },
+          { t: "No adverse remarks (suit filed/written off/settled/post-WO-settled/purchased account)", hard:true },
+          { t: "If deviation on score/adverse remarks: competent authority approval per Cir 102 dated 17.06.2026 obtained" },
+        ]
+      },
+      {
+        title: "Pre-Sanction Due Diligence",
+        items: [
+          { t: "Pre-sanction field visit conducted — skills, experience, cropping feasibility verified", hard:true },
+          { t: "Land record particulars cross-checked against revenue records AND CCRC Card details" },
+          { t: "Internal monitoring systems checked (AUCA/Loan/CCOD/Written-Off accounts) for both tenant and landowner", hard:true },
+          { t: "KYC verified (Aadhaar, Voter ID, PAN)", hard:true },
+        ]
+      },
+      {
+        title: "Insurance & Subvention",
+        items: [
+          { t: "PMFBY/WBCIS coverage mandatory unless opt-out form obtained", hard:true },
+          { t: "PAIS or PMJJBY or PMSBY coverage confirmed" },
+          { t: "Aadhaar seeded + mobile number updated for interest subvention (1.5%) and prompt-repayment incentive (3%)", hard:true },
+        ]
+      },
+      {
+        title: "Charges & Compliance",
+        items: [
+          { t: "Processing charges: NIL (aggregate limit ≤Rs.2 lakh)" },
+          { t: "Inspection charges: Nil (limit up to Rs.2L / aggregate agri up to Rs.3L)" },
+          { t: "Penal charge 2% p.a. + GST 18% applied only if sanctioned limit >Rs.50,000 and overdue" },
+          { t: "Limit expiry date in CBS = 1 year from disbursement minus 1 day, correctly computed", hard:true },
+          { t: "Illiterate borrower: witness signature + KYC copy + explanation declaration obtained" },
+          { t: "Vernacular declaration obtained where borrower signs in non-English language" },
+          { t: "Rate of interest confirmed: 7% p.a. (subvention) / 13% p.a. (post-subvention)" },
+        ]
+      },
+    ]
+  },
+  {
+    id: "kcc-ah", category: "Agri & Rural",
+    name: "KCC — Animal Husbandry",
+    code: "APKAD / APKAO / APKAP",
+    validity: "Cir No.192 dated 14.08.2026",
+    sections: [
+      {
+        title: "Eligibility Screening",
+        items: [
+          { t: "Applicant is farmer/dairy farmer (incl. tenant) with owned/rented/leased shed — Dairy activity", hard:true },
+          { t: "OR applicant is farmer/poultry farmer (incl. tenant) — sheep/goat/pig/poultry/rabbit — owned/rented/leased shed" },
+          { t: "Minimum age 18 confirmed (no maximum age cap)", hard:true },
+          { t: "Correct scheme code selected: APKAD (Dairy) / APKAO (Others) / APKAP (Poultry)", hard:true },
+        ]
+      },
+      {
+        title: "Limit Assessment",
+        items: [
+          { t: "Scale of Finance confirmed per DLTC/SLTC (per acre/animal/unit/bird basis)", hard:true },
+          { t: "Working capital component covers feed, veterinary aid, labour, water/electricity" },
+          { t: "Assessment period based on cash flow statement or one production cycle" },
+          { t: "If lessee/tenant applicant: loan amount restricted to Rs.2 lakh maximum", hard:true },
+          { t: "If activity outside SoF and loan >Rs.2 lakh: 15% margin on unit cost applied" },
+        ]
+      },
+      {
+        title: "Security & Collateral",
+        items: [
+          { t: "Up to Rs.2,00,000: hypothecation of assets/crops created out of bank finance only" },
+          { t: "Above Rs.2,00,000: hypothecation + 3rd party guarantee (150%+ worth)", hard:true },
+          { t: "Collateral (if applicable): 150% immovable property OR 120% bank deposit" },
+        ]
+      },
+      {
+        title: "Credit Score & CIC",
+        items: [
+          { t: "Up to Rs.5 lakh: CIC/CIBIL mandatory only at fresh sanction; optional at renewal/enhancement" },
+          { t: "Above Rs.5 lakh: CIC/CIBIL mandatory for fresh loans, enhancements, and on 5-year expiry", hard:true },
+          { t: "Above Rs.20 lakh: CIBIL + one additional bureau report obtained", hard:true },
+          { t: "Minimum bureau score 600 confirmed (or NTC band)", hard:true },
+          { t: "No adverse remarks (suit filed/written off/settled/post-WO-settled/purchased account)", hard:true },
+          { t: "If deviation: competent authority approval per Cir 102 dated 17.06.2026 obtained" },
+        ]
+      },
+      {
+        title: "Branch Jurisdiction",
+        items: [
+          { t: "Unit at distant location: financed by branch within 25 KMs of residence, inspection report from nearest branch obtained within 6 days" },
+          { t: "Other cases: borrower residence within 25 KMs of branch (RM approval for relaxation)" },
+        ]
+      },
+      {
+        title: "Insurance",
+        items: [
+          { t: "If unit cost includes livestock price: comprehensive insurance obtained + renewed annually with bank hypothecation clause", hard:true },
+          { t: "If loan purely for working capital (feed/medicine/labour): livestock insurance not required" },
+          { t: "Poultry: bird insurance obtained, OR risk-fund waiver (Rs.5/bird/year, linked to full layer capacity) confirmed" },
+        ]
+      },
+      {
+        title: "Charges & Stamp Duty",
+        items: [
+          { t: "Processing charges: NIL up to Rs.3L; above Rs.3L = 0.75% of limit, min Rs.500" },
+          { t: "Inspection charges per aggregate agri slab + GST 18%" },
+          { t: "Stamp duty exemption / 0.5%+Rs.100 (capped Rs.50,000) as applicable per landholding" },
+          { t: "Penal charge 2% p.a. + GST 18% applied only if sanctioned limit >Rs.50,000 and overdue" },
+        ]
+      },
+      {
+        title: "Documentation & Compliance",
+        items: [
+          { t: "Repayment fixed per cash flow/income pattern, capped at 1 year from disbursement" },
+          { t: "Limit expiry date in CBS = 1 year from disbursement minus 1 day, correctly computed", hard:true },
+          { t: "No pre-signed withdrawal vouchers — drawl form signed in presence of BM/Credit Officer", hard:true },
+          { t: "Illiterate borrower: witness signature + KYC copy + explanation declaration obtained" },
+          { t: "Vernacular declaration obtained where borrower signs in non-English language" },
+          { t: "Revival letter (Re.1 stamp, borrower + guarantor) obtained from 2nd year onwards" },
+          { t: "Rate of interest confirmed: 7% p.a. up to Rs.2L (subvention) / 13% p.a. thereafter or post-subvention" },
+        ]
+      },
+    ]
+  },
+  {
+    id: "gold-cons-bullet", category: "Gold Loan",
+    name: "Gold Loan — Consumption (Bullet)",
+    code: "GLCNB",
+    validity: "GL Code: 54110",
+    sections: buildGoldLoanSections({
+      productName: "Retail Gold Loan – Bullet Repayment (Consumption/Personal)",
+      schemeCode: "GLCNB", glCode: "54110",
+      category: "Retail — Consumption / Personal",
+      facilityType: "Demand Loan (Short-term liquidity)",
+      eligibilityItems: [
+        { t: "Borrower aged 18+ years, legally competent to contract", hard:true },
+        { t: "Existing or new customer — full KYC/AML compliance confirmed" },
+        { t: "Purpose confirmed as legitimate personal/household need (education, medical, family obligation, etc.)", hard:true },
+        { t: "Confirmed loan is NOT for speculative, unlawful, or economically impermissible activity", hard:true },
+      ],
+      quantumItems: [
+        { t: "Sanctioned amount = lowest of: (a) amount requested, (b) per-gram rate eligible amount with LTV, (c) category max Rs.150L aggregate", hard:true },
+        { t: "Confirmed aggregate consumption gold loan limit per borrower (incl. top-ups, all schemes) does NOT exceed Rs.50.00 lakh", hard:true },
+        { t: "For loans above Rs.2.50 lakh: Repayment Assessment Format used to justify amount against repayment capacity", hard:true },
+      ],
+      ltvNote: "85% up to Rs.2.50L; 80% up to Rs.5.00L; 75% above Rs.5.00L",
+      tenure: "Maximum 12 months",
+      roi: "10.00% p.a., Fixed",
+      restFreq: "Monthly rests",
+      repaymentItems: [
+        { t: "Entire principal + accrued interest + charges payable in single bullet payment on/before due date or at closure, whichever earlier", hard:true },
+        { t: "Cash repayment NOT permitted where aggregate outstanding ≥ Rs.20,000 — traceable banking channels only", hard:true },
+      ],
+      npaNorm: "NPA if any dues remain unpaid beyond standard IRAC trigger for demand loans (per Bank's Gold Loan Policy)",
+      kfsType: "Key Fact Statement (KFS)",
+      documentItems: [
+        { t: "Duly filled Application-cum-Letter of Pledge" },
+        { t: "Repayment Assessment (for loans above Rs.2.50L)" },
+        { t: "Demand Promissory Note" },
+        { t: "Loan Account Pass Card in duplicate" },
+        { t: "Declaration(s) from borrower(s), as applicable" },
+      ],
+      topUpCode: "GCNBT",
+    })
+  },
+  {
+    id: "gold-cons-emi", category: "Gold Loan",
+    name: "Gold Loan — Consumption (EMI)",
+    code: "GLCNE",
+    validity: "GL Code: 54110",
+    sections: buildGoldLoanSections({
+      productName: "Retail Gold Loan – Equated Periodic Installments (Consumption/Personal)",
+      schemeCode: "GLCNE", glCode: "54110",
+      category: "Retail — Consumption / Personal",
+      facilityType: "Term Loan (Medium-Term)",
+      eligibilityItems: [
+        { t: "Borrower aged 18+ years, legally competent to contract", hard:true },
+        { t: "Existing or new customer — full KYC/AML compliance confirmed" },
+        { t: "Borrower has verifiable regular cash flows to comfortably service periodic installments", hard:true },
+        { t: "Confirmed loan is NOT for speculative, unlawful, or economically impermissible activity", hard:true },
+      ],
+      quantumItems: [
+        { t: "Sanctioned amount = lowest of: (a) amount requested, (b) per-gram rate eligible amount with LTV, (c) category max Rs.150L aggregate, (d) end-use/repayment-capacity justified amount", hard:true },
+        { t: "Confirmed aggregate consumption gold loan limit per borrower (incl. top-ups, all schemes) does NOT exceed Rs.50.00 lakh", hard:true },
+        { t: "For loans above Rs.2.50 lakh: Repayment Assessment Format used", hard:true },
+      ],
+      ltvNote: "85% up to Rs.2.50L; 80% up to Rs.5.00L; 75% above Rs.5.00L",
+      tenure: "Generally max 36 months; exact tenor/frequency fixed per borrower's assessed repayment capacity",
+      roi: "10.00% p.a., Fixed",
+      restFreq: "Applied/compounded at rests linked to Repayment Frequency (not fixed monthly)",
+      repaymentItems: [
+        { t: "Principal + interest recovered via regular Equated Periodic Installments on stipulated due dates", hard:true },
+        { t: "Installment frequency (Monthly/Quarterly/Half-Yearly/Yearly) matches borrower's verified cash flow pattern" },
+        { t: "Cash repayment NOT permitted where aggregate outstanding ≥ Rs.20,000 — traceable banking channels only", hard:true },
+      ],
+      npaNorm: "Per standard IRAC norms for term loans (installment/interest overdue trigger)",
+      kfsType: "Key Fact Statement (KFS)",
+      documentItems: [
+        { t: "Duly filled Application-cum-Letter of Pledge" },
+        { t: "Repayment Assessment" },
+        { t: "Demand Promissory Note" },
+        { t: "Loan Account Pass Card in duplicate" },
+        { t: "Declaration(s) from borrower(s), as applicable" },
+      ],
+      topUpCode: "GCNET",
+    })
+  },
+  {
+    id: "gold-kisan-bullet", category: "Gold Loan",
+    name: "Kisan Swarna Gold Loan (Bullet)",
+    code: "KSGLB",
+    validity: "GL Code: 54200",
+    sections: buildGoldLoanSections({
+      productName: "Kisan Swarna Gold Loan – Bullet Repayment (Crop Production)",
+      schemeCode: "KSGLB", glCode: "54200",
+      category: "Income Generating Loan — Agriculture (Priority Sector)",
+      facilityType: "Demand Loan (Short-term agricultural credit)",
+      eligibilityItems: [
+        { t: "Borrower is an Agriculturist — owner cultivator, tenant farmer, oral lessee, or sharecropper — aged 18+", hard:true },
+        { t: "Confirmed purpose is crop production/cultivation expense — NOT speculative or personal consumption", hard:true },
+        { t: "Existing or new customer — full KYC/AML compliance confirmed" },
+      ],
+      quantumItems: [
+        { t: "Sanctioned amount = lowest of: (a) requested, (b) per-gram LTV-based, (c) Scale of Finance (SoF) per DLTC/SLTC for crop+acreage, (d) category max Rs.150L, (e) end-use/repayment justified", hard:true },
+        { t: "Scale of Finance strictly applied — eligible amount tied to crop cultivated + extent of land + applicable SoF", hard:true },
+        { t: "Non-duality check: total credit for same crop/land (existing KCC + other crop loans + this gold loan) does NOT exceed SoF eligibility", hard:true },
+        { t: "Multiple financing for same crop season against same land parcel confirmed PROHIBITED and checked", hard:true },
+        { t: "'Existing Agri-Exposure' verified in CBS; declaration obtained on facilities held with other banks", hard:true },
+        { t: "For loans above Rs.2.50 lakh: Repayment Assessment Format used" },
+      ],
+      ltvNote: "90% LTV maintained dynamically (principal + accrued interest + charges)",
+      tenure: "Maximum 12 months",
+      roi: "9.75% p.a., Fixed",
+      restFreq: "Quarterly rests",
+      repaymentItems: [
+        { t: "Entire principal + accrued interest + charges payable in single bullet payment on/before due date or at closure", hard:true },
+        { t: "Cash repayment NOT permitted where aggregate outstanding ≥ Rs.20,000 — traceable banking channels only", hard:true },
+      ],
+      npaNorm: "NPA if dues (principal/interest/charges) unpaid for MORE THAN TWO CROP SEASONS (as defined by DLTC/SLTC) — not calendar days",
+      kfsType: "Sanction communication with acknowledgement",
+      documentItems: [
+        { t: "Duly filled Application-cum-Letter of Pledge" },
+        { t: "Repayment Assessment (for loans above Rs.2.50L)" },
+        { t: "For loans up to Rs.2.50L: Self-Declaration/undertaking" },
+        { t: "For loans above Rs.2.50L: Land Records — Pattadar Passbook/Adangal (Mee Seva/Mee Bhoomi), COC, LEC, or other legally acceptable document", hard:true },
+        { t: "Demand Promissory Note" },
+        { t: "Loan Account Pass Card in duplicate" },
+        { t: "Declaration(s) from borrower(s), as applicable" },
+      ],
+      topUpCode: "KSGBT",
+    })
+  },
+  {
+    id: "gold-kisan-emi", category: "Gold Loan",
+    name: "Kisan Swarna Gold Loan (EMI)",
+    code: "KSGLE",
+    validity: "GL Code: 54203",
+    sections: buildGoldLoanSections({
+      productName: "Kisan Swarna Gold Loan – Equated Periodic Installments (Crop Production)",
+      schemeCode: "KSGLE", glCode: "54203",
+      category: "Income Generating Loan — Agriculture (Priority Sector)",
+      facilityType: "Term Loan (Long-term agricultural credit)",
+      eligibilityItems: [
+        { t: "Borrower is an Agriculturist — owner cultivator, tenant farmer, oral lessee, or sharecropper — aged 18+", hard:true },
+        { t: "Confirmed purpose is crop production expense — NOT speculative or personal consumption", hard:true },
+        { t: "Existing or new customer — full KYC/AML compliance confirmed" },
+      ],
+      quantumItems: [
+        { t: "Sanctioned amount = lowest of: (a) requested, (b) per-gram LTV-based, (c) Scale of Finance per DLTC/SLTC, (d) category max Rs.150L, (e) end-use/repayment justified", hard:true },
+        { t: "Scale of Finance strictly applied per crop+acreage", hard:true },
+        { t: "Non-duality check: total credit for same crop/land does NOT exceed SoF eligibility; multiple financing same season/land PROHIBITED", hard:true },
+        { t: "'Existing Agri-Exposure' verified in CBS; declaration on other-bank facilities obtained", hard:true },
+        { t: "For loans above Rs.2.50 lakh: Repayment Assessment Format used" },
+      ],
+      ltvNote: "90% LTV maintained dynamically (principal + accrued interest + charges)",
+      tenure: "Generally max 36 months; exact tenor/frequency per borrower's assessed repayment capacity",
+      roi: "9.75% p.a., Fixed",
+      restFreq: "Applied/compounded at rests linked to Repayment Frequency",
+      repaymentItems: [
+        { t: "Principal + interest recovered via regular Equated Periodic Installments on stipulated due dates", hard:true },
+        { t: "Cash repayment NOT permitted where aggregate outstanding ≥ Rs.20,000 — traceable banking channels only", hard:true },
+      ],
+      npaNorm: "NPA if interest/installment remains overdue for MORE THAN 90 DAYS", 
+      kfsType: "Key Fact Statement (KFS)",
+      documentItems: [
+        { t: "Duly filled Application-cum-Letter of Pledge" },
+        { t: "Repayment Assessment" },
+        { t: "For loans up to Rs.2.50L: Self-Declaration/undertaking" },
+        { t: "For loans above Rs.2.50L: Land Records — Pattadar Passbook/Adangal (Mee Seva/Mee Bhoomi), COC, LEC, or other legally acceptable document", hard:true },
+        { t: "Demand Promissory Note" },
+        { t: "Loan Account Pass Card in duplicate" },
+        { t: "Declaration(s) from borrower(s), as applicable" },
+      ],
+      topUpCode: "KSGET",
+    })
+  },
+  {
+    id: "gold-allied-bullet", category: "Gold Loan",
+    name: "Allied Agri Activities Gold Loan (Bullet)",
+    code: "AAGLB",
+    validity: "GL Code: 54119",
+    sections: buildGoldLoanSections({
+      productName: "Allied Agricultural Activities Gold Loan – Bullet Repayment",
+      schemeCode: "AAGLB", glCode: "54119",
+      category: "Agriculture — Income Generating Loan (Priority Sector)",
+      facilityType: "Demand Loan (Short-term agricultural credit)",
+      eligibilityItems: [
+        { t: "Borrower engaged in allied agricultural activity — Dairy, Poultry, Sheep/Goat, Fisheries, Sericulture, Pig rearing, or other RBI-PSL-permitted allied activity", hard:true },
+        { t: "Borrower aged 18+, legally competent to contract" },
+        { t: "MANDATORY EXCLUSION checked: no Bank staff member is the borrower", hard:true },
+        { t: "Confirmed loan strictly for income-generating allied activity — NOT speculative, trading, or personal consumption", hard:true },
+      ],
+      quantumItems: [
+        { t: "Sanctioned amount = lowest of: (a) requested, (b) per-gram LTV-based, (c) NABARD Unit Cost/activity-based project cost/standard unit economics, (d) category max Rs.150L, (e) end-use/repayment justified", hard:true },
+        { t: "Loan requirement assessed against nature of allied activity, scale undertaken, and applicable unit cost norms", hard:true },
+        { t: "Confirmed per-borrower maximum of Rs.10.00 lakh under this product", hard:true },
+        { t: "For loans above Rs.2.50 lakh: Repayment Assessment Format used" },
+      ],
+      ltvNote: "90% LTV maintained dynamically (principal + accrued interest + charges)",
+      tenure: "Maximum 12 months",
+      roi: "9.75% p.a., Fixed",
+      restFreq: "Quarterly rests, per Bank's Interest Rate Policy prevailing at sanction",
+      repaymentItems: [
+        { t: "Entire principal + accrued interest + charges payable in single bullet payment on/before due date or at closure", hard:true },
+        { t: "Cash repayment NOT permitted where aggregate outstanding ≥ Rs.20,000 — traceable banking channels only", hard:true },
+      ],
+      npaNorm: "NPA if dues unpaid for more than 90 days, per standard IRAC norms for agricultural term/demand loans",
+      kfsType: "Sanction communication with acknowledgement",
+      documentItems: [
+        { t: "Duly filled Application-cum-Letter of Pledge" },
+        { t: "Repayment Assessment (for loans above Rs.2.50L)" },
+        { t: "For loans up to Rs.2.50L: Self-Declaration/undertaking" },
+        { t: "Activity proof / land records / unit details where applicable" },
+        { t: "Demand Promissory Note" },
+        { t: "Loan Account Pass Card in duplicate" },
+        { t: "Declaration(s) from borrower(s), as applicable" },
+      ],
+      topUpCode: "AAGLT",
+    })
+  },
+  {
+    id: "gold-allied-emi", category: "Gold Loan",
+    name: "Allied Agri Activities Gold Loan (EMI)",
+    code: "AAGLE",
+    validity: "GL Code: 54119",
+    sections: buildGoldLoanSections({
+      productName: "Allied Agricultural Activities Gold Loan – Equated Periodic Installments (AAA Gold Loan)",
+      schemeCode: "AAGLE", glCode: "54119",
+      category: "Agriculture — Income Generating Loan (Priority Sector)",
+      facilityType: "Term Loan (Medium to Long-term agricultural credit)",
+      eligibilityItems: [
+        { t: "Borrower engaged in allied agricultural activity — Dairy, Poultry, Sheep/Goat, Fisheries, Sericulture, Pig rearing, or other RBI-PSL-permitted allied activity", hard:true },
+        { t: "Borrower aged 18+, legally competent to contract" },
+        { t: "Confirmed loan strictly for income-generating allied activity — NOT speculative, trading, or personal consumption", hard:true },
+      ],
+      quantumItems: [
+        { t: "Sanctioned amount = lowest of: (a) requested, (b) per-gram LTV-based, (c) NABARD Unit Cost/activity-based project cost, (d) category max Rs.150L, (e) end-use/repayment justified", hard:true },
+        { t: "Loan requirement assessed against nature of allied activity, scale undertaken, and unit cost norms/activity economics", hard:true },
+        { t: "Confirmed per-borrower maximum of Rs.10.00 lakh under this product", hard:true },
+        { t: "For loans above Rs.2.50 lakh: Repayment Assessment Format used" },
+      ],
+      ltvNote: "90% LTV maintained dynamically (principal + accrued interest + charges)",
+      tenure: "Generally max 36 months; exact tenor/frequency per borrower's assessed repayment capacity",
+      roi: "9.75% p.a., Fixed",
+      restFreq: "Applied/compounded at rests linked to Repayment Frequency",
+      repaymentItems: [
+        { t: "Principal + interest recovered via regular Equated Periodic Installments (Monthly/Quarterly/Half-Yearly/Yearly) on stipulated due dates", hard:true },
+        { t: "Cash repayment NOT permitted where aggregate outstanding ≥ Rs.20,000 — traceable banking channels only", hard:true },
+      ],
+      npaNorm: "NPA if dues unpaid for more than 90 days, per standard IRAC norms for agricultural term loans",
+      kfsType: "Sanction communication with acknowledgement",
+      documentItems: [
+        { t: "Duly filled Application-cum-Letter of Pledge" },
+        { t: "Repayment Assessment (for loans above Rs.2.50L)" },
+        { t: "For loans up to Rs.2.50L: Self-Declaration/undertaking" },
+        { t: "Activity proof / land records / unit details where applicable" },
+        { t: "Demand Promissory Note" },
+        { t: "Loan Account Pass Card in duplicate" },
+        { t: "Declaration(s) from borrower(s), as applicable" },
+      ],
+      topUpCode: "AAGET",
+    })
+  },
+  {
+    id: "gold-msme-bullet", category: "Gold Loan",
+    name: "MSME Swarna Shakti (Bullet)",
+    code: "MSSSB",
+    validity: "GL Code: 54204",
+    sections: buildGoldLoanSections({
+      productName: "MSME Swarna Shakti Scheme – Bullet Repayment",
+      schemeCode: "MSSSB", glCode: "54204",
+      category: "Income Generating Loan — MSME (Priority Sector)",
+      facilityType: "Demand Loan (Short-term business credit)",
+      eligibilityItems: [
+        { t: "Borrower is an individual MSME unit — Proprietor, Business owner, Self-employed, Trader, Retailer, or Women Entrepreneur", hard:true },
+        { t: "UDYAM/MSME/SSI registration obtained and verified for ALL borrowers", hard:true },
+        { t: "MANDATORY EXCLUSION checked: no Bank staff member is the borrower", hard:true },
+        { t: "Confirmed loan for business working capital/petty trade — NOT speculative or personal consumption", hard:true },
+      ],
+      quantumItems: [
+        { t: "Sanctioned amount = lowest of: (a) requested, (b) per-gram LTV-based, (c) category max Rs.150L aggregate subject to Rs.50L per-borrower MSME cap, (d) end-use/declared-credit-requirement justified", hard:true },
+        { t: "Letter of Undertaking cum Declaration Form obtained supporting the declared credit requirement for the activity", hard:true },
+        { t: "For loans above Rs.2.50 lakh: Repayment Assessment Format used" },
+      ],
+      ltvNote: "90% LTV maintained dynamically (principal + accrued interest + charges)",
+      tenure: "Maximum 12 months",
+      roi: "9.15% p.a., Fixed",
+      restFreq: "Monthly rests",
+      repaymentItems: [
+        { t: "Entire principal + accrued interest + charges payable in single bullet payment on/before due date or at closure", hard:true },
+        { t: "Cash repayment NOT permitted where aggregate outstanding ≥ Rs.20,000 — traceable banking channels only", hard:true },
+      ],
+      npaNorm: "NPA if any dues (principal/interest/charges) remain unpaid for more than 90 days",
+      kfsType: "Sanction communication with acknowledgement, including Key Fact Statement",
+      documentItems: [
+        { t: "Duly filled Application-cum-Letter of Pledge" },
+        { t: "Repayment Assessment (for loans above Rs.2.50L)" },
+        { t: "UDYAM/MSME/SSI registration", hard:true },
+        { t: "Self-Declaration/undertaking" },
+        { t: "Common declaration form for Gold loan under MSME, obtained from borrower", hard:true },
+        { t: "Demand Promissory Note" },
+        { t: "Loan Account Pass Card in duplicate" },
+        { t: "Declaration(s) from borrower(s), as applicable" },
+      ],
+      topUpCode: "MSSBT",
+    })
+  },
+  {
+    id: "gold-msme-emi", category: "Gold Loan",
+    name: "MSME Swarna Shakti (EMI)",
+    code: "MSSSE",
+    validity: "GL Code: 54204",
+    sections: buildGoldLoanSections({
+      productName: "MSME Swarna Shakti Scheme – Equated Periodic Installments",
+      schemeCode: "MSSSE", glCode: "54204",
+      category: "MSME — Income Generating Loan (Priority Sector)",
+      facilityType: "Term Loan (Medium term business credit)",
+      eligibilityItems: [
+        { t: "Borrower is an individual MSME unit — Proprietor, Business owner, Self-employed, Trader, Retailer, or Women Entrepreneur", hard:true },
+        { t: "UDYAM/MSME/SSI registration obtained and verified for ALL borrowers", hard:true },
+        { t: "MANDATORY EXCLUSION checked: no Bank staff member is the borrower", hard:true },
+        { t: "Confirmed loan for investment/business expansion — NOT speculative or personal consumption", hard:true },
+      ],
+      quantumItems: [
+        { t: "Sanctioned amount = lowest of: (a) requested, (b) per-gram LTV-based, (c) category max Rs.150L aggregate subject to Rs.50L per-borrower MSME cap, (d) end-use/declared-credit-requirement justified", hard:true },
+        { t: "Letter of Undertaking cum Declaration Form obtained supporting declared credit requirement", hard:true },
+        { t: "For loans above Rs.2.50 lakh: Repayment Assessment Format used" },
+      ],
+      ltvNote: "90% LTV maintained dynamically (principal + accrued interest + charges)",
+      tenure: "Generally max 36 months; exact tenor/frequency per borrower's assessed repayment capacity",
+      roi: "9.15% p.a., Fixed",
+      restFreq: "Applied/compounded at rests linked to Repayment Frequency",
+      repaymentItems: [
+        { t: "Principal + interest recovered via regular Equated Periodic Installments on stipulated due dates", hard:true },
+        { t: "Cash repayment NOT permitted where aggregate outstanding ≥ Rs.20,000 — traceable banking channels only", hard:true },
+      ],
+      npaNorm: "NPA if any dues (principal/interest/charges) remain unpaid for more than 90 days",
+      kfsType: "Key Fact Statement (KFS)",
+      documentItems: [
+        { t: "Duly filled Application-cum-Letter of Pledge" },
+        { t: "Repayment Assessment" },
+        { t: "UDYAM/MSME/SSI registration", hard:true },
+        { t: "Self-Declaration/undertaking" },
+        { t: "Common declaration form for Gold loan under MSME, obtained from borrower", hard:true },
+        { t: "Demand Promissory Note" },
+        { t: "Loan Account Pass Card in duplicate" },
+        { t: "Declaration(s) from borrower(s), as applicable" },
+      ],
+      topUpCode: "MSSET",
+    })
+  },
+  {
+    id: "gold-msme-od", category: "Gold Loan",
+    name: "MSME Swarna Shakti Overdraft",
+    code: "MSSSO",
+    validity: "GL Code: 54206",
+    sections: (() => {
+      const base = buildGoldLoanSections({
+        productName: "MSME Swarna Shakti Overdraft",
+        schemeCode: "MSSSO", glCode: "54206",
+        category: "Income Generating Loan — MSME (Priority Sector)",
+        facilityType: "Overdraft (Running Account) — Working capital",
+        eligibilityItems: [
+          { t: "Borrower is an individual MSME unit — Proprietor, Business owner, Self-employed, Trader, Retailer, or Women Entrepreneur", hard:true },
+          { t: "UDYAM/MSME/SSI registration obtained and verified for ALL borrowers", hard:true },
+          { t: "MANDATORY EXCLUSION checked: no Bank staff member is the borrower", hard:true },
+          { t: "Confirmed facility for day-to-day business operational/liquidity needs — NOT speculative or personal consumption", hard:true },
+        ],
+        quantumItems: [
+          { t: "Sanctioned amount = lowest of: (a) requested, (b) per-gram LTV-based, (c) category max Rs.150L aggregate subject to Rs.50L per-borrower MSME cap, (d) end-use/declared-credit-requirement justified", hard:true },
+          { t: "Letter of Undertaking cum Declaration Form obtained supporting declared credit requirement", hard:true },
+          { t: "For loans above Rs.2.50 lakh: Repayment Assessment Format used" },
+        ],
+        ltvNote: "90% Maintenance LTV maintained dynamically (principal + accrued interest + charges) — applies to running balance, not just at sanction",
+        tenure: "24 months, subject to Annual Review and Renewal — NOT a fixed-term loan",
+        roi: "9.00% p.a., applied at Monthly Rests on DAILY outstanding balance",
+        restFreq: "Monthly rests on daily outstanding — confirmed NOT flat/bullet interest calculation",
+        repaymentItems: [
+          { t: "Revolving facility — interest serviced monthly; NOT a bullet or EMI structure", hard:true },
+          { t: "Account reviewed annually; renewed before expiry of 24-month tenure", hard:true },
+          { t: "Cash deposits up to Rs.1,99,999/day accepted without additional documentation" },
+          { t: "Single-day cash deposits ≥ Rs.2,00,000 require brief 'Source of Funds' declaration for AML/KYC", hard:true },
+          { t: "Account accepts NEFT/RTGS/IMPS/internal transfers and Cheque/DD credits" },
+          { t: "QR Code/UPI handle linked to account provided to encourage direct digital settlement of sales" },
+        ],
+        npaNorm: "NPA if account remains 'Out of Order' OR interest not serviced for more than 90 days",
+        kfsType: "Sanction communication with acknowledgement",
+        documentItems: [
+          { t: "Duly filled Application-cum-Letter of Pledge" },
+          { t: "Repayment Assessment (for loans above Rs.2.50L)" },
+          { t: "UDYAM/MSME/SSI registration", hard:true },
+          { t: "Self-Declaration/undertaking" },
+          { t: "Common declaration form for Gold loan under MSME, obtained from borrower", hard:true },
+          { t: "Demand Promissory Note" },
+          { t: "Loan Account Pass Card in duplicate" },
+          { t: "Declaration(s) from borrower(s), as applicable" },
+        ],
+        topUpCode: "N/A — Overdraft uses Review/Renewal/Enhancement instead of top-up",
+        isOverdraft: true,
+      });
+      // Replace the generic Top-Up section with OD-specific Review & Renewal section
+      const topUpIdx = base.findIndex(s => s.title === "Top-Up Loan Provisions (If Applicable)");
+      if(topUpIdx !== -1){
+        base[topUpIdx] = {
+          title: "Review, Renewal & Enhancement (OD-Specific)",
+          items: [
+            { t: "Mandatory Annual Review conducted at end of 12 months", hard:true },
+            { t: "Full Renewal conducted at end of 24 months", hard:true },
+            { t: "Fresh appraisal of pledged gold done at BOTH review and renewal to align Drawing Power with current HO per-gram rate", hard:true },
+            { t: "Enhancement requests (any time during tenure) verified against business growth, sufficient collateral margin, and 90% Maintenance LTV", hard:true },
+            { t: "All fresh-sanction charges (Processing, Appraisal, etc.) correctly re-levied at each Review/Renewal/Enhancement" },
+          ]
+        };
+      }
+      return base;
+    })()
+  },
+  {
+    id: "housing", category: "Retail & Business",
+    name: "APGB Home Loan",
+    code: "HL",
+    validity: "Cir No.181 dated 12/08/2026",
+    sections: [
+      {
+        title: "Eligible Purpose",
+        items: [
+          { t: "Purpose confirmed among: new/old house purchase, construction, plot+construction (composite), repair/renovation, extension, completion of under-construction unit, takeover from other bank/FI/NBFC, or 3rd+ house (Commercial Housing)", hard:true },
+          { t: "If let-out due to posting/employer accommodation OR purchase of 2nd house for self-occupation: confirmed eligible" },
+          { t: "Confirmed NOT for farm house construction on agricultural land", hard:true },
+          { t: "Confirmed NOT for property declared for commercial use despite residential classification", hard:true },
+          { t: "Property NOT in unauthorized colony, unless regularized with development charges paid", hard:true },
+        ]
+      },
+      {
+        title: "Reimbursement of Prior Cost (within preceding 6 months)",
+        items: [
+          { t: "House/flat/construction/plot purchased/constructed within preceding 6 months confirmed" },
+          { t: "LTV norms adhered to; valuation report obtained from approved bank valuer" },
+          { t: "Confirmed investment was NOT via borrowing from another Bank/HFC/NBFC (else governed by Takeover norms instead)", hard:true },
+          { t: "Property confirmed in borrower's possession (occupation not required)" },
+          { t: "Construction case: reimbursement correctly capped at 75% of (funds invested − applicable margin)", hard:true, sub:"E.g., ₹100L estimate, 10% margin, 50% stage complete → ₹30L reimbursement + ₹50L for remaining work = ₹80L eligible." },
+          { t: "Plot purchase case: sanctioned building plan from competent authority obtained before considering reimbursement" },
+        ]
+      },
+      {
+        title: "Commercial Housing Classification (3rd house onward)",
+        items: [
+          { t: "Classification based on OWNERSHIP count of individual applicant as on sanction/appraisal date — NOT number of housing loans held", hard:true },
+          { t: "Sanctioning authority confirmed RCAC or above for Commercial Housing", hard:true },
+          { t: "ROI loaded correctly: +0.25% for 3rd house, +0.75% for 4th house onward over applicable home loan ROI" },
+        ]
+      },
+      {
+        title: "Eligible Applicants / Co-Applicants",
+        items: [
+          { t: "Applicant is Resident Indian OR NRI (PIO/OCI treated as NRI)" },
+          { t: "All proposed co-owners of the property have joined as applicants to the loan", hard:true },
+          { t: "Co-applicants outside permitted family list (Spouse/Father/Mother/Son/Daughter-in-law/Unmarried daughter/Father-in-law/Mother-in-law/Brother/Brother-in-law/Sister-in-law) flagged as deviation for RCAC" },
+          { t: "HUF inclusion as applicant/co-applicant (income considered or owner/co-owner) flagged as deviation for GCAC approval, with all major coparceners standing as individual guarantors", hard:true },
+          { t: "Staff-applicant eligibility confirmed on general public terms (over & above Staff Home Loan scheme)" },
+        ]
+      },
+      {
+        title: "Age Norms",
+        items: [
+          { t: "Minimum age of borrower confirmed 18 years", hard:true },
+          { t: "Maximum age at end of repayment (income-considered applicants) capped at 75 years", hard:true },
+          { t: "Private employee: superannuation taken as 60 years or actual superannuation age, whichever lower" },
+          { t: "Govt/PSU/PSB/Quasi-Govt employee on NPS/CPS (no fixed pension): loan tenure permitted up to age 75" },
+        ]
+      },
+      {
+        title: "Quantum of Loan",
+        items: [
+          { t: "Maximum: ₹500 lakh (urban/semi-urban) OR ₹35 lakh (rural) — area classification per Engineer Valuation Report", hard:true },
+          { t: "Rural proposal >₹35 lakh: RCAC deviation approval obtained BEFORE taking up proposal", hard:true },
+          { t: "Repairs/renovation loan capped at ₹30 lakh; end-use of funds verified" },
+        ]
+      },
+      {
+        title: "Margin & LTV",
+        items: [
+          { t: "LTV slab correctly applied: ≤₹20L → lower of 90% unit cost / 90% FMV; >₹20L–75L → 80% FMV; >₹75L → 75% FMV", hard:true },
+          { t: "Both Margin AND LTV maintained simultaneously — confirmed NO deviation permitted on either", hard:true },
+          { t: "Repairs/renovation: margin confirmed minimum 20% of estimated cost (loan ≤80% of cost)" },
+          { t: "Construction-only on customer-owned plot: LTV includes land value, but 10% minimum customer margin still maintained" },
+          { t: "Cost components correctly excluded: stamp duty/registration/documentation NOT included in project cost (except where total cost ≤₹10 lakh)", hard:true },
+          { t: "GST on under-construction property added to project cost where applicable, LTV still maintained" },
+          { t: "Resale property age ≥3 years: any additions/modifications/repairs treated as part of unit cost, not separately as repair/renovation" },
+        ]
+      },
+      {
+        title: "Repayment Tenure & Moratorium",
+        items: [
+          { t: "Max tenure: 30 years (all purposes) OR 15 years for repairs/renovation (incl. moratorium)", hard:true },
+          { t: "Residual life of property confirmed ≥5 years beyond repayment tenure end date", hard:true },
+          { t: "Moratorium capped correctly: 18 months (general) / 12 months (repairs-renovation) / composite — commence within 6 months, complete within 24 months or Development Authority period, whichever earlier" },
+          { t: "Completed residential unit purchase: confirmed NO moratorium permitted", hard:true },
+          { t: "Interest serviced during moratorium — confirmed NOT deferred; any unrecovered interest cleared before next disbursement or EMI start" },
+          { t: "Moratorium extension (if any): next higher authority approval obtained, capped at 12 months, overall tenure unchanged" },
+        ]
+      },
+      {
+        title: "Rate of Interest — Floating",
+        items: [
+          { t: "Floating ROI linked to EBLR per applicable CIBIL slab: ≥800→7.70%; 700–799/NTC→7.95%; 650–699→8.35%; 600–649→8.70%; <600→10.00%", hard:true },
+          { t: "For joint applicants: only income-considered applicants' CIBIL used; highest of these scores applied for pricing", hard:true },
+          { t: "0.05% concession applied if credit/life/term policy assigned to bank" },
+          { t: "0.05% concession applied for salary account with bank OR EMI-at-source authorization (withdrawn if salary account/credit shifts away)" },
+          { t: "0.10% concession applied for Govt/PSU/PSB/Quasi-Govt employee applicant (income considered)" },
+          { t: "Sanction letter includes the mandatory floating-rate revision-rights clause referencing apgb.bank.in", hard:true },
+        ]
+      },
+      {
+        title: "Rate of Interest — Fixed",
+        items: [
+          { t: "Fixed ROI slab correctly applied: ≥800→8.00%; 750–799→8.25%; 700–749/NTC→8.50%; 650–699→9.00%; Others→9.50%" },
+          { t: "Fixed-rate reset confirmed: rate fixed for 5 years from first disbursement, then reset to prevailing fixed rate" },
+          { t: "Sanction letter includes the mandatory 5-year fixed-reset clause referencing apgb.bank.in", hard:true },
+          { t: "ROI charged at monthly rests (applies to both floating & fixed)" },
+        ]
+      },
+      {
+        title: "Composite Scheme — Plot Purchase + Construction",
+        items: [
+          { t: "Plot-portion loan = lowest of: 50% of loan amount / 50% of project cost / applicable LTV on agreement value", hard:true },
+          { t: "Initial sanction based on abstract plan approval by empaneled engineer; recalculated if approved plan differs from abstract plan (loan reduced proportionately if lower)" },
+          { t: "Entire land extent mortgaged to bank at plot-purchase disbursement" },
+          { t: "If local body mandates land gift/mortgage for public use: NOC issued, LTV recalculated on net realizable extent, documentation retained" },
+          { t: "Construction: commenced within 6 months, completed within 24 months (or Development Authority period, whichever earlier)" },
+          { t: "Non-compliance with commence/complete timeline: APGB Mortgage Loan ROI applied retrospectively from first disbursement date", hard:true },
+          { t: "No construction activity for 6 months: loan RECALLED, Mortgage Loan ROI applied from first disbursement", hard:true },
+          { t: "Margin for plot and construction maintained SEPARATELY (excess plot margin can flow to construction margin, not vice versa)" },
+          { t: "Built-up area confirmed ≥30% of total plot area; if <30%, Mortgage Loan ROI applied from first disbursement", hard:true },
+        ]
+      },
+      {
+        title: "Income Reckoning — General",
+        items: [
+          { t: "Only regular income sources considered — capital gains/speculation/one-time bulk receipts excluded", hard:true },
+          { t: "All individuals whose income is considered have joined as applicants/co-applicants, irrespective of co-ownership" },
+        ]
+      },
+      {
+        title: "Income — Salaried",
+        items: [
+          { t: "Income taken per latest salary slip / latest ITR / Form-16" },
+          { t: "Last 2 years ITR/Form-16 + last 3 months salary slip obtained for corroboration; abnormal income increase justified in documentation" },
+          { t: "Missing ITR/Form-16 for any of last 2 years (non-employment reason): RCAC deviation approval obtained case-to-case", tag:"rcac" },
+          { t: "Govt/quasi-govt employee below taxable income (no Form-16, salary slip + bank statement available): NO deviation required" },
+          { t: "Latest 6 months salary-credited bank statement obtained mandatorily", hard:true },
+          { t: "Bonus/variable pay/incentives included on 2-year Form-16/ITR average basis, where applicable" },
+          { t: "Other regular income (rent/agri) considered only if reflected in ITR; current-FY income supported by documents + bank credits" },
+        ]
+      },
+      {
+        title: "Income — Self-Employed",
+        items: [
+          { t: "3 years ITR obtained; income regularity assessed — variation <25% → latest year ITR used; variation >25% → 3-year average used", hard:true },
+          { t: ">25% growth with satisfactory documentary proof: latest ITR used only with RCAC deviation approval (or respective authority if within its delegation)" },
+          { t: "P&L, Balance Sheet, Computation of Income obtained for assessment" },
+          { t: "Depreciation add-back (if permitted): asset verified at pre-sanction inspection, calculated as lower of 2-yr average or current-year depreciation, and fixed-asset loan repayment deducted" },
+          { t: "All liabilities of proprietor considered in eligibility" },
+          { t: "Gap between two ITR filing dates confirmed minimum 6 months (deviation per delegated-authority matrix)" },
+          { t: "Only last 2 years ITR available (no 3-year history): processed on latest ITR with RCAC (or respective HCAC/GCAC/CCAC) deviation approval", tag:"rcac" },
+        ]
+      },
+      {
+        title: "Income — Agriculturists & No-ITR Cases",
+        items: [
+          { t: "Agri income not in ITR/ITR not filed: MRO certificate accepted as income proof" },
+          { t: "Agri income reflected via ITR filing: assessed per Self-Employed norms" },
+          { t: "Rental income (incl. from unit being financed) considered in eligible loan amount/repayment capacity" },
+          { t: "Loan ≤₹7.50 lakh, no ITR filed: processed on income declaration + Income Assessment Report + Field Visit Report on record" },
+          { t: "Loan >₹7.50L–₹10L, no ITR filed: declaration + 6 months bank statement/GST returns/shop license corroborating turnover obtained" },
+          { t: "Declaration covers minimum last 2 preceding financial years' income" },
+          { t: "Sanctioning authority for no-ITR borrowers confirmed as CPCAC ONLY — no other authority has discretion", hard:true },
+        ]
+      },
+      {
+        title: "Repayment Method & Mode",
+        items: [
+          { t: "EMI is default; EQI/Equated Half-Yearly/Equated Yearly or fixed-principal Quarterly/Half-Yearly/Yearly permitted for agriculture/allied borrowers" },
+          { t: "Repayment routed from designated primary account per category (Salary a/c / Business a/c / Agri Savings a/c with DBT / NRE-NRO for NRI)", hard:true },
+          { t: "Debit mode correct: Standing Instruction (if primary a/c with our bank) OR NACH Mandate (if with other bank)", hard:true },
+          { t: "No cash repayment accepted except recovery from overdue customer", hard:true },
+          { t: "NACH mandate registered prior to disbursement; CPA checked where mandatory per CMRD policy" },
+        ]
+      },
+      {
+        title: "Sustenance Norms",
+        items: [
+          { t: "Sustenance % correctly slabbed on annual gross income: ≤3L→45%; 3–5L→40%; 5–8L→35%; 8–12L→30%; >12L→lower of 25% or ₹2L/month", hard:true },
+          { t: "Combined sustenance applied only where applicants stay together AND repayment tenor fits permissible age of all; else calculated separately per applicant" },
+        ]
+      },
+      {
+        title: "Eligible Loan Amount Calculation",
+        items: [
+          { t: "Eligible quantum computed as Lower of: (I) EMI-capacity-based loan amount, (J) cost of property less margin, (K) amount requested", hard:true },
+          { t: "Multiple applicants of differing ages: total eligibility = sum of each applicant's eligible amount for their respective maximum tenure" },
+          { t: "Income beyond retirement (pension/NPS/CPS): eligible quantum = (lower income level, full tenure) + (income differential, tenure till higher income persists), with borrower declaration on record", hard:true },
+        ]
+      },
+      {
+        title: "Fees & Charges",
+        items: [
+          { t: "Processing charge: 0.50% of sanctioned amount, capped ₹15,000 + GST, collected before initial disbursement", hard:true },
+          { t: "Two-stage sanction (in-principle + final): 50% processing charge collected at each stage" },
+          { t: "Confirmed NO prepayment/foreclosure charges levied", hard:true },
+          { t: "Penal charges: 2% p.a. on overdue amount, not capitalized" },
+          { t: "Inspection charges per slab: Nil ≤₹50K; ₹200/half-yr (₹50K–2L); ₹300/half-yr (2L–5L); ₹600/half-yr (5L–25L); ₹750/half-yr (>25L)" },
+        ]
+      },
+      {
+        title: "Security & Mortgage",
+        items: [
+          { t: "Property located within notified area (state of Andhra Pradesh)", hard:true },
+          { t: "Simple/equitable mortgage created; CERSAI charge registered within 15 days of mortgage creation", hard:true },
+          { t: "Affidavit-cum-undertaking obtained confirming residential-only use, not commercial" },
+          { t: "Title deeds/sale agreement examined by empaneled lawyer; seller's title confirmed clear & transferable" },
+          { t: "Interim security (equivalent to loan + interest if unserviced) obtained where under-construction property cannot yet bear valid mortgage" },
+        ]
+      },
+      {
+        title: "Single-Project Exposure Limits",
+        items: [
+          { t: "Construction ≥80% complete: NO restriction on number of units financed in project" },
+          { t: "Construction <80% complete: units financed capped at 30% of total project units, else deviation approval per matrix (RCAC/HCAC/GCAC/CCAC by unit-count band) obtained", hard:true },
+          { t: "Exposure >50% of total project units: independent legal opinion obtained from a DIFFERENT panel advocate via CPC, fee borne by Regional Office (waived if project finance already extended by bank)", hard:true },
+          { t: "Stage of construction ascertained from panel valuer's report" },
+          { t: "Exposure limit confirmed applied at BANK level, not branch level" },
+        ]
+      },
+      {
+        title: "Valuation",
+        items: [
+          { t: "Valuation report obtained from approved bank valuer at sanction" },
+          { t: "Under-construction unit: valuation obtained on completion, held on record" },
+          { t: "Revaluation cycle: every 3 years (standard accounts) / per NPA Management Policy 2025-26 (NPA accounts)" },
+          { t: "Property purchased within preceding 1 year, now under construction: valued at higher of registered sale deed value or latest SRO value" },
+          { t: "Seller acquired within preceding 1 year at agreed price above both sale deed & SRO value: agreement value used, margin routed through bank to seller", hard:true },
+          { t: "Repairs/renovation: property confirmed minimum 3 years since construction completion" },
+          { t: "Property value >₹150 lakh: TWO panel engineer valuations obtained, LOWEST value considered", hard:true },
+        ]
+      },
+      {
+        title: "Legal Opinion",
+        items: [
+          { t: "Title deeds/sale agreement examined by empaneled advocate; legal opinion on title search & genuineness obtained" },
+          { t: "Property value ≥₹150 lakh: TWO title search reports obtained (exempt if aggregate secured limit ≤₹50 lakh)", hard:true },
+        ]
+      },
+      {
+        title: "Insurance",
+        items: [
+          { t: "Property insurance (excluding land value) obtained at borrower's cost with bank clause, sum insured per valuation report's insurable/replacement value" },
+          { t: "Tie-up insurer explored where possible; premium borne by applicant(s)" },
+        ]
+      },
+      {
+        title: "Guarantee",
+        items: [
+          { t: "HUF-inclusion case: all major coparceners stand as individual guarantors" },
+          { t: "Rural property: guarantee ≥100% of loan obtained UNLESS a borrower is Govt/PSU/Quasi-Govt employee OR LTV <60%", hard:true },
+          { t: "Guarantor worth based on declared immovable property value, certified by BM, with ownership proof retained" },
+          { t: "NRI case: 1–2 local resident guarantors obtained (waived if resident co-applicant among permitted relatives is present); POA mandatorily joins as guarantor/co-applicant" },
+          { t: "Guarantor age confirmed NOT exceeding 75 years at loan closure", hard:true },
+        ]
+      },
+      {
+        title: "Takeover of Home Loan",
+        items: [
+          { t: "Existing account confirmed REGULAR; sanction letter + 12-month statement (regular repayment) obtained from other bank/FI", hard:true },
+          { t: "Borrower letter instructing other bank to send title deeds directly to financing branch obtained" },
+          { t: "Loan amount confirmed NOT exceeding outstanding with other bank (additional construction/repair loan permitted separately, subject to margin/repayment norms)" },
+          { t: "All applicants/co-applicants/guarantors from original loan join this loan too — relaxation only with RCAC approval minimum", hard:true },
+          { t: "Repayment tenure capped correctly at lower of (360 months − period run with existing bank) or up to age 75", hard:true },
+          { t: "Purpose of original loan verified as genuinely housing-related" },
+          { t: "Foreclosure/balance confirmation letter + NOC from existing lender + charge-release letter obtained; account confirmed regular with no overdue" },
+          { t: "Under-moratorium / under-construction property loans confirmed NOT taken over (except composite-loan exception)", hard:true },
+          { t: "Existing loan age confirmed minimum 12 months, UNLESS construction complete + moratorium complete + security created — then early takeover with RCAC prior approval", tag:"rcac" },
+          { t: "Composite takeover: construction completion within 24 months from first disbursement; work completed at takeover ≥25% of total; cost certified by empaneled valuer" },
+        ]
+      },
+      {
+        title: "Delegation of Powers",
+        items: [
+          { t: "Loans up to ₹10 lakh with declaration-based income: sanctioned ONLY by CPC — no other authority has discretion", hard:true },
+          { t: "Repairs/renovation where original loan sanctioned by RCAC+: minimum sanctioning authority for repair loan is RCAC (subject to RCAC's power band)" },
+        ]
+      },
+      {
+        title: "Disbursement — Outright Purchase",
+        items: [
+          { t: "Total acquisition cost (loan + margin) paid to vendor via NEFT/RTGS/DD post document execution" },
+          { t: "Pre-paid borrower amount considered as margin only with documentary proof (bank statement/UTR/cheque reference) retained" },
+          { t: "Sale deed mentions APGB loan details (branch, amount, transfer reference) explicitly", hard:true },
+          { t: "BM/Credit Officer preferably visits SRO during registration for due diligence" },
+          { t: "Title deed collected from SRO on borrower's behalf" },
+          { t: "Supplementary legal opinion confirming ownership transfer obtained before mortgage charge creation", hard:true },
+          { t: "Affidavit-cum-undertaking (construction per sanctioned plan/bye-laws) obtained; panel engineer certifies same in valuation report" },
+        ]
+      },
+      {
+        title: "Disbursement — Plot + Construction / Semi-Finished Purchase",
+        items: [
+          { t: "Construction-portion loan disbursed STAGE-WISE per construction progress", hard:true },
+          { t: "Affidavit-cum-undertaking obtained: construction per sanctioned plan, completion certificate obtained within 3 months of completion, else recall powers apply" },
+          { t: "Panel engineer certifies each construction stage against sanctioned plan AND certifies completion before final disbursement" },
+          { t: "Panel engineer confirms completion certificate obtained from competent authority post-construction" },
+        ]
+      },
+      {
+        title: "NRI Home Loan",
+        items: [
+          { t: "Minimum age 21 with regular income confirmed", hard:true },
+          { t: "Passport photocopy obtained" },
+          { t: "Registered POA in favor of Resident Indian obtained mandatorily; if executed abroad, attested by Indian Embassy + endorsed/adjudicated by District/Sub-Registrar", hard:true },
+          { t: "If NRI executes documents in person in India: passport photocopy (all pages) retained AND registered POA still mandatorily obtained" },
+          { t: "POA mandatorily joins as co-applicant/guarantor" },
+          { t: "NRI work experience ≥2 years with valid work permit confirmed; VISA/residence permit photocopy obtained" },
+          { t: "Credit report from country of employment obtained, not older than 30 days on sanction date", hard:true },
+          { t: "Self-employed NRI: CCAC deviation approval obtained + last 1-year business bank statement retained", tag:"rcac" },
+          { t: "Repayment confirmed mandatorily from NRE/NRO account", hard:true },
+          { t: "Foreign-language documents translated to English, attested by Indian Embassy or licensed translator" },
+        ]
+      },
+      {
+        title: "Priority Sector Classification",
+        items: [
+          { t: "Dwelling loan limit/cost slab correctly matched to center population: ≥50L pop→₹50L limit/₹63L cost; 10–50L pop→₹45L/₹57L; <10L pop→₹35L/₹44L" },
+          { t: "Confirmed staff housing loan NOT classified under priority sector", hard:true },
+          { t: "Repair-loan PS slab correctly matched: ≥50L pop→₹15L limit; 10–50L pop→₹12L; <10L pop→₹10L (same cost caps as above)" },
+        ]
+      },
+      {
+        title: "Staff-Related Accounts",
+        items: [
+          { t: "General-public terms applied where staff applies under general public category (over & above Staff Housing Loan scheme)" },
+          { t: "HR clearance from HR Dept/Head Office obtained mandatorily for all staff applicant/co-applicant cases", hard:true },
+        ]
+      },
+      {
+        title: "Documentation Checklist",
+        items: [
+          { t: "Application form + Credit Information Form completed" },
+          { t: "KYC obtained for each applicant/co-applicant/guarantor: PAN, ID proof, address proof, office/business address proof, 2 photographs" },
+          { t: "Income documents matched to category (salaried/self-employed/agriculturist) per norms above" },
+          { t: "Property documents: agreement to sell/allotment letter, title/sale deed, advance payment receipts, approved plan, builder/society NOC, statutory approvals, engineer cost estimate (construction/repair cases)" },
+          { t: "Second/subsequent sale: seller confirmed in possession of ORIGINAL title documents for the exact sub-divided portion being sold", hard:true },
+        ]
+      },
+      {
+        title: "Pre-Sanction Inspection Matrix",
+        items: [
+          { t: "Inspection authority correctly matched: ≤₹50L → Credit Officer/BM; ₹50L–100L → BM; >₹100L → BM (Scale IV+)/CPC Head", hard:true },
+          { t: "Distant property: inspection delegated to nearest branch's manager where financing-branch manager cannot visit" },
+        ]
+      },
+      {
+        title: "Credit Reports",
+        items: [
+          { t: "Credit history report (CIBIL/Equifax/Experian/CRIF) obtained for ALL applicants/co-applicants/guarantors, not older than 30 days at sanction", hard:true },
+          { t: "Adverse credit history: sanctioning authority decision on case merits; deviation approval obtained per CIR guidelines if proceeding" },
+          { t: "Takeover case: other bank/FI charge shown in credit report, satisfied within 30 days of disbursement — noted in sanction advice" },
+          { t: "Minimum CIBIL score 600 confirmed (NTC band -1/1–5/100–200 also acceptable)", hard:true },
+        ]
+      },
+      {
+        title: "Other Compliance",
+        items: [
+          { t: "Sanction validity confirmed 6 months from sanction date; revalidation with updated documents done if undisbursed beyond that", hard:true },
+          { t: "Branch choice confirmed within 25 KMs of property / employment-business-profession / residence (exception: same municipal limits); RCAC (or respective committee) approval for exceeding 25 KMs" },
+          { t: "Operative account with bank opened prior to disbursement", hard:true },
+          { t: "Declaration obtained: borrower will repay any residual balance at tenure end" },
+          { t: "Key Fact Statement issued to borrower(s) mandatorily at sanction", hard:true },
+        ]
+      },
+    ]
+  },
+  {
+    id: "mudra", category: "Govt-Sponsored Enterprise",
+    name: "PM Mudra Yojana (PMMY)",
+    code: "SHISHU · KISHORE · TARUN · TARUN PLUS",
+    validity: "Cir No.193 dated 14.08.2026",
+    sections: [
+      {
+        title: "Variant Identification",
+        items: [
+          { t: "Confirmed correct variant based on loan amount slab:", sub:"SHISHU: up to ₹50,000 · KISHORE: ₹50,001–₹5L · TARUN: ₹5,00,001–₹10L · TARUN PLUS: ₹10,00,001–₹20L", hard:true },
+          { t: "If TARUN PLUS: confirmed applicant has PREVIOUSLY availed AND successfully repaid a loan under TARUN category — this is a mandatory prior-track-record gate, not open to fresh applicants", hard:true },
+        ]
+      },
+      {
+        title: "Eligibility & Purpose",
+        items: [
+          { t: "Borrower type confirmed eligible: individual, proprietorship, partnership (excl. HUF as partner), LLP, OPC, private limited company (excl. NBFC), SHG, JLG, or other eligible legal entity" },
+          { t: "Confirmed EXCLUDED entity types are NOT financed: HUF as partner in a firm, and NBFCs (excluded specifically from private limited company eligibility)", hard:true },
+          { t: "Manufacturing/Services/Trading units hold a valid Udyam Registration Number", hard:true },
+          { t: "Loan purpose confirmed as business Term Loan or Working Capital need — for INCOME-GENERATING activity only", hard:true },
+          { t: "Confirmed loan is NOT for non-business/personal consumption purposes" },
+        ]
+      },
+      {
+        title: "Allied-to-Agriculture Activities — Scope & Exclusions",
+        items: [
+          { t: "Loans up to ₹20.00 Lakh (incl. Tarun Plus) for activities allied to agriculture — pisciculture, beekeeping, poultry, livestock, grading/sorting/aggregation, agro-industries, dairy, fishery, agri-clinics, agribusiness centres, food/agro-processing — correctly classified under PMMY and eligible for CGTMSE cover", hard:true },
+          { t: "Confirmed loan purpose is NOT a crop loan or land-improvement activity (irrigation, canals, wells) — these are explicitly EXCLUDED from PMMY", hard:true },
+          { t: "PMJDY OD limits up to ₹10,000 correctly classified as PMMY loans, flagged for CGFMU guarantee cover (not CGTMSE)", hard:true },
+        ]
+      },
+      {
+        title: "Loan Quantum & Margin",
+        items: [
+          { t: "Term Loan assessed at maximum 85% of project cost, per prevailing guidelines", hard:true },
+          { t: "Working Capital assessed as per Turnover Method" },
+          { t: "Maximum finance confirmed within overall PMMY ceiling of ₹20.00 Lakh", hard:true },
+          { t: "Margin correctly applied: NIL margin for loans up to ₹50,000", hard:true },
+          { t: "Margin correctly applied: 15% margin for loans above ₹50,000", hard:true },
+          { t: "For Govt.-sponsored (State/Central) schemes: margin applied per respective scheme guidelines, not the standard PMMY slab" },
+          { t: "Loan amount matches the variant slab selected (Shishu/Kishore/Tarun/Tarun Plus) — cross-checked against Variant Identification section" },
+        ],
+        calculator: {
+          title: "Margin Calculator",
+          fields: [
+            { id:"mudra-project-cost", label:"Total Project Cost (₹)" },
+          ],
+          compute: (v) => {
+            const cost = v["mudra-project-cost"] || 0;
+            if(cost === 0) return null;
+            let margin = 0, marginPct = "NIL";
+            if(cost > 50000){ margin = cost * 0.15; marginPct = "15%"; }
+            const eligibleLoan = cost - margin;
+            let variant = "N/A";
+            if(eligibleLoan <= 50000) variant = "SHISHU";
+            else if(eligibleLoan <= 500000) variant = "KISHORE";
+            else if(eligibleLoan <= 1000000) variant = "TARUN";
+            else if(eligibleLoan <= 2000000) variant = "TARUN PLUS";
+            else variant = "EXCEEDS ₹20L CEILING";
+            return `Margin required (${marginPct}): <b>₹${margin.toLocaleString('en-IN')}</b><br>
+            Borrower's own contribution: ₹${margin.toLocaleString('en-IN')}<br>
+            <div class="final">Eligible loan amount: ₹${eligibleLoan.toLocaleString('en-IN')} → Variant: ${variant}</div>`;
+          }
+        }
+      },
+      {
+        title: "Interest Rate",
+        items: [
+          { t: "Rate of Interest confirmed: 12.00% p.a. Fixed", hard:true },
+          { t: "Confirmed this is the applicable rate at time of sanction — check for any subsequent circular revision" },
+        ]
+      },
+      {
+        title: "Security & Guarantee",
+        items: [
+          { t: "Primary security confirmed: hypothecation of stocks & book debts + charge on assets created out of bank finance", hard:true },
+          { t: "No collateral security taken for loans up to ₹20.00 Lakh under PMMY", hard:true },
+          { t: "Loan account MANDATORILY covered under CGTMSE (Credit Guarantee Fund for Micro Units); guarantee fee + taxes borne by borrower annually", hard:true },
+          { t: "CGTMSE guarantee fee/charges/taxes clearly communicated to borrower IN the sanction letter", hard:true },
+          { t: "Personal guarantee obtained from ALL partners/promoters of the firm", hard:true },
+          { t: "Third-party guarantee confirmed NOT applicable (NA under this scheme)" },
+        ]
+      },
+      {
+        title: "Disbursement — by slab",
+        items: [
+          { t: "Up to ₹1.00 Lakh: disbursed to borrower SB account OR vendor; Utilization Certificate obtained; quotations/bills NOT mandatory", hard:true },
+          { t: "Above ₹1L–₹2L (Stock Purchase): disbursed to borrower SB account or vendor; released in 2 phases of 50% each; second tranche released ONLY after site-visit stock verification + utilization certificate; quotations/bills NOT mandatory", hard:true },
+          { t: "Above ₹1L–₹2L (Machinery/Fixed Assets, not stock): direct payment to vendor account only; quotations/bills MANDATORY", hard:true },
+          { t: "Above ₹2.00 Lakh (Term Loan): direct vendor payment based on quotation amount, inclusive of borrower's margin, irrespective of purpose", hard:true },
+          { t: "Above ₹2.00 Lakh (Working Capital/OD/CC): disbursement routed through the operative overdraft account per borrower requirement" },
+        ]
+      },
+      {
+        title: "Repayment",
+        items: [
+          { t: "Term Loan: repayable within 5 years INCLUDING moratorium period", hard:true },
+          { t: "Term Loan: repayment frequency confirmed as Monthly/Quarterly/Half-Yearly instalments per nature of business" },
+          { t: "Term Loan: moratorium (if applied) does not exceed 6 months, and only applied where genuinely warranted" },
+          { t: "Working Capital: repayable within 1 year from date of sanction and on demand — NOT a fixed 36-month limit", hard:true },
+          { t: "Working Capital: interest recovered as and when debited (not deferred)" },
+        ]
+      },
+      {
+        title: "Financial Statements & Stock Statement",
+        items: [
+          { t: "Confirmed financial statements NOT insisted upon for loans up to ₹2.00 Lakh", hard:true },
+          { t: "For loans above ₹2.00 Lakh: financial statements obtained as per applicable guidelines", hard:true },
+          { t: "For Working Capital facilities: Stock Statement obtained QUARTERLY", hard:true },
+        ]
+      },
+      {
+        title: "Insurance",
+        items: [
+          { t: "Comprehensive insurance coverage obtained for stocks, equipment, and other assets created out of bank finance", hard:true },
+          { t: "Bank's Clause correctly endorsed on the insurance policy", hard:true },
+        ]
+      },
+      {
+        title: "Credit Information (CIC)",
+        items: [
+          { t: "CIC score checked and applied strictly as per Bank's prevailing CIC Policy" },
+        ]
+      },
+      {
+        title: "Processing, Admin/Inspection & Penal Charges",
+        items: [
+          { t: "Working Capital processing — up to ₹50,000: NIL; above ₹50,000–₹10L: 0.3% + GST; above ₹10L: 0.4% + GST", hard:true },
+          { t: "Term Loan processing — up to ₹50,000: NIL; above ₹50,000–₹2L: 0.5% + GST; above ₹2L: 1% + GST", hard:true },
+          { t: "Confirmed correct charge slab applied based on facility TYPE (WC vs Term) — the two schedules differ", hard:true },
+          { t: "Admin/Inspection charges applied per slab: up to ₹50,000 Nil; above ₹50,000–₹2L ₹200+GST/half-yr; above ₹2L–₹5L ₹300+GST/half-yr; above ₹5L–₹20L ₹600+GST/half-yr", hard:true },
+          { t: "Penal charges: 2% p.a. on overdue amount at MONTHLY rests, not capitalized (regular interest compounding unaffected)", hard:true },
+          { t: "Penal charges confirmed NIL for Priority Sector accounts with sanction limit up to ₹50,000", hard:true },
+        ]
+      },
+      {
+        title: "Classification, Inspection & Documentation",
+        items: [
+          { t: "Account classified under Micro–Manufacturing or Micro–Trading/Services as applicable, reported under Priority Sector", hard:true },
+          { t: "Both Pre-Sanction AND Post-Sanction inspections conducted by Manager/Officer (Advances/Credit)", hard:true },
+          { t: "Stamp duty applied as per State Stamp Act provisions" },
+          { t: "IRAC norms applied per prevailing Bank policy for both Term Loan and Working Capital classification" },
+          { t: "Loans sanctioned strictly per Bank's Guideline on Lending Powers (Circular 102 or applicable delegation matrix)", hard:true },
+          { t: "CGTMSE coverage documentation and undertaking obtained and correctly flagged in CBS", hard:true },
+          { t: "Personal guarantee documents executed by all partners/promoters" },
+          { t: "Utilization Certificate format used matches slab requirement (see Disbursement section)" },
+        ]
+      },
+      {
+        title: "Scheme Codes",
+        items: [
+          { t: "SHISHU: APMST (Term Loan) · APMSW (WC Overdraft) · PMSCC (WC Cash Credit)" },
+          { t: "KISHORE: APMKT (Term Loan) · APMKW (WC Overdraft) · PMKCC (WC Cash Credit)" },
+          { t: "TARUN: APMTT (Term Loan) · APMTW (WC Overdraft) · PMTCC (WC Cash Credit)" },
+          { t: "TARUN PLUS: APTPT (Term Loan) · APTPW (WC Overdraft)" },
+          { t: "Confirmed scheme code entered in CBS matches variant + facility type combination selected", hard:true },
+        ]
+      },
+    ]
+  },
+  {
+    id: "pm-vishwakarma", category: "Govt-Sponsored Enterprise",
+    name: "PM Vishwakarma Yojana",
+    code: "PMVSM / PMVS2",
+    validity: "Cir No.195 dated 14.08.2026",
+    sections: [
+      {
+        title: "Eligibility — Trade & Registration",
+        items: [
+          { t: "Beneficiary is an artisan/craftsperson in an eligible family-based traditional trade (Tailor, Washerman, Barber, Blacksmith, Carpenter, Potter, Goldsmith, Cobbler, Mason, Sculptor, Boat Maker, etc. per notified list), unorganized sector, self-employment basis", hard:true },
+          { t: "Minimum age 18 years confirmed as on date of registration", hard:true },
+          { t: "Beneficiary engaged in the trade on date of registration" },
+          { t: "Confirmed NOT availed similar Central/State self-employment credit schemes (PMEGP, PM SVANidhi, MUDRA) in the past 5 years FROM DATE OF SANCTION of that loan", hard:true, sub:"Exception: those who fully REPAID MUDRA or SVANidhi loans remain eligible. A person who availed PMEGP is never eligible. Outstanding MUDRA/SVANidhi also disqualifies." },
+          { t: "5-day Basic Skill training + Skill Verification completed before availing 1st tranche" },
+          { t: "3-step verification completed — Vishwakarma digital ID, PM Vishwakarma Digital Certificate, and ID Card issued", hard:true },
+          { t: "Registration/benefit confirmed restricted to ONE member per family (family = husband, wife, unmarried children)", hard:true },
+          { t: "Confirmed applicant and family members are NOT in government service", hard:true },
+          { t: "Application generated and routed through the online PM Vishwakarma portal" },
+        ]
+      },
+      {
+        title: "Second Tranche — Additional Gate",
+        items: [
+          { t: "First tranche loan fully repaid before availing second tranche", hard:true },
+          { t: "Second tranche NOT granted before 6 months from first tranche disbursement", hard:true },
+          { t: "Beneficiary maintains a Standard loan account AND has either adopted digital transactions in business OR completed Advanced Skill Training" },
+        ]
+      },
+      {
+        title: "Loan Type & Quantum",
+        items: [
+          { t: "Facility type confirmed: Enterprise Development Loan, in the nature of Working Capital Demand Loan, in 2 tranches" },
+          { t: "1st Tranche: sanctioned within Rs.50,000 (min) – Rs.1,00,000 (max) band", hard:true },
+          { t: "2nd Tranche: sanctioned up to Rs.2.00 lakh" },
+          { t: "Total exposure under scheme confirmed capped at Rs.3.00 lakh (both tranches combined)", hard:true },
+          { t: "Margin confirmed NIL for both tranches", hard:true },
+          { t: "Assessment done on need basis, within tranche ceiling; key benchmark ratios/financial parameters exempted" },
+        ]
+      },
+      {
+        title: "Disbursement & Repayment",
+        items: [
+          { t: "Disbursed to borrower's operative account with the bank OR directly to vendor" },
+          { t: "End-use supplemented by GST/Non-GST bills + borrower undertaking (prescribed format) obtained" },
+          { t: "1st Tranche: repayable in 18 monthly instalments", hard:true },
+          { t: "2nd Tranche: repayable in 30 monthly instalments", hard:true },
+          { t: "Confirmed NO moratorium permitted under the scheme", hard:true },
+          { t: "No prepayment penalty charged after 6 months from disbursement" },
+        ]
+      },
+      {
+        title: "Interest Rate & Subvention",
+        items: [
+          { t: "Card rate of interest confirmed: 13% p.a." },
+          { t: "Concessional rate charged to beneficiary: 5% p.a. (interest subvention cap of 8% borne by MoMSME)", hard:true },
+          { t: "Subvention confirmed applicable ONLY to accounts classified Standard (RBI norms)", hard:true },
+          { t: "If account slips to NPA: penal charge of 2% over the applicable 13% p.a. rate collected", hard:true },
+          { t: "Subvention terms explicitly incorporated as part of sanction letter terms & conditions", hard:true },
+        ]
+      },
+      {
+        title: "Security & Credit Guarantee (CGTMSE)",
+        items: [
+          { t: "Primary security: assets created out of bank finance only" },
+          { t: "Collateral security confirmed NIL", hard:true },
+          { t: "Loan covered under CGTMSE guarantee — NO annual guarantee fee charged to borrower", hard:true },
+          { t: "Portfolio coverage basis understood: 1st tranche max effective cover 35.5%; 2nd tranche max effective cover 13%" },
+          { t: "Sanction/disbursal data uploaded on PM Vishwakarma portal for CGTMSE API capture", hard:true },
+          { t: "Lock-in period of 9 months from first disbursement noted before any claim eligibility" },
+          { t: "NPA classification date reported to CGTMSE by end of subsequent quarter" },
+          { t: "Claim lodgement window understood: within 2 years from NPA date, after lock-in completion, quarterly at Head Office" },
+        ]
+      },
+      {
+        title: "CIC / Credit Report",
+        items: [
+          { t: "CIBIL report generated and analysed at sanction stage IRRESPECTIVE of loan amount", hard:true },
+          { t: "Rejection basis checked: written-off/settled/restructured (non-exempt)/devolved/invoked/settled-post-WO in last 36 months", hard:true, sub:"Restructuring due to COVID-19/natural calamity/Govt mandate is EXEMPT from this rejection ground." },
+          { t: "Confirmed NO minimum CIBIL score prescribed under this scheme — absence of credit history is NOT a ground for exclusion", hard:true },
+          { t: "Confirmed sole disqualifying credit condition is presence of NPA/default — not score" },
+        ]
+      },
+      {
+        title: "Charges",
+        items: [
+          { t: "Processing charges — WC: Nil up to Rs.50,000; 0.30%+GST above Rs.50,000–2L" },
+          { t: "Processing charges — TL: Nil up to Rs.50,000; 0.50%+GST above Rs.50,000–2L" },
+          { t: "Penal charges: 2% p.a. on overdue + GST, only if sanctioned limit >Rs.50,000; not capitalized" },
+          { t: "Admin/Inspection charges: Nil up to Rs.50,000; Rs.200+GST per half-year above Rs.50,000–2L" },
+        ]
+      },
+      {
+        title: "Other Compliance",
+        items: [
+          { t: "Confirmed NO separate stock/equipment insurance required under this scheme" },
+          { t: "Udyam Assist Number / Udyam Registration Number obtained — mandatory", hard:true },
+          { t: "Savings Bank account number + IFSC verified per SOP before processing any transaction", hard:true },
+          { t: "Pre-sanction AND post-sanction unit visit conducted" },
+          { t: "PAN obtained per extant guidelines" },
+          { t: "Credit decision (sanction/rejection) made within maximum 14 working days of application receipt", hard:true },
+          { t: "Undertaking/Declaration letter (prescribed format) obtained from borrower" },
+        ]
+      },
+      {
+        title: "Scheme Codes",
+        items: [
+          { t: "PMVSM — PM Vishwakarma Tranche I" },
+          { t: "PMVS2 — PM Vishwakarma Tranche II" },
+          { t: "Confirmed correct tranche code entered matching first vs. second tranche facility", hard:true },
+        ]
+      },
+    ]
+  },
+  {
+    id: "pmegp", category: "Govt-Sponsored Enterprise",
+    name: "PM Employment Generation Programme (PMEGP)",
+    code: "APMET / APMEW",
+    validity: "Cir No.26/Credit-06 dated 16.05.2025",
+    sections: [
+      {
+        title: "Eligibility — Beneficiary",
+        items: [
+          { t: "Applicant age confirmed above 18 years; exit age capped at 70", hard:true },
+          { t: "Educational qualification: NIL required for projects ≤₹10L (Manufacturing) or ≤₹5L (Service); minimum 8th standard pass required above these limits", hard:true },
+          { t: "Confirmed unit is NEW — existing PMRY/REGP units or units that already availed subsidy under any Central/State scheme are ineligible", hard:true },
+          { t: "No income ceiling applied as a restriction" },
+          { t: "KVIC/KVIB/State DIC registration confirmed voluntary; Udyam Portal + MSME Data Bank registration encouraged (mandatory for CGTMSE coverage)" },
+          { t: "Project confirmed to include capital expenditure — pure working-capital-only projects are NOT eligible", hard:true },
+          { t: "Only ONE person per family (self + spouse) confirmed eligible for PMEGP assistance", hard:true },
+        ]
+      },
+      {
+        title: "Eligibility — Upgradation of Existing PMEGP/REGP/MUDRA Units",
+        items: [
+          { t: "Margin Money successfully adjusted after 3-year lock-in period" },
+          { t: "First loan under PMEGP/REGP/MUDRA fully repaid within stipulated time", hard:true },
+          { t: "Unit confirmed profit-making with good turnover and growth potential via modernization/tech upgradation" },
+        ]
+      },
+      {
+        title: "Permitted Activities",
+        items: [
+          { t: "Activity confirmed NOT on the negative list and NOT prohibited by local authorities (environmental/socio-economic grounds)", hard:true },
+          { t: "Trading: retail outlets selling KVIC-certified Khadi/Village Industry products OR products of PMEGP units/SFURTI clusters; OR retail backed by manufacturing/service activity" },
+          { t: "Trading/Service sector project cost confirmed within ₹20 lakh subsidy-eligible cap" },
+          { t: "Transport: vehicle purchase (Cab/Van/Boat/Motorboat/Shikara etc.) for tourist/public transport confirmed eligible" },
+          { t: "Animal Husbandry (Dairy/Poultry/Aquaculture/Beekeeping-Sericulture): confirmed under Service sector, ₹20L subsidy-eligible cap; livestock cost assessed per NABARD rates as Capital Expenditure" },
+        ]
+      },
+      {
+        title: "Loan Margin & Structure — New Units",
+        items: [
+          { t: "Beneficiary contribution: 10% (General) / 5% (Special category — SC/ST/OBC/Minorities/Women/Ex-Servicemen/NER/Hill/Border)", hard:true },
+          { t: "Subsidy rate correctly applied: General 15% urban/25% rural; Special 25% urban/35% rural", hard:true },
+          { t: "Bank finance correctly computed: 90% of project cost (General) / 95% (Special)" },
+          { t: "Sector cost cap for subsidy eligibility: ₹50 lakh (Manufacturing) / ₹20 lakh (Service-Business)", hard:true },
+          { t: "Working capital component capped: ≤40% (Manufacturing) / ≤60% (Service)" },
+          { t: "Additional bank finance beyond sector cap permitted, but NO subsidy on the excess portion" },
+          { t: "Projects >₹2.00 lakh confirmed to include genuine capital expenditure (Term Loan) — pure WC proposals above this threshold rejected", hard:true },
+          { t: "Subsidy adjustment: if actual capital+WC utilization within 3 years < sanctioned, excess subsidy refunded to KVIC" },
+        ]
+      },
+      {
+        title: "Loan Margin & Structure — Upgradation",
+        items: [
+          { t: "Beneficiary contribution: 10% of project cost (all categories)" },
+          { t: "Subsidy rate: 15% (Standard) / 20% (NER & Hill States)" },
+          { t: "Max subsidy-eligible project cost: Manufacturing ₹1.00 crore (subsidy cap ₹15L / ₹20L NER-Hill); Service-Business ₹25 lakh (subsidy cap ₹3.75L / ₹5L NER-Hill)", hard:true },
+          { t: "Additional bank finance beyond cap permitted, no subsidy on excess; excess subsidy refunded if actual cost < sanctioned" },
+        ]
+      },
+      {
+        title: "Rural/Urban Area Classification",
+        items: [
+          { t: "Rural confirmed as: any area classified Village per State/UT revenue record, OR any Panchayati Raj Institution area (irrespective of population)" },
+          { t: "Municipality areas correctly classified as Urban" },
+        ]
+      },
+      {
+        title: "Loan Tenure & Rate of Interest",
+        items: [
+          { t: "Term Loan tenure: min 3 years, max 7 years (incl. moratorium up to 24 months); repaid via EMI" },
+          { t: "Working Capital tenure: max 3 years, subject to annual review" },
+          { t: "ROI slab correctly applied: ≤₹10L → 12.00% p.a.; >₹10L with 100% liquid security → 10.00%; >₹10L with 125% collateral → 11.00%; >₹10L Hybrid Collateral (>50% coverage) → 11.50%; other eligible cases → 12.00%", hard:true },
+          { t: "Penal charges: 2% p.a. on overdue + applicable taxes at monthly rests, not capitalized" },
+        ]
+      },
+      {
+        title: "Charges",
+        items: [
+          { t: "Processing charge — Term Loan (Capital Expenditure): 1.00% of sanctioned limit + taxes, collected upfront", hard:true },
+          { t: "Processing charge — Working Capital (CC): 0.75% p.a. of sanctioned limit + taxes, collected upfront" },
+          { t: "Administrative/other charges per prevailing service charges circular" },
+        ]
+      },
+      {
+        title: "Security & CGTMSE",
+        items: [
+          { t: "Primary security: asset created out of bank finance" },
+          { t: "Loans up to ₹10 lakh: NO collateral security obtained — mandatorily covered under CGTMSE", hard:true },
+          { t: "Loans above ₹10 lakh: SARFAESI-compliant immovable property (≥125% of limit) OR Liquid Security (≥100% of loan amount) accepted" },
+          { t: "Regional Office may permit Hybrid Collateral Model (partial collateral + CGTMSE covering unsecured portion, 100% total coverage) OR Full CGTMSE Coverage where no SARFAESI-compliant collateral available" },
+          { t: "Land & Building mortgaged as primary security with market value exceeding sanctioned loan may be considered toward collateral coverage" },
+          { t: "CGTMSE guarantee fee + charges + taxes borne by borrower annually, clearly disclosed in sanction letter", hard:true },
+        ]
+      },
+      {
+        title: "Guarantee",
+        items: [
+          { t: "Confirmed NO guarantee taken for loans fully covered under CGTMSE", hard:true },
+          { t: "If collateral provided by a third party: owner of the collateral joined as guarantor to the loan", hard:true },
+        ]
+      },
+      {
+        title: "Appraisal & Repayment Capacity Assessment",
+        items: [
+          { t: "Term Loan: repayment capacity assessed on projected cash flows from productive use of machinery/equipment OR income generation potential of the new unit" },
+          { t: "Detailed Project Report (DPR) obtained — covers projected income/expenditure, revenue assumptions, and proposed repayment schedule (interest + principal)", hard:true },
+          { t: "Working Capital: assessed per prevailing OCC/SOD guidelines" },
+          { t: "Credit rating done per prevailing guidelines" },
+        ]
+      },
+      {
+        title: "Disbursement",
+        items: [
+          { t: "Term Loan: disbursed directly to Supplier/Dealer/Vendor's account (incl. borrower's margin), stage-wise per investment progress, verified via progress reports + empaneled engineer photographs", hard:true },
+          { t: "Further disbursement released only after confirming margin invested/utilized as per norms and asset creation adhered to" },
+          { t: "Working Capital: disbursed through borrower's CC/OD account per standard procedures" },
+        ]
+      },
+      {
+        title: "Scheme Codes",
+        items: [
+          { t: "APMET — Andhra Pradesh PMEGP Term Loan (Capital Expenditure)" },
+          { t: "APMEW — Andhra Pradesh PMEGP Working Capital" },
+        ]
+      },
+      {
+        title: "Sanction Delegation",
+        items: [
+          { t: "OJM Grade-I: NIL sanctioning power" },
+          { t: "MM Grade-II: ₹5L (no Hub/CPC) / ₹5L (with Hub/CPC) / ₹10L (Hub/CPC power)" },
+          { t: "MM Grade-III (Sr. Manager): ₹10L / ₹5L / ₹20L" },
+          { t: "SM Grade-IV (Chief Manager): ₹15L / ₹10L / ₹30L" },
+          { t: "SM Grade-V (AGM): ₹20L / ₹10L / ₹40L" },
+          { t: "CAC headed by Regional Manager: ₹50L; by GM-Credit: ₹100L; by Chairman: ₹500L", hard:true },
+          { t: "E-Sanction Letter issued ONLY after approval from concerned sanctioning authority within discretionary power", hard:true },
+        ]
+      },
+      {
+        title: "Documentation & Compliance",
+        items: [
+          { t: "Family eligibility due diligence done — confirmed no other family member (self+spouse definition) has availed PMEGP subsidy", hard:true },
+          { t: "CIBIL consent letters obtained for applicant AND guarantor before sanction, per bank's CIC policy", hard:true },
+          { t: "All primary and collateral assets covered under comprehensive insurance with bank clause noted" },
+          { t: "Asset classification (Term Loan + WC/OD/CC) done per prevailing IRAC norms" },
+          { t: "Bilingual signboard displayed at unit entrance (min 4ft × 2.5ft, light blue background per PMEGP portal template)", hard:true },
+          { t: "Signboard photograph uploaded at time of Margin Money Subsidy claim" },
+        ]
+      },
+      {
+        title: "EDP Training",
+        items: [
+          { t: "EDP/SDP/ESDP/VT training (10 days offline / 60 hours online) completed and confirmed mandatory before Margin Money Subsidy claim", hard:true },
+          { t: "Projects up to ₹2.00 lakh confirmed EXEMPT from EDP training requirement" },
+          { t: "Applicants with prior EDP/SDP/ESDP/VT training certification confirmed exempt from repeating training" },
+        ]
+      },
+      {
+        title: "Process Flow — Application to Sanction",
+        items: [
+          { t: "Application received via PMEGP portal or physically through Implementing Agency, forwarded to branch login" },
+          { t: "Branch used its OWN individual login credentials to process the application (not shared/other branch credentials)", hard:true },
+          { t: "Appraisal covered: industry type, per capita investment, own contribution, rural/urban classification, negative-list exclusion" },
+          { t: "E-Sanction Letter issued only after viability confirmation + competent authority approval" },
+          { t: "Post-EDP: bank retains discretion to reject application if norms not met after training completion" },
+        ]
+      },
+      {
+        title: "Margin Money (Subsidy) Claim",
+        items: [
+          { t: "First instalment released BEFORE subsidy claim initiated", hard:true },
+          { t: "EDP training certificate uploaded" },
+          { t: "Borrower's own contribution confirmed deposited" },
+          { t: "Loan disbursed confirmed ≥ eligible subsidy amount" },
+          { t: "Activity confirmed NOT on negative list" },
+          { t: "Subsidy parked in non-operative TDR/SRF account, no interest paid/charged, 3-year lock-in observed", hard:true },
+          { t: "If account turns NPA before 3 years: subsidy refund triggered", hard:true },
+          { t: "Confirmed subsidy NOT claimed for enhanced credit/expansion/modernisation (except eligible 2nd loans) or for projects jointly financed by multiple banks/FIs", hard:true },
+        ]
+      },
+      {
+        title: "Physical Verification & Subsidy Adjustment",
+        items: [
+          { t: "100% physical verification (with geo-tagging) by Implementing Agency confirmed" },
+          { t: "Establishment date confirmed as after 6 months from first instalment disbursement" },
+          { t: "Verification window: begins after 2 years, concludes before end of 3-year lock-in" },
+          { t: "Subsidy adjustment NOT done before 3 years OR without IA's Adjustment Letter on record", hard:true },
+        ]
+      },
+      {
+        title: "Monitoring & Miscellaneous",
+        items: [
+          { t: "IA officer visit cadence noted: at least once every 3 months post-establishment" },
+          { t: "Borrower submissions on file: source declaration with margin proofs, CIBIL consent, statutory permissions/approvals, TDR/SRF refund undertaking" },
+          { t: "Confirmed NO deviation from approved project/construction plan permitted", hard:true },
+        ]
+      },
+    ]
+  },
+  {
+    id: "shg-nrlm", category: "SHG Bank Linkage",
+    name: "SHG Bank Linkage — DAY-NRLM (Rural)",
+    code: "SHFCC / SHGFS · Free Code 1: 065",
+    validity: "Cir No.184 dated 12.08.2026 · Annexure I",
+    sections: [
+      {
+        title: "Eligibility",
+        items: [
+          { t: "SHG in active existence for at least 6 months as per its own books of accounts (not from SB a/c opening date)", hard:true },
+          { t: "SHG practicing Panchasutras: regular meetings, regular savings, regular inter-loaning, timely repayment, up-to-date books" },
+          { t: "SHG qualifies per NABARD grading norms (or federation-conducted grading where federations exist)" },
+          { t: "All members have attained 18 years of age at time of application", hard:true },
+          { t: "Group size 10–20 members (women SHG); minimum 5 for special SHGs — difficult areas, disabled persons, remote tribal groups" },
+          { t: "If defunct SHG being revived: revived and active for minimum 3 months before considering for credit" },
+          { t: "No multiple membership of same individual across different SHGs verified" },
+        ]
+      },
+      {
+        title: "Below-10-Members Relaxation (Repeat Dose Only)",
+        items: [
+          { t: "Confirms this is a REPEAT dose to an already credit-linked SHG — not a fresh/first-time linkage", hard:true },
+          { t: "Active membership has not fallen below 8 members", hard:true },
+          { t: "Shortfall is due to migration or death ONLY — not willful default, disciplinary removal, or internal disputes", hard:true },
+          { t: "Group has zero overdues/irregularities on all earlier loans as of sanction date" },
+          { t: "Formal Special Resolution executed — joint & several liability for full repayment incl. departed member's share" },
+          { t: "Group has undertaken to induct new member(s) to restore to 10 within 6 months of sanction" },
+          { t: "Diary noted for mandatory 6-month review by Branch Manager to verify induction compliance", sub:"Non-compliance → immediate expiry of sanctioned limit; IRAC norms continue to apply." },
+        ]
+      },
+      {
+        title: "Loan Quantum & Dosage",
+        items: [
+          { t: "Maximum eligible loan quantum per SHG: Rs.20.00 Lakh overall cap", hard:true },
+          { t: "CCL: minimum Rs.6 lakh sanctioned for 3 years, with yearly reviewed drawing power" },
+          { t: "TL dosage-based quantum applied correctly per dose (1st–4th+) using corpus multiple or MCP basis", hard:true },
+          { t: "Repayment tenure applied correctly by dose: 1st dose 24–36mo, 2nd 36–48mo, 3rd 48–60mo, 4th+ 60–84mo" },
+        ],
+        calculator: {
+          title: "Quantum Calculator (TL Dose-wise / CCL DP)",
+          fields: [
+            { id:"shg-nrlm-corpus", label:"Existing SHG Corpus (₹)" },
+          ],
+          compute: (v) => {
+            const corpus = v["shg-nrlm-corpus"] || 0;
+            if(corpus === 0) return null;
+            const dose1 = Math.max(corpus*6, 150000);
+            const dose2 = Math.max(corpus*8, 300000);
+            return `<b>Term Loan doses (based on corpus):</b><br>
+            1st dose: ₹${dose1.toLocaleString('en-IN')} (6× corpus or ₹1.5L, whichever higher)<br>
+            2nd dose: ₹${dose2.toLocaleString('en-IN')} (8× corpus or ₹3L, whichever higher)<br>
+            3rd dose onward: min ₹6L, based on MCP<br><br>
+            <b>CCL Drawing Power:</b><br>
+            Year 1 DP: ₹${dose1.toLocaleString('en-IN')} (same formula)<br>
+            Year 2 DP: ₹${dose2.toLocaleString('en-IN')}<br>
+            Year 3+ DP: min ₹6L, based on MCP + credit history
+            <div class="final">Scheme cap: ₹20,00,000 per SHG</div>`;
+          }
+        }
+      },
+      {
+        title: "MCP & Purpose Verification",
+        items: [
+          { t: "Micro Credit Plan (MCP) prepared by SHG through democratic consensus in group meeting" },
+          { t: "Loan purpose usage ratios checked: ≥50% (loans >Rs.1L), ≥75% (>Rs.4L), ≥85% (>Rs.6L) toward income-generating productive purposes" },
+        ]
+      },
+      {
+        title: "Security & Margin",
+        items: [
+          { t: "Loans up to Rs.10 Lakh: confirmed NO collateral and NO margin taken; no lien marked on SHG SB account", hard:true },
+          { t: "Loans above Rs.10 Lakh up to Rs.20 Lakh: confirmed NO collateral, NO lien on SB account" },
+          { t: "For loans above Rs.10 Lakh: CGFMU coverage eligibility checked (see CGFMU section)" },
+          { t: "Confirmed pure agri crop-cultivation-only loans are NOT eligible for CGFMU (allied-agri group activities are)" },
+        ]
+      },
+      {
+        title: "Credit Information / CIC",
+        items: [
+          { t: "Unregistered SHG: individual CIBIL reports obtained for all members", hard:true },
+          { t: "Registered SHG: both individual member CIBIL reports AND group CIBIL report obtained", hard:true },
+          { t: "Any CIC deviation (score/derogatory remarks) routed for approval per Circular 102 dated 17.06.2026" },
+        ]
+      },
+      {
+        title: "Defaulter Handling",
+        items: [
+          { t: "Willful defaulters within the group excluded from the credit facility documentation (though they may retain thrift/corpus benefits)", hard:true },
+          { t: "Loan not denied to SHG solely because a member's family member is a defaulter with the bank" },
+          { t: "Non-willful defaulters not debarred; restructuring norms applied where default is due to genuine reasons" },
+        ]
+      },
+      {
+        title: "Migrated Groups (From Other Banks) — Additional Precautions",
+        items: [
+          { t: "Confirmed group follows Panchasutras prior to entertaining migration proposal" },
+          { t: "KYC and residence of all members verified — same village/area for semi-urban/urban groups", hard:true },
+          { t: "All loans at transferor bank branch closed; No Due Certificate obtained", hard:true },
+          { t: "NOC from existing bank OR Group Resolution obtained, authenticated by SERP official (APM/CMM level or above)", sub:"If NOC not received within 15 days, deemed no-objection from transferor bank." },
+          { t: "Transferor branch informed of the financing to prevent duplicate lending" },
+          { t: "SB account at transferor branch confirmed closed" },
+          { t: "Group seniority counted from date of FIRST linkage — proof obtained" },
+          { t: "Maximum permissible limit capped at 150% of amount last financed at transferor branch", sub:"E.g., ₹3L at other bank → max ₹4.5L permissible here at first instance.", hard:true },
+          { t: "All member party codes linked to SB/Loan accounts; SERP informed of financing bank change" },
+        ]
+      },
+      {
+        title: "Interest Rate Verification",
+        items: [
+          { t: "Up to Rs.3L @ 7.00% p.a. (Fixed)", hard:true },
+          { t: "Above Rs.3L up to Rs.5L @ 9.75% p.a. (Fixed)", hard:true },
+          { t: "Above Rs.5L @ 12.00% p.a. (Fixed)", hard:true },
+          { t: "Free Code 1 set to '065' in CBS — confirmed this drives correct ROI slab selection", hard:true },
+        ]
+      },
+      {
+        title: "Interest Subvention (Women SHGs)",
+        items: [
+          { t: "Confirmed scheme limited to Women SHGs under DAY-NRLM, rural areas only", hard:true },
+          { t: "SHG accounts (savings + loan) tagged with unique DAY-NRLM/SLRM codes in CBS", hard:true },
+          { t: "Account confirmed in Standard category (subvention payable only while standard)" },
+          { t: "If SHG promoted by other agency: DAY-NRLM protocol compliance and database submission confirmed" },
+          { t: "Quarterly claim certificate process noted (Jun 30/Sep 30/Dec 31/Mar 31) with Statutory Auditor certificate for Q4" },
+        ]
+      },
+      {
+        title: "CGFMU Coverage (Loans Rs.10L–20L)",
+        items: [
+          { t: "Account confirmed as Performing Asset (PA) as on previous quarter-end, prior to portal upload" },
+          { t: "Activity type confirmed eligible: agri-allied (livestock, fishery, bee-keeping, dairy, poultry etc.) or non-agri MSME income generation", hard:true },
+          { t: "Pure crop loans / land improvement confirmed EXCLUDED from CGFMU coverage" },
+          { t: "Group resolution specifically states nature of activity for classification" },
+          { t: "Guarantee fee structure understood: 0.25% p.a. (base year) → 0.50% p.a. (subsequent years) of quarter-end o/s" },
+          { t: "CBS MIS Code Tab flagged correctly: 'CGFMU' if eligible, 'NOGUA' if not — before disbursal", sub:"Irrevocable once flagged as CGFMU — no reversal to NOGUA permitted during loan tenure. Exercise care.", hard:true },
+          { t: "Irrevocable Undertaking letter obtained from SHG (Annexure format) if opting for CGFMU coverage" },
+        ]
+      },
+      {
+        title: "Grading",
+        items: [
+          { t: "Correct grading format used: Fresh Linkage / Repeat Linkage (CC) / Repeat Linkage (Term Loan) as applicable" },
+          { t: "Grading score computed — only A (≥80) or B (70–79) graded SHGs considered for linkage", hard:true },
+          { t: "CDD of office bearers completed for SB account opening; CDD of all members completed at time of credit linkage" },
+        ]
+      },
+      {
+        title: "Document Bundle — Final Check",
+        items: [
+          { t: "Loan application form" },
+          { t: "Copy of Micro Credit Plan (MCP) as approved in group meeting, with resolution" },
+          { t: "Completed Grading Format sheet (Fresh/Repeat-CC/Repeat-TL as applicable) with marks obtained", hard:true },
+          { t: "Customer consent letter for data sharing to DAY-NRLM/SRLMs — signed by borrower", hard:true },
+          { t: "Individual member CIBIL reports (unregistered SHG) or member + group CIBIL reports (registered SHG) on file", hard:true },
+          { t: "If below-10-member relaxation used: Special Resolution & Undertaking document executed with signatures/thumb impressions of all active members (min. 8) and Bookkeeper/VOA/RP certificate attached", sub:"Telugu-format document per Annexure — confirms joint & several liability and induction undertaking." },
+          { t: "If CGFMU coverage opted: Irrevocable Undertaking letter obtained, signed by authorised SHG signatories with SHG stamp" },
+          { t: "If migrated group: No Due Certificate, NOC/Group Resolution, and first-linkage seniority proof attached" },
+          { t: "Bank passbook/statement format explained to SHG in regional language at disbursement" },
+        ]
+      },
+      {
+        title: "Sanction Delegation & Charges",
+        items: [
+          { t: "Sanctioning authority confirmed as per Delegation of Lending Powers, Circular Credit/102 dated 17.06.2026", hard:true },
+          { t: "Processing charges confirmed NIL" },
+          { t: "Inspection charges and all other charges confirmed NIL" },
+          { t: "Takeover of SHG accounts: confirmed Regional Manager is minimum sanctioning authority (per hierarchy)" },
+        ]
+      },
+      {
+        title: "Post-Sanction Follow-up",
+        items: [
+          { t: "Loan passbook / statement issued in regional language with full terms and conditions" },
+          { t: "Fixed fortnightly field day designated for staff to attend SHG/Federation meetings" },
+          { t: "Minimum 12-month gap maintained between successive linkages" },
+          { t: "Monthly list of defaulting SHGs prepared and tabled at BLBC/DCC meetings" },
+        ]
+      },
+    ]
+  },
+  {
+    id: "shg-nulm", category: "SHG Bank Linkage",
+    name: "SHG Bank Linkage — DAY-NULM (Urban)",
+    code: "SHNCC / SHGNF · Free Code 1: 066",
+    validity: "Cir No.184 dated 12.08.2026 · Annexure II",
+    sections: [
+      {
+        title: "Eligibility",
+        items: [
+          { t: "SHG has functioned satisfactorily for 6+ months AND secured 'A' or 'B' grading per Critical Rating Index (CRI)", hard:true },
+          { t: "For loan amount ≥ Rs.10 lakh: 'A' rating is mandatory (not just A or B)", hard:true },
+          { t: "SHG practicing Panchasutras: regular meetings, regular savings, regular inter-loaning, timely repayment, up-to-date books" },
+          { t: "All members have attained 18 years of age at time of application", hard:true },
+          { t: "Group size 10–20 members (women SHG); minimum 5 for special SHGs — difficult areas, disabled persons, remote tribal groups" },
+          { t: "No multiple membership of same individual across different SHGs verified" },
+        ]
+      },
+      {
+        title: "Below-10-Members Relaxation (Repeat Dose Only)",
+        items: [
+          { t: "Confirms this is a REPEAT dose to an already credit-linked SHG — not a fresh/first-time linkage", hard:true },
+          { t: "Active membership has not fallen below 8 members", hard:true },
+          { t: "Shortfall is due to migration or death ONLY — not willful default, disciplinary removal, or internal disputes", hard:true },
+          { t: "Group has zero overdues/irregularities on all earlier loans as of sanction date" },
+          { t: "Formal Special Resolution executed — joint & several liability for full repayment incl. departed member's share" },
+          { t: "Group has undertaken to induct new member(s) to restore to 10 within 6 months of sanction" },
+          { t: "Diary noted for mandatory 6-month review by Branch Manager to verify induction compliance", sub:"Non-compliance → immediate expiry of sanctioned limit; IRAC norms continue to apply." },
+        ]
+      },
+      {
+        title: "Loan Quantum & Dosage",
+        items: [
+          { t: "Maximum loan amount: Rs.20 Lakh overall cap", hard:true },
+          { t: "CCL 1st dose: 1–4× savings or Rs.1,00,000, whichever higher" },
+          { t: "CCL 2nd dose: 5–10× savings or Rs.2,00,000, whichever higher" },
+          { t: "CCL 3rd dose onward: per Micro Credit Plan (MCP) of the group" },
+          { t: "TL dosage-based quantum applied correctly per dose (1st–4th+) using corpus multiple or MCP basis", hard:true },
+          { t: "Repayment tenure applied correctly by dose: 1st dose 24–36mo, 2nd 36–48mo, 3rd 48–60mo, 4th+ 60–84mo" },
+          { t: "For sanction above Rs.10 Lakh: 'A' rating (CRI) confirmed", hard:true },
+          { t: "For sanction above Rs.10 Lakh: SHG has completed 5 years since formation", hard:true },
+          { t: "For sanction above Rs.10 Lakh: limit available only from 3rd dosage onward", hard:true },
+          { t: "For sanction above Rs.10 Lakh: MCP obtained and proven track record confirmed (repayment, books, savings, meetings, credit absorption)" },
+          { t: "For enhancement above Rs.10 Lakh: SHG has NOT slipped to SMA-2 even once in last 1 year, and NOT slipped to NPA in last 2 years", sub:"Deviation beyond this requires RCAC approval.", hard:true },
+        ],
+        calculator: {
+          title: "CCL Quantum Calculator (1st/2nd Dose)",
+          fields: [
+            { id:"shg-nulm-savings", label:"Existing SHG Savings (₹)" },
+          ],
+          compute: (v) => {
+            const sav = v["shg-nulm-savings"] || 0;
+            if(sav === 0) return null;
+            const d1min = Math.max(sav*1, 100000);
+            const d1max = Math.max(sav*4, 100000);
+            const d2min = Math.max(sav*5, 200000);
+            const d2max = Math.max(sav*10, 200000);
+            return `<b>CCL 1st dose range:</b><br>₹${d1min.toLocaleString('en-IN')} – ₹${d1max.toLocaleString('en-IN')} (1–4× savings or ₹1L, whichever higher)<br><br>
+            <b>CCL 2nd dose range:</b><br>₹${d2min.toLocaleString('en-IN')} – ₹${d2max.toLocaleString('en-IN')} (5–10× savings or ₹2L, whichever higher)<br>
+            <div class="final">3rd dose onward: per MCP · Scheme cap: ₹20,00,000</div>`;
+          }
+        }
+      },
+      {
+        title: "MCP & Purpose Verification",
+        items: [
+          { t: "Micro Credit Plan (MCP) prepared by SHG through democratic consensus in group meeting" },
+          { t: "Digital MCP downloaded from SERP/MEPMA portal only — non-digital MCP not acceptable for credit linkage", hard:true },
+          { t: "Loan purpose usage ratios checked: ≥50% (loans >Rs.1L), ≥75% (>Rs.4L), ≥85% (>Rs.6L) toward income-generating productive purposes" },
+          { t: "Branch staff have physically attended the SHG group meeting before sanctioning/recommending the loan", hard:true },
+        ]
+      },
+      {
+        title: "Security & Margin",
+        items: [
+          { t: "Loans up to Rs.10 Lakh: confirmed NO collateral and NO margin taken; no lien marked on SHG SB account", hard:true },
+          { t: "Loans above Rs.10 Lakh up to Rs.20 Lakh: confirmed NO collateral, NO lien on SB account" },
+          { t: "For loans above Rs.10 Lakh: CGFMU coverage eligibility checked (see CGFMU section)" },
+        ]
+      },
+      {
+        title: "Credit Information / CIC",
+        items: [
+          { t: "Unregistered SHG: individual CIBIL reports obtained for all members", hard:true },
+          { t: "Registered SHG: both individual member CIBIL reports AND group CIBIL report obtained", hard:true },
+          { t: "Any CIC deviation (score/derogatory remarks) routed for approval per Circular 102 dated 17.06.2026" },
+        ]
+      },
+      {
+        title: "Defaulter Handling",
+        items: [
+          { t: "Willful defaulters within the group excluded from the credit facility documentation (though they may retain thrift/corpus benefits)", hard:true },
+          { t: "Loan not denied to SHG solely because a member's family member is a defaulter with the bank" },
+          { t: "Non-willful defaulters not debarred; restructuring norms applied where default is due to genuine reasons" },
+        ]
+      },
+      {
+        title: "Migrated Groups (From Other Banks) — Additional Precautions",
+        items: [
+          { t: "Confirmed group follows Panchasutras prior to entertaining migration proposal" },
+          { t: "KYC and residence of all members verified — same village/area, extra caution for semi-urban/urban groups", hard:true },
+          { t: "All loans at transferor bank branch closed; No Due Certificate obtained", hard:true },
+          { t: "NOC from existing bank OR Group Resolution obtained, authenticated by MEPMA official (APM/CMM level or above)", sub:"If NOC not received within 15 days, deemed no-objection from transferor bank." },
+          { t: "Transferor branch informed of the financing to prevent duplicate lending" },
+          { t: "SB account at transferor branch confirmed closed" },
+          { t: "Group seniority counted from date of FIRST linkage — proof obtained" },
+          { t: "Maximum permissible limit capped at 150% of amount last financed at transferor branch", sub:"E.g., ₹3L at other bank → max ₹4.5L permissible here at first instance.", hard:true },
+          { t: "All member party codes linked to SB/Loan accounts; MEPMA informed of financing bank change" },
+        ]
+      },
+      {
+        title: "Interest Rate Verification",
+        items: [
+          { t: "Up to Rs.3.00L @ 9.50% p.a. (Fixed)", hard:true },
+          { t: "Above Rs.3.00L @ 12.00% p.a. (Fixed)", hard:true },
+          { t: "Free Code 1 set to '066' in CBS — confirmed this drives correct ROI slab selection", hard:true },
+        ]
+      },
+      {
+        title: "CGFMU Coverage (Loans Rs.10L–20L)",
+        items: [
+          { t: "Account confirmed as Performing Asset (PA) as on previous quarter-end, prior to portal upload" },
+          { t: "Activity type confirmed eligible: agri-allied (livestock, fishery, bee-keeping, dairy, poultry etc.) or non-agri MSME income generation", hard:true },
+          { t: "Group resolution specifically states nature of activity for classification" },
+          { t: "Guarantee fee structure understood: 0.25% p.a. (base year) → 0.50% p.a. (subsequent years) of quarter-end o/s" },
+          { t: "CBS MIS Code Tab flagged correctly: 'CGFMU' if eligible, 'NOGUA' if not — before disbursal", sub:"Irrevocable once flagged as CGFMU — no reversal to NOGUA permitted during loan tenure. Exercise care.", hard:true },
+          { t: "Irrevocable Undertaking letter obtained from SHG (Annexure format) if opting for CGFMU coverage" },
+        ]
+      },
+      {
+        title: "Grading",
+        items: [
+          { t: "Correct grading format used: Fresh Linkage / Repeat Linkage (CC) / Repeat Linkage (Term Loan) as applicable" },
+          { t: "Grading score computed — only A (≥80) or B (70–79) graded SHGs considered for linkage", hard:true },
+          { t: "CDD of office bearers completed for SB account opening; CDD of all members completed at time of credit linkage" },
+        ]
+      },
+      {
+        title: "Document Bundle — Final Check",
+        items: [
+          { t: "Loan application form" },
+          { t: "Digital MCP copy downloaded from SERP/MEPMA portal, with group resolution", hard:true },
+          { t: "Completed Grading Format sheet (Fresh/Repeat-CC/Repeat-TL as applicable) with marks obtained and CRI rating noted", hard:true },
+          { t: "Customer consent letter for data sharing to DAY-NRLM/SRLMs — signed by borrower", hard:true },
+          { t: "Individual member CIBIL reports (unregistered SHG) or member + group CIBIL reports (registered SHG) on file", hard:true },
+          { t: "If below-10-member relaxation used: Special Resolution & Undertaking document executed with signatures/thumb impressions of all active members (min. 8) and Bookkeeper/VOA/RP certificate attached", sub:"Telugu-format document per Annexure — confirms joint & several liability and induction undertaking." },
+          { t: "If CGFMU coverage opted: Irrevocable Undertaking letter obtained, signed by authorised SHG signatories with SHG stamp" },
+          { t: "If migrated group: No Due Certificate, NOC/Group Resolution, and first-linkage seniority proof attached" },
+          { t: "Bank passbook/statement format explained to SHG in regional language at disbursement" },
+        ]
+      },
+      {
+        title: "Sanction Delegation & Charges",
+        items: [
+          { t: "Sanctioning authority confirmed as per Delegation of Lending Powers, Circular Credit/102 dated 17.06.2026", hard:true },
+          { t: "Processing charges confirmed NIL" },
+          { t: "Inspection charges and all other charges confirmed NIL" },
+          { t: "Takeover of SHG accounts: confirmed Regional Manager is minimum sanctioning authority (per hierarchy)" },
+        ]
+      },
+      {
+        title: "Post-Sanction Follow-up",
+        items: [
+          { t: "Loan passbook / statement issued in regional language with full terms and conditions" },
+          { t: "Fixed fortnightly field day designated for staff to attend SHG/Federation meetings" },
+          { t: "Sanction details updated on SERP/MEPMA portal immediately after credit linkage", hard:true },
+          { t: "Minimum 12-month gap maintained between successive linkages" },
+          { t: "Monthly list of defaulting SHGs prepared and tabled at BLBC/DCC meetings" },
+        ]
+      },
+    ]
+  },
+  {
+    id: "lakhpati-didi", category: "Govt-Sponsored Enterprise",
+    name: "Lakhpati Didi Scheme",
+    code: "LDTLA / LDTLM / LDWCA / LDWCM",
+    validity: "Cir No.197 dated 14.08.2026",
+    sections: [
+      {
+        title: "Eligibility",
+        items: [
+          { t: "Applicant is a woman member of a matured, well-performing DAY-NRLM SHG — SHG >2 years old AND has accessed at least one dose of bank loan with timely repayment", hard:true },
+          { t: "Beneficiary identified & sourced by SRLM/NRLM", hard:true },
+          { t: "SHG holds a Unique Code under DAY-NRLM" },
+          { t: "Individual member holds a Unique Code under DAY-NRLM" },
+          { t: "Udyam Registration Certificate obtained — mandatory", hard:true },
+          { t: "Applicant's age confirmed above 18 and below 55 years", hard:true },
+          { t: "Confirmed applicant's SHG has NOT turned NPA in the past 12 months", hard:true },
+          { t: "Confirmed this is the borrower's FIRST loan under this scheme — no second loan permitted even if first is closed", hard:true, sub:"For a second loan, finance under other applicable schemes/products instead." },
+          { t: "Confirmed borrower has NOT availed Working Capital limits with other banks", hard:true },
+        ]
+      },
+      {
+        title: "Loan Type, Quantum & Margin",
+        items: [
+          { t: "Nature of limit confirmed: Term Loan / Working Capital / Composite (TL+WC)" },
+          { t: "Quantum within scheme ceiling of Rs.1.50 lakh (applies to both AGRI & MSME activities)", hard:true },
+          { t: "Margin: NIL up to Rs.50,000; 15% above Rs.50,000", hard:true },
+          { t: "If activity is among the 30 Model DPR-identified activities: no prior quotation sought — borrower request letter + undertaking obtained instead" },
+          { t: "If activity is OUTSIDE the 30 Model DPRs: Term Loan based on quotation + borrower's stake; WC assessed at 25% of projected/actual turnover" },
+        ]
+      },
+      {
+        title: "Security & Guarantee",
+        items: [
+          { t: "Primary security: hypothecation of stocks/machinery purchased out of bank finance" },
+          { t: "No collateral security insisted upon", hard:true },
+          { t: "No third-party guarantee insisted upon", hard:true },
+          { t: "Loan MANDATORILY covered under CGTMSE", hard:true },
+        ]
+      },
+      {
+        title: "Interest Rate & Subvention",
+        items: [
+          { t: "Rate of Interest confirmed: 12.00% p.a. Fixed", hard:true },
+          { t: "2% interest subvention applied for prompt repayment behavior (Women Enterprise Acceleration Fund)" },
+          { t: "Subvention applied on outstanding up to Rs.1.50 lakh per borrower — capped even if outstanding exceeds this", hard:true },
+          { t: "Subvention duration confirmed capped at maximum 3 years per borrower" },
+          { t: "Subvention claimed ONLY for periods account remained Standard — NOT for any period in NPA status", hard:true },
+          { t: "If NPA account later turns Standard: confirmed NO subvention payable retroactively for the NPA period" },
+          { t: "Subvention credited to loan account within 3 days of Nodal Bank fund receipt; to SB account if loan already closed" },
+        ]
+      },
+      {
+        title: "Credit Guarantee Fee Reimbursement",
+        items: [
+          { t: "CGTMSE fee reimbursement considered for max loan outstanding of Rs.5.00 lakh per borrower, max tenure 5 years" },
+          { t: "Reimbursement confirmed as ONE-TIME only per borrower", hard:true },
+          { t: "If not reimbursed by DAY-NRLM: fee recovered from the SHG member" },
+        ]
+      },
+      {
+        title: "Disbursement & Repayment",
+        items: [
+          { t: "Disbursed to vendor/supplier OR borrower's account; Utilization Certificate or Tax/invoice bills obtained post-disbursement", hard:true },
+          { t: "Term Loan: repayable max 5 years, monthly/quarterly/half-yearly per activity, with 3-month grace/moratorium" },
+          { t: "Working Capital: limit valid 36 months subject to annual review; interest recovered as and when debited" },
+          { t: "Reimbursement of expenditure incurred PRIOR to sanction confirmed NOT permitted (except borrower's stake)", hard:true },
+          { t: "Confirmed waiver applied: last 2 years Balance Sheet / Projected Balance Sheet / IT or Sales Tax return NOT required" },
+        ]
+      },
+      {
+        title: "Charges",
+        items: [
+          { t: "Processing fee — WC: Nil up to Rs.50,000; 0.30%+GST above Rs.50,000–1.50L" },
+          { t: "Processing fee — TL: Nil up to Rs.50,000; 0.50%+GST above Rs.50,000–1.50L" },
+          { t: "Penal charges: 2% p.a. on overdue, from due date to actual payment, only if sanctioned limit >Rs.50,000; not capitalized" },
+          { t: "Admin/Inspection charges: Nil up to Rs.50,000; Rs.200+GST per half-year above Rs.50,000–1.50L" },
+        ]
+      },
+      {
+        title: "Insurance & CERSAI",
+        items: [
+          { t: "Comprehensive insurance obtained for stocks/equipment with Bank's clause; full peak-value coverage confirmed, no under-insurance" },
+          { t: "For livestock-based activity: insurance to full value, policy in borrower's name noting hypothecation charge, copy retained by Bank" },
+          { t: "Insurance cost borne by beneficiary — recovered upfront or debited to deposit account" },
+          { t: "CERSAI entry made on date of hypothecation creation — NOT delayed to the 30-day statutory window", hard:true },
+        ]
+      },
+      {
+        title: "Inspection & Documentation",
+        items: [
+          { t: "Branch official unit visit within 15 days of disbursement, with dated/time-stamped photograph captured", hard:true },
+          { t: "Pre-Sanction AND Post-Sanction survey conducted by Manager/Branch Staff" },
+          { t: "Stock Statement obtained YEARLY, as on 31st December (not at time of sanction)" },
+          { t: "SHG-Member Unique ID confirmed via disaggregated SHG data" },
+          { t: "CIC score checked per Bank's prevailing CIC policy" },
+        ]
+      },
+      {
+        title: "Scheme Codes",
+        items: [
+          { t: "LDTLA — Lakhpati Didi Term Loan Agri" },
+          { t: "LDTLM — Lakhpati Didi Term Loan MSME" },
+          { t: "LDWCA — Lakhpati Didi WC Agriculture" },
+          { t: "LDWCM — Lakhpati Didi WC MSME" },
+          { t: "Confirmed scheme code entered matches facility type (TL/WC) + activity category (Agri/MSME)", hard:true },
+        ]
+      },
+    ]
+  },
+  {
+    id: "vehicle", category: "Retail & Business",
+    name: "APGB Light Commercial Vehicle (LCV)",
+    code: "APRTO",
+    validity: "Cir No.210/Credit-61 dated 20.09.2025",
+    sections: [
+      {
+        title: "Eligibility",
+        items: [
+          { t: "Applicant type confirmed: Individual / Proprietorship / Partnership (incl. LLP) / Limited Company / Trust / Society, purchasing LCV for Road Transport Operator / goods transport / passenger transport use", hard:true },
+          { t: "Confirmed scheme now covers ALL LCV purchasers, not restricted to Road Transport Operators only (per revised Cir.210)" },
+          { t: "Udyam Registration Number (URN) obtained — mandatory for all borrowers", hard:true },
+        ]
+      },
+      {
+        title: "Age of Borrower (Individuals)",
+        items: [
+          { t: "Minimum age 21 years at application confirmed — NO deviation permitted", hard:true },
+          { t: "Age at loan closure confirmed NOT exceeding 70 years" },
+          { t: "Relaxation up to 75 years at closure only with RCAC approval", tag:"rcac" },
+        ]
+      },
+      {
+        title: "Quantum & Margin",
+        items: [
+          { t: "Maximum loan amount confirmed within Rs.20 lakh ceiling", hard:true },
+          { t: "Finance confirmed restricted to NEW vehicles only", hard:true },
+          { t: "Unit cost components correctly included: invoice amount + body-building cost + spares + insurance + incidental charges, backed by mandatory quotation" },
+          { t: "Minimum margin of 10% maintained", hard:true },
+        ]
+      },
+      {
+        title: "Disbursement",
+        items: [
+          { t: "Loan component + borrower margin remitted DIRECTLY to vehicle supplier via DD/Pay Order/NEFT/RTGS", hard:true },
+          { t: "If body-building done at a separate location: that portion (with margin) remitted directly to that vendor via DD/Pay Order/NEFT/RTGS" },
+        ]
+      },
+      {
+        title: "Security",
+        items: [
+          { t: "Primary security: hypothecation of the financed vehicle; bank hypothecation printed on the vehicle mandatorily", hard:true },
+          { t: "If CGTMSE-covered: confirmed NO collateral security obtained", hard:true },
+          { t: "If borrower voluntarily offers collateral (opting out of CGTMSE): SARFAESI-compliant property (≥100% of loan limit) OR Term Deposit (≥outstanding balance) OR combination accepted" },
+          { t: "Written declaration obtained confirming borrower is aware of CGTMSE coverage and is voluntarily offering collateral instead", hard:true },
+          { t: "Third-party deposit/property accepted as collateral ONLY with the owner joining as guarantor" },
+          { t: "Confirmed collateral does NOT include: agricultural lands, Hospital/Educational Institution/Religious Trust properties (owned or hosting), properties with statutory liabilities/claims, or heritage/transfer-restricted properties", hard:true },
+          { t: "Open plots accepted as collateral ONLY if urban, clearly demarcated, approachable road, approved layout, AND RCAC administrative approval obtained", tag:"rcac" },
+          { t: "Cross-collateralization from other credit limits permitted only where no dilution occurs in that facility's security/margin coverage" },
+        ]
+      },
+      {
+        title: "Guarantee",
+        items: [
+          { t: "Confirmed NO third-party guarantee obtained by default", hard:true },
+          { t: "Partnership/Trust/Society/Company borrower: guarantee obtained from ALL partners/members/trustees/directors in individual capacity", hard:true },
+        ]
+      },
+      {
+        title: "Repayment",
+        items: [
+          { t: "Maximum tenure confirmed within 5 years", hard:true },
+          { t: "Moratorium (if sanctioned) capped at 3 months, within overall tenure; interest during moratorium may be capitalized" },
+          { t: "Repayment structured as Monthly Instalments" },
+          { t: "Repayment mode: Auto-debit preferred; Standing Instruction if business account with our Bank; NACH mandate if operative account with another bank", hard:true },
+        ]
+      },
+      {
+        title: "Rate of Interest",
+        items: [
+          { t: "ROI correctly applied: 11.00% p.a. (With Collateral) / 12.00% p.a. (CGTMSE-covered)", hard:true },
+          { t: "'With Collateral' rate applied ONLY where collateral of at least 100% is offered", hard:true },
+          { t: "ROI confirmed FIXED for entire loan tenure; sanction letter includes this clause with borrower acknowledgment obtained", hard:true },
+        ]
+      },
+      {
+        title: "Charges",
+        items: [
+          { t: "Processing charge: 1% of sanction limit + GST" },
+          { t: "Admin/Inspection charges per extant norms" },
+          { t: "Penal charges: 2% p.a. on overdue, not capitalized" },
+          { t: "Pre-closure/prepayment: NIL if repaid from own sources; 2% + GST on amount repaid if takeover by another bank — details + acknowledgment captured in sanction letter", hard:true },
+        ]
+      },
+      {
+        title: "Insurance",
+        items: [
+          { t: "Vehicle comprehensively insured with Bank clause/Bank lien for full value, kept in force till loan closure", hard:true },
+        ]
+      },
+      {
+        title: "Credit Information Reports",
+        items: [
+          { t: "Individual borrower: minimum CIBIL score 650 (NTC customers acceptable)", hard:true },
+          { t: "Non-individual borrower: minimum CIBIL MSME rank 5; all guarantors require minimum CIBIL score 650 (NTC acceptable)", hard:true },
+          { t: "Any CIBIL-related deviation processed per CIC guidelines" },
+        ]
+      },
+      {
+        title: "Income Assessment",
+        items: [
+          { t: "Detailed Project Report (DPR) attested by borrower(s) obtained, covering projected income/expenses/cash flow/repayment capacity for full tenure", hard:true },
+          { t: "Minimum DSCR confirmed: 1.10 on year-on-year basis, and not less than 1.30 on average basis", hard:true },
+        ]
+      },
+      {
+        title: "Lending Powers",
+        items: [
+          { t: "Applied as per SRTO delegation (Cir No.165 dated 21.08.2025): OJM Grade-I ₹5L (BM) / MM Grade-II ₹10L (BM), ₹20L (CPC CAC) / MM Grade-III ₹10L (BM), ₹20L (CPC CAC) / SM Grade-IV & above ₹10L (BM), ₹20L (CPC CAC)", hard:true },
+          { t: "RCAC/HCAC/GCAC/CCAC each capped at ₹20L (CPC Credit Approval Committee band)" },
+        ]
+      },
+      {
+        title: "Other Terms",
+        items: [
+          { t: "Periodic vehicle inspection carried out per Credit Monitoring & Review Policy 2025, satisfactory running condition + inspection report confirmed" },
+          { t: "Original invoice, stamped receipt, and blank transfer forms (signed by borrower) obtained and retained with loan agreement", hard:true },
+          { t: "Vehicle registered in the State of Andhra Pradesh only", hard:true },
+          { t: "Hypothecation charge updated on Vahan portal and confirmed printed on RC Card", hard:true },
+          { t: "Road tax payment for the vehicle ensured regular" },
+          { t: "'Vehicle is hypothecated to Andhra Pradesh Grameena Bank' confirmed printed on the vehicle", hard:true },
+        ]
+      },
+      {
+        title: "Classification of Loan",
+        items: [
+          { t: "Classified under MSME Priority Sector" },
+          { t: "Loans up to ₹10 lakh classified under Mudra sub-category by amount: Shishu (≤₹50,000) / Kishore (₹50,001–5,00,000) / Tarun (₹5,00,001–10,00,000)", hard:true },
+          { t: "Loans above ₹10 lakh classified as PM Mudra ONLY if customer previously availed and repaid a Tarun-category loan", hard:true },
+        ]
+      },
+      {
+        title: "Asset Classification & Scheme Code",
+        items: [
+          { t: "Asset classification carried out per prevailing IRAC norms" },
+          { t: "Scheme code: APRTO" },
+          { t: "Separate record maintained for accounts under APRTO where actual end-use is NOT directly Road Transport Operator activity — for reclassification readiness", hard:true },
+        ]
+      },
+    ]
+  },
+  { id:"msme", category:"Retail & Business", name:"MSME / Business Loan", code:"MSME", sections:null },
+  { id:"education", category:"Retail & Business", name:"Education Loan", code:"EDU", sections:null },
+  { id:"personal", category:"Retail & Business", name:"Personal Loan", code:"PL", sections:null },
+];
+
+/* ============================================================ */
+
+let currentProductId = null;
+let state = {};
+
+function storageKeyState(pid){ return 'sanction_state_' + pid; }
+function storageKeyMeta(pid){ return 'sanction_meta_' + pid; }
+
+function loadState(pid){
+  try{
+    const saved = localStorage.getItem(storageKeyState(pid));
+    return saved ? JSON.parse(saved) : {};
+  }catch(e){ return {}; }
+}
+function saveState(pid, st){
+  try{ localStorage.setItem(storageKeyState(pid), JSON.stringify(st)); }catch(e){}
+}
+function loadMeta(pid){
+  try{
+    return JSON.parse(localStorage.getItem(storageKeyMeta(pid)) || '{}');
+  }catch(e){ return {}; }
+}
+function saveMeta(pid){
+  const m = {
+    name: document.getElementById('f-name').value,
+    kcc: document.getElementById('f-kcc').value,
+    branch: document.getElementById('f-branch').value,
+    officer: document.getElementById('f-officer').value,
+  };
+  try{ localStorage.setItem(storageKeyMeta(pid), JSON.stringify(m)); }catch(e){}
+}
+
+function productProgress(product){
+  if(!product.sections) return null;
+  const st = loadState(product.id);
+  let total = 0, done = 0;
+  product.sections.forEach((sec, si) => {
+    sec.items.forEach((it, ii) => {
+      total++;
+      if(st[si+'-'+ii]) done++;
+    });
+  });
+  return { total, done };
+}
+
+let activeCategory = 'All';
+let searchQuery = '';
+
+function categoryOrder(){
+  const seen = [];
+  PRODUCTS.forEach(p => { if(p.category && !seen.includes(p.category)) seen.push(p.category); });
+  return seen;
+}
+
+function renderCategoryChips(){
+  const row = document.getElementById('category-chips');
+  const cats = ['All', ...categoryOrder()];
+  row.innerHTML = '';
+  cats.forEach(cat => {
+    const chip = document.createElement('div');
+    chip.className = 'chip' + (activeCategory === cat ? ' active' : '');
+    chip.textContent = cat;
+    chip.addEventListener('click', () => {
+      activeCategory = cat;
+      renderRegistry();
+    });
+    row.appendChild(chip);
+  });
+}
+
+function buildProductCard(p, idx){
+  const card = document.createElement('div');
+  card.className = 'product-card' + (p.sections ? '' : ' placeholder');
+  const prog = productProgress(p);
+  let statusHtml = '';
+  if(!p.sections){
+    statusHtml = `<span class="product-status empty">Awaiting document</span>`;
+  } else if(prog.done === 0){
+    statusHtml = `<span class="product-status notstarted">Not started</span>`;
+  } else if(prog.done === prog.total){
+    statusHtml = `<span class="product-status ready">Ready</span>`;
+  } else {
+    statusHtml = `<span class="product-status progress">${prog.done}/${prog.total}</span>`;
+  }
+  card.innerHTML = `
+    <div class="product-tab-index ${p.sections ? '' : 'empty'}">${idx+1}</div>
+    <div class="product-info">
+      <div class="product-name">${p.name}</div>
+      <div class="product-code">${p.code}</div>
+    </div>
+    ${statusHtml}
+    <div class="card-arrow">›</div>
+  `;
+  card.addEventListener('click', () => openProduct(p.id));
+  return card;
+}
+
+function renderRegistry(){
+  renderCategoryChips();
+
+  const hint = document.getElementById('registry-hint');
+  hint.textContent = `${PRODUCTS.length} loan products configured. Checklists populate as circulars/annexures are added — each product's progress is saved independently on this device.`;
+
+  const groupsEl = document.getElementById('registry-groups');
+  const noResultsEl = document.getElementById('no-results');
+  groupsEl.innerHTML = '';
+
+  const q = searchQuery.trim().toLowerCase();
+  let filtered = PRODUCTS.filter(p => {
+    const matchesCategory = activeCategory === 'All' || p.category === activeCategory;
+    const matchesSearch = !q || p.name.toLowerCase().includes(q) || p.code.toLowerCase().includes(q);
+    return matchesCategory && matchesSearch;
+  });
+
+  if(filtered.length === 0){
+    noResultsEl.style.display = 'block';
+    return;
+  }
+  noResultsEl.style.display = 'none';
+
+  if(activeCategory !== 'All' || q){
+    // Flat list when filtering/searching — no need to sub-group
+    const grid = document.createElement('div');
+    grid.className = 'card-grid';
+    filtered.forEach((p) => {
+      const idx = PRODUCTS.indexOf(p);
+      grid.appendChild(buildProductCard(p, idx));
+    });
+    groupsEl.appendChild(grid);
+    return;
+  }
+
+  // Grouped view (All, no search)
+  categoryOrder().forEach(cat => {
+    const items = PRODUCTS.filter(p => p.category === cat);
+    if(items.length === 0) return;
+    const block = document.createElement('div');
+    block.className = 'group-block';
+    const title = document.createElement('div');
+    title.className = 'group-title';
+    title.textContent = cat;
+    block.appendChild(title);
+    const grid = document.createElement('div');
+    grid.className = 'card-grid';
+    items.forEach((p) => {
+      const idx = PRODUCTS.indexOf(p);
+      grid.appendChild(buildProductCard(p, idx));
+    });
+    block.appendChild(grid);
+    groupsEl.appendChild(block);
+  });
+}
+
+document.getElementById('product-search').addEventListener('input', (e) => {
+  searchQuery = e.target.value;
+  renderRegistry();
+});
+
+
+function openProduct(pid){
+  currentProductId = pid;
+  const product = PRODUCTS.find(p => p.id === pid);
+  document.getElementById('registry-view').classList.add('hidden');
+  document.getElementById('detail-view').classList.add('active');
+
+  document.getElementById('d-eyebrow').textContent = product.validity ? `${product.code} · ${product.validity}` : product.code;
+  document.getElementById('d-title').textContent = product.name;
+  document.getElementById('d-subtitle').textContent = 'Sanction File — Credit Processing Checklist';
+
+  const meta = loadMeta(pid);
+  document.getElementById('f-name').value = meta.name || '';
+  document.getElementById('f-kcc').value = meta.kcc || '';
+  document.getElementById('f-branch').value = meta.branch || '';
+  document.getElementById('f-officer').value = meta.officer || '';
+
+  if(product.sections){
+    document.getElementById('populated-block').style.display = 'block';
+    document.getElementById('empty-block').style.display = 'none';
+    state = loadState(pid);
+    renderSections(product);
+    updateProgress(product);
+  } else {
+    document.getElementById('populated-block').style.display = 'none';
+    document.getElementById('empty-block').style.display = 'block';
+  }
+
+  window.scrollTo(0,0);
+}
+
+function closeProduct(){
+  document.getElementById('detail-view').classList.remove('active');
+  document.getElementById('registry-view').classList.remove('hidden');
+  currentProductId = null;
+  renderRegistry();
+  window.scrollTo(0,0);
+}
+
+document.getElementById('back-btn').addEventListener('click', closeProduct);
+
+function itemKey(si, ii){ return si+'-'+ii; }
+
+function renderSections(product){
+  const container = document.getElementById('sections');
+  container.innerHTML = '';
+  product.sections.forEach((sec, si) => {
+    const secEl = document.createElement('div');
+    secEl.className = 'section';
+
+    const head = document.createElement('div');
+    head.className = 'section-head';
+    head.innerHTML = `
+      <div class="section-num">${si+1}</div>
+      <div class="section-title">${sec.title}</div>
+      <div class="section-count" data-count="${si}"></div>
+      <div class="chevron">▾</div>
+    `;
+    head.addEventListener('click', () => secEl.classList.toggle('collapsed'));
+    secEl.appendChild(head);
+
+    const body = document.createElement('div');
+    body.className = 'section-body';
+
+    sec.items.forEach((it, ii) => {
+      const key = itemKey(si, ii);
+      const checked = !!state[key];
+      const row = document.createElement('div');
+      row.className = 'item' + (it.hard ? ' hard' : '');
+      row.innerHTML = `
+        <div class="chk ${checked?'checked':''}" tabindex="0" role="checkbox" aria-checked="${checked}"></div>
+        <div class="item-text">
+          <div class="item-label ${checked?'checked':''}">${it.t}${it.hard?'<span class="tag hard">Hard Stop</span>':''}${it.tag==='rcac'?'<span class="tag rcac">RCAC</span>':''}</div>
+          ${it.sub ? `<div class="item-sub">${it.sub}</div>` : ''}
+        </div>
+      `;
+      const chk = row.querySelector('.chk');
+      const toggle = () => {
+        state[key] = !state[key];
+        saveState(product.id, state);
+        renderSections(product);
+        updateProgress(product);
+      };
+      chk.addEventListener('click', toggle);
+      chk.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); }
+      });
+      body.appendChild(row);
+    });
+
+    if(sec.calculator){
+      body.appendChild(buildCalculator(sec.calculator));
+    }
+
+    secEl.appendChild(body);
+    container.appendChild(secEl);
+  });
+
+  updateSectionCounts(product);
+}
+
+function buildCalculator(calc){
+  const wrap = document.createElement('div');
+  wrap.className = 'calc-box';
+  let fieldsHtml = '';
+  calc.fields.forEach(f => {
+    fieldsHtml += `
+      <div class="calc-row">
+        <label>${f.label}</label>
+        <input type="number" min="0" id="${f.id}" placeholder="0">
+      </div>
+    `;
+  });
+  wrap.innerHTML = `
+    <div class="calc-title">${calc.title}</div>
+    ${fieldsHtml}
+    <div class="calc-result" id="${calc.fields[0].id}-result">Enter values above to compute.</div>
+  `;
+  const resultId = calc.fields[0].id + '-result';
+  const recompute = () => {
+    const vals = {};
+    calc.fields.forEach(f => {
+      vals[f.id] = parseFloat(document.getElementById(f.id).value) || 0;
+    });
+    const html = calc.compute(vals);
+    document.getElementById(resultId).innerHTML = html || 'Enter values above to compute.';
+  };
+  setTimeout(() => {
+    calc.fields.forEach(f => {
+      document.getElementById(f.id).addEventListener('input', recompute);
+    });
+    recompute();
+  }, 0);
+  return wrap;
+}
+
+function updateSectionCounts(product){
+  product.sections.forEach((sec, si) => {
+    const total = sec.items.length;
+    let done = 0;
+    sec.items.forEach((it, ii) => { if(state[itemKey(si,ii)]) done++; });
+    const el = document.querySelector(`.section-count[data-count="${si}"]`);
+    if(el){
+      el.textContent = `${done}/${total}`;
+      el.classList.toggle('complete', done === total);
+    }
+  });
+}
+
+function updateProgress(product){
+  let total = 0, done = 0, hardTotal = 0, hardDone = 0;
+  product.sections.forEach((sec, si) => {
+    sec.items.forEach((it, ii) => {
+      total++;
+      const c = !!state[itemKey(si,ii)];
+      if(c) done++;
+      if(it.hard){ hardTotal++; if(c) hardDone++; }
+    });
+  });
+  const pct = total ? Math.round((done/total)*100) : 0;
+  document.getElementById('prog-count').textContent = `${done} / ${total} checked`;
+  document.getElementById('prog-pct').textContent = `${pct}%`;
+  document.getElementById('prog-fill').style.width = pct + '%';
+
+  const seal = document.getElementById('seal');
+  const sealTxt = document.getElementById('seal-txt');
+  const noteEl = document.getElementById('hardstop-note');
+
+  const allHardDone = hardDone === hardTotal;
+  const allDone = done === total;
+
+  if(allDone){
+    seal.className = 'seal ready';
+    sealTxt.innerHTML = 'Sanction<br>Ready';
+    noteEl.classList.remove('show');
+  } else if(!allHardDone && done > 0){
+    seal.className = 'seal hardstop';
+    sealTxt.innerHTML = 'Pending<br>Review';
+    noteEl.classList.add('show');
+    noteEl.textContent = `⚠ ${hardTotal - hardDone} hard-stop item(s) unresolved`;
+  } else {
+    seal.className = 'seal';
+    sealTxt.innerHTML = 'Pending<br>Review';
+    noteEl.classList.remove('show');
+  }
+  updateSectionCounts(product);
+}
+
+document.getElementById('reset-btn').addEventListener('click', () => {
+  if(confirm('Reset all checklist items for this file? Applicant details will be kept.')){
+    const product = PRODUCTS.find(p => p.id === currentProductId);
+    state = {};
+    saveState(product.id, state);
+    renderSections(product);
+    updateProgress(product);
+  }
+});
+
+document.getElementById('save-btn').addEventListener('click', () => {
+  saveMeta(currentProductId);
+  const btn = document.getElementById('save-btn');
+  const orig = btn.textContent;
+  btn.textContent = 'Saved ✓';
+  setTimeout(() => { btn.textContent = orig; }, 1200);
+});
+
+['f-name','f-kcc','f-branch','f-officer'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    if(currentProductId) saveMeta(currentProductId);
+  });
+});
+
+renderRegistry();
+</script>
+
+</body>
+</html>
